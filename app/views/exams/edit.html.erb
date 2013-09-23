@@ -1,10 +1,13 @@
 <div class="hero-unit">
-
+	<div id="contenttimer" style="position: relative;margin: auto;">
+		<div id="timer" style="background: rgba(236, 236, 206, 0.61);position: fixed;right: 69px;padding: 20px;-webkit-box-shadow: 0px 0px 15px 1px rgba(0, 0, 0, 0.2);box-shadow:  0px 0px 15px 1px rgba(0, 0, 0, 0.2);">
+			<div style="background-image:url('/reloj.png');width: 58px;margin:auto;height: 58px;background-size: contain;"></div><h4> <span id="examen"><%= 
+		    #TOMA EL VALOR DE DURACION DE LA TABLA DE MASTER_EXAM
+		     @examenMaestro.duracion 
+		    %>:00</span> minutos</h4></div>
+	</div>
 	<h3  style="text-align: center;">Exámen</h3>
-    <div  style="background:yellow;"><h4> Duración del examen: <span id="examen"><%= 
-    #TOMA EL VALOR DE DURACION DE LA TABLA DE MASTER_EXAM
-     @examenMaestro.duracion 
-    %>:00</span> minutos</h4></div>
+   
 	<%= render 'form' %>
 
 	<% if @exam.errors.any? %>
@@ -42,7 +45,11 @@
 				 tiempoSeg--;
 				 //si el tiempo es de segundos
 				 if(tiempoSeg <= 60){
-				 		console.log("Se te acabara el tiempo");
+					$('#timer').css({"background":"rgba(255, 2, 2, 0.66)", 
+										"color": "white",
+										"text-shadow": "0px 0px 3px #000000",
+										"filter": "dropshadow(color=#000000, offx=0, offy=0)"});
+
 				 }
 				 if(tiempoSeg == 0){
 				 	//se debe de cerrar
