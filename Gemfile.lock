@@ -133,12 +133,12 @@ PLATFORMS
   x86-mingw32
 
 DEPENDENCIES
-  bcrypt-ruby
+  bcrypt-ruby (~> 3.0.0)
   bootstrap-sass (>= 2.1)
   coffee-rails (~> 3.2.1)
   debugger
   json
-  pg (= 0.12.2)
+  pg
   rails (= 3.2.12)
   rails-erd
   sass-rails (~> 3.2.3)
