@@ -17,6 +17,14 @@ class SessionsController < ApplicationController
   	end
   end
 
+  def self.find_for_database_authentication(conditions = {} )
+	unless conditions[:mail] =~ /^([\w\.%\+\-]+)@([\w\-]+\.)+([\w]{2,})$/i
+		conditions[:username] = conditions.delete("mail")
+	end
+	super
+  end
+  
+
   # def home
   # end
 

@@ -11,5 +11,10 @@
 			<li>- <%= message_error %></li>
 			<% end %>
 		</ul>
+<% end %>
+	<% @user.errors.each do |attr,msg|  %>
+			<ul>
+				<li> <%= attr %>  <%= msg %> </li>
+			</ul>
 	<% end %>
 </div>

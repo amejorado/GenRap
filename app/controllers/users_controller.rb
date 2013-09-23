@@ -31,9 +31,9 @@ class UsersController < ApplicationController
 		@user.utype = 0
 		
 		if @user.save
-			flash[:notice] = "Usuario creado de manera exitosa. Haga Sign In."
+			flash[:notice] = "usuario creado de manera exitosa. haga sign in."
 		else
-			flash[:error] = "Sus datos no son válidos."
+			flash[:error] = @user.errors.messages[:username].last
 		end
 
 		redirect_to("/signup")
@@ -100,10 +100,10 @@ class UsersController < ApplicationController
 			}
 			if tempStr != ""
 				u = User.joins(:groups).select("DISTINCT users.id").where("groups_users.group_id in (#{tempStr})")
-				@users = User.select("DISTINCT id, username, fname, lname").where("id not in (?)", u)
+				@users = User.select("DISTINCT id, username, fname, lname, mail").where("id not in (?)", u)
 
 			else
-				@users = User.where("id != #{session[:user_id]}").select("DISTINCT users.id, users.username, users.fname, users.lname")
+				@users = User.where("id != #{session[:user_id]}").select("DISTINCT users.id, users.username, users.fname, users.lname, users.mail")
 			end
 		    respond_to do |format|
 		      format.json { render json: @users.to_json }
