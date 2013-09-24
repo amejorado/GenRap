@@ -250,7 +250,7 @@ class MasterQuestionsController < ApplicationController
   end
 
   def get_languages
-    languages = MasterQuestion.select("DISTINCT(master_questions.language), id").group("master_questions.language")
+    languages = MasterQuestion.select("DISTINCT(language), id").group("language")
     respond_to do |format|
       format.json { render json: languages.to_json }
     end
