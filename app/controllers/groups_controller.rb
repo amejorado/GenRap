@@ -35,7 +35,9 @@ class GroupsController < ApplicationController
 			else
 			  logger.error "Bad group_file: #{group_file.class.name}: #{group_file.inspect}"
 			end
-			users = to_add.split(/(\r?\n|,)/)
+			to_add = to_add.gsub(/\r\n?|\n/, ",")
+			users = to_add.split(/,/)
+			errors = []
 			users.each do |user|
 				user = user.gsub(/\s+|\n+|\r+/, "")
 				if (user == "") 
@@ -43,12 +45,14 @@ class GroupsController < ApplicationController
 				end
 				curr_user = User.find_by_username(user)
 				if(curr_user == nil)
-					flash[:error] = ("Usuario <b>" + user + "</b> no encontrado.").html_safe
+					errors << ("Usuario <b>" + user + "</b> no encontrado.")
 				else
 					params[:group][:user_ids] << curr_user.id
 				end
 			end
-			
+			if errors.length > 0
+				flash[:error] = errors.join("<br />").html_safe
+			end
 			if @group.save
 				flash[:notice] = "Grupo creado de manera exitosa."
 				redirect_to(groups_path)
@@ -93,7 +97,9 @@ class GroupsController < ApplicationController
 			else
 			  logger.error "Bad group_file: #{group_file.class.name}: #{group_file.inspect}"
 			end
-			users = to_add.split(/(\r?\n|,)/)
+			to_add = to_add.gsub(/\r\n?|\n/, ",")
+			users = to_add.split(/,/)
+			errors = []
 			users.each do |user|
 				user = user.gsub(/\s+|\n+|\r+/, "")
 				if (user == "") 
@@ -101,12 +107,15 @@ class GroupsController < ApplicationController
 				end
 				curr_user = User.find_by_username(user)
 				if(curr_user == nil)
-					flash[:error] = ("Usuario <b>" + user + "</b> no encontrado.").html_safe
+					errors << ("Usuario <b>" + user + "</b> no encontrado.")
 				else
 					params[:group][:user_ids] << curr_user.id
 				end
 			end
-
+			if errors.length > 0
+				flash[:error] = errors.join("<br />").html_safe
+			end
+			
 			if @group.update_attributes(params[:group])
 				flash[:notice] = 'El grupo fue actualizado de manera correcta.'
 		    else
