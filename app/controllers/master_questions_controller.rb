@@ -177,12 +177,12 @@ class MasterQuestionsController < ApplicationController
     when 'randomizer'
       text << "def randomize(inquiry)\n  values = Hash.new('')\n" +
               "  #Inserte su codigo para llenar values aqui\n" +
-              "  #values['^1'] = 2\n  #values['^2'] = 2\n" + 
+              "  #values['^1'] = Random.rand(1..2)\n  #values['^2'] = Random.rand(5..10)\n" + 
               "  values\nend"
     when 'solver'
       text << "def solve(inquiry, values)\n  answers = Hash.new('')\n" +
               "  #Inserte su codigo para llenar generar answers aqui\n" +
-              "  #answers[1] = 2\n  #answers[2] = 3\n" +
+              "  #answers[1] = values['^1'] + values['^2']\n  #answers[2] = values['^1'] - values['^2']\n" +
               "  #Inserte su codigo para indicar la respuesta correcta\n" +
               "  #correct = 1\n  [answers, correct]\nend"
     when 'inquiry'
