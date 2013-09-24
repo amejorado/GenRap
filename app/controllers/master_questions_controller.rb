@@ -184,13 +184,7 @@ class MasterQuestionsController < ApplicationController
               "  #Inserte su codigo para llenar generar answers aqui\n" +
               "  #answers[1] = 2\n  #answers[2] = 3\n" +
               "  #Inserte su codigo para indicar la respuesta correcta\n" +
-              "  #correct = 1\n  answers = check_correct_anwers(answers, correct)\n [answers, correct]\nend\n\n" +
-              "\n#Favor de NO modificar el codigo de la siguiente funcion\n" +
-              "def check_correct_anwers(answers, correct)\n  correctAnswer = answers[correct].to_s\n" + 
-              "  count = answers.length\n  i = 0\n  i.to_i\n  while i < count\n    if i != correct\n" +
-              "      if answers[i].to_s == correctAnswer\n        if answers[i].to_s.match(/\A[+-]?\d+?(\.\d+)?\Z/) != nil\n" +
-              "          answers[i] = answers[i] + Random.rand(1..10)\n        end\n      end\n    end\n    i = i + 1\n" + 
-              "  end\n  return answers\nend"
+              "  #correct = 1\n  [answers, correct]\nend"
     when 'inquiry'
       text << "¿Cuánto es ^1 + ^2?"
     end
