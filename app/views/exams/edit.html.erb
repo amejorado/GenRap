@@ -52,7 +52,9 @@
 
 				 }
 				 if(tiempoSeg == 0){
-				 	//se debe de cerrar
+				 	window.onbeforeunload = null;	//se cancela la funcion onbeforeunload
+				 	var idExamen =  "edit_exam_" + <%= @exam.id %> ;
+				 	document.getElementById(idExamen).submit();
 				 }
 			},
 			1000,
