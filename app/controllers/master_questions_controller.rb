@@ -189,7 +189,7 @@ class MasterQuestionsController < ApplicationController
               "def check_correct_anwers(answers, correct)\n  correctAnswer = answers[correct].to_s\n" + 
               "  count = answers.length\n  i = 0\n  i.to_i\n  while i < count + 1\n    if i != correct\n" +
               "      if answers[i].to_s == correctAnswer\n" +
-              "          answers[i] = answers[i] + Random.rand(1..10)\n        end\n      end\n    i = i + 1\n" + 
+              "          answers[i] = answers[i] + Random.rand(1..100)\n        end\n      end\n    i = i + 1\n" + 
               "  end\n  return answers\nend"
     when 'inquiry'
       text << "¿Cuánto es ^1 + ^2?"
