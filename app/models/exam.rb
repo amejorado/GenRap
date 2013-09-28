@@ -29,6 +29,22 @@ class Exam < ActiveRecord::Base
 	  	end
 	  end
 
+	  def self.check_correct_answers(answers, correct)
+		correctAnswer = answers[correct].to_s
+		count = answers.length
+		i = 0
+		i.to_i
+		while i < count + 1
+		  if i != correct
+		    if answers[i].to_s == correctAnswer
+		        answers[i] = answers[i] + Random.rand(1..100)
+		      end
+		    end
+		  i = i + 1
+		end
+		return answers
+	  end
+
 
   def self.createInstance(master_exam_id, user_id)
   		# session = Hash.new
@@ -91,6 +107,7 @@ class Exam < ActiveRecord::Base
 				load full_solver_path
 				puts "loaded " + full_solver_path
 				answers, correctAns = solve(inquiry, values)
+				answers = check_correct_answers(answers, correctAns)
 				# puts "answers " + answers.to_s
 				# puts "correctAns " + correctAns.to_s
 
