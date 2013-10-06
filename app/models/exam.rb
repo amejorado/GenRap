@@ -30,19 +30,53 @@ class Exam < ActiveRecord::Base
 	  end
 
 	  def self.check_correct_answers(answers, correct)
+		#Variables declaration/inicialization
+		answersTemp = Hash.new ('')
+		answersTemp[1] = answers[1];
 		correctAnswer = answers[correct].to_s
 		count = answers.length
-		i = 0
-		i.to_i
-		while i < count + 1
-		  if i != correct
-		    if answers[i].to_s == correctAnswer
-		        answers[i] = answers[i] + Random.rand(1..100)
-		      end
-		    end
-		  i = i + 1
+		
+		#Debugging variables
+		#puts "Contador check_correct_answers " + count.to_s + " correctAnswer = " + correctAnswer
+		#puts "The actual answers are = " + answers.to_s
+		#puts "The temporal answers are = " + answersTemp.to_s 
+		#puts "Temporal answers count = " + answersTemp.length.to_s
+
+
+		answersIndex = 1
+		temporalIndex = 1
+		answersIndex.to_i
+		temporalIndex.to_i
+
+		#Se recorre todo el arreglo para revisar si existen valores repetidos
+		while answersIndex <= count
+			while temporalIndex <= answersTemp.length 
+				#Se revisa que las respuestas no sean igual que la correcta
+				if answersIndex != correct
+					#Revisa si la respuesta es igual a la respuesta correcta y si es igual la cambia
+					if answers[answersIndex].to_s == correctAnswer
+						answers[answersIndex] = answers[answersIndex] + Random.rand(1..100)
+					end
+					#Revisa si la respuesta esta repetida
+					if answers[answersIndex] == answersTemp[temporalIndex]
+						answers[answersIndex] = answers[answersIndex] + Random.rand(1..100)
+						#Revisa que la respuesta generada no sea igual a la correcta
+						if answers[answersIndex].to_s == correctAnswer
+							answers[answersIndex] = answers[answersIndex] + Random.rand(1..100)
+						end	
+					end
+				end
+				temporalIndex = temporalIndex + 1
+			end
+			answersTemp[temporalIndex - 1] = answers[answersIndex]
+			answersTemp[temporalIndex] = ""
+			temporalIndex = 1
+			answersIndex = answersIndex + 1
 		end
-		return answers
+
+		answersTemp.delete(answersTemp.length)
+
+		return answersTemp
 	  end
 
 
