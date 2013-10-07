@@ -1,3 +1,4 @@
+
 class AddMailToUsers < ActiveRecord::Migration
   def change
 

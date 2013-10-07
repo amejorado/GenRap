@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130921175020) do
+ActiveRecord::Schema.define(:version => 20131004191245) do
 
   create_table "cantakes", :id => false, :force => true do |t|
     t.integer "master_exam_id"
@@ -39,6 +39,8 @@ ActiveRecord::Schema.define(:version => 20130921175020) do
     t.datetime "created_at",     :null => false
     t.datetime "updated_at",     :null => false
     t.integer  "attemptnumber"
+    t.date     "startdate"
+    t.date     "finishdate"
   end
 
   add_index "exams", ["master_exam_id"], :name => "index_exams_on_master_exam_id"
@@ -81,6 +83,7 @@ ActiveRecord::Schema.define(:version => 20130921175020) do
     t.string   "subconcept"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
+    t.integer  "borrado"
   end
 
   create_table "questions", :force => true do |t|
