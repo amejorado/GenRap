@@ -14,7 +14,7 @@
  
   <tbody>
   <% 
-  @masterQuestions.each do |mq| 
+  @masterQuestions.each do |mq|
     if mq.borrado == 0
   %>
     <tr>
@@ -28,8 +28,6 @@
 
     </tr>
     <% 
-    else
-      flash[:error] = 'No se definido ninguna pregunta.'
     end
   end
   %>
