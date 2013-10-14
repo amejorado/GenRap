@@ -150,7 +150,7 @@ $(document).ready ->
               master_question_id: parseInt($(this).find("td:nth-child(1)").text())
 
             dataIndex++
-
+          create_done = false;
           $.getJSON "/exam_definition/exam_def",
             hash: dataToSend
             exam_name: $("#name_exam").val()
@@ -172,11 +172,21 @@ $(document).ready ->
             endHour: $("#end_Time_4i").val()
             endMinute: $("#end_Time_5i").val()
           , (data) ->
+            if create_done
+              alert "Examen creado exitosamente"
+              window.location = "/exams"
+            else
+              create_done = true
 
           $.getJSON "/user/set_users_cantake",
             checked_groups: checkedGroups
             exam_name: $("#name_exam").val()
           , (data) ->
+            if create_done
+              alert "Examen creado exitosamente"
+              window.location = "/exams"
+            else
+              create_done = true
 
           $("#language").prop "selectedIndex", 0
           $("#filteredMQ tr").remove()
@@ -193,10 +203,6 @@ $(document).ready ->
           )
 
           i = 1
-
-          alert "Examen creado exitosamente."
-
-          window.location = "/exams"
         else
           window.console and console.log("Debe seleccionar por lo menos un grupo")
           alert "No hay grupos seleccionados"
