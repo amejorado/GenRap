@@ -71,7 +71,7 @@ $(document).ready ->
       $.each data, (item) ->
         rows.append $("<tr />")
         rows = $("#filteredMQ tr:last")
-        rows.append $("<td />").append(data[item].inquiry)
+        rows.append $("<td  id=\"pregunta\"/>").append $("<pre style='font-size: 11px; border: none; background: transparent;'/>").append(data[item].inquiry)
         rows.append $("<td />").append($("<button/>",
           text: "Agregar Reactivo"
           type: "button"
@@ -84,8 +84,8 @@ $(document).ready ->
             inquiry.append $("<tr />")
             inquiry = $("#examInquiries tr:last")
             inquiry.append $("<td />").append(data[item].id).hide()
-            inquiry.append $("<td />").append(data[item].inquiry)
-            input1 = $("<input type=\"text\" id=\"value\" size=\"5\" placeholder=\"Valor del Reactivo\" />").change(->
+            inquiry.append $("<td style='width:500px'   />").append $("<pre style='font-size: 11px; border: none; background: transparent;'/>").append(data[item].inquiry)
+            input1 = $("<input type=\"text\" id=\"value\" size=\"3\" placeholder=\"Valor del Reactivo\" style = 'width: 116px;'/>").change(->
               calculated = false
             )
             inquiry.append $("<td />").append(input1)
@@ -103,6 +103,7 @@ $(document).ready ->
             inquiry = $("#examInquiries tbody")
         ))
         rows = $("#filteredMQ tbody")
+        $('#pregunta').css('width','500');
 
 $(document).ready ->
   $("#submit").click ->
