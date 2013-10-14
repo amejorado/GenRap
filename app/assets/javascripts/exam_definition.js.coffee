@@ -172,37 +172,29 @@ $(document).ready ->
             endHour: $("#end_Time_4i").val()
             endMinute: $("#end_Time_5i").val()
           , (data) ->
-            if create_done
+            $.getJSON "/user/set_users_cantake",
+              checked_groups: checkedGroups
+              exam_name: $("#name_exam").val()
+            , (data) ->
               alert "Examen creado exitosamente"
               window.location = "/exams"
-            else
-              create_done = true
 
-          $.getJSON "/user/set_users_cantake",
-            checked_groups: checkedGroups
-            exam_name: $("#name_exam").val()
-          , (data) ->
-            if create_done
-              alert "Examen creado exitosamente"
-              window.location = "/exams"
-            else
-              create_done = true
+            $("#language").prop "selectedIndex", 0
+            $("#filteredMQ tr").remove()
+            $("#concept option").remove()
+            $("#concept").append $("<option />").val(-1).text("Selecciona un Concepto").prop "selectedIndex", 0
+            $("#subconcept option").remove()
+            $("#subconcept").append $("<option />").val(-1).text("Selecciona un Suboncepto").prop "selectedIndex", 0
+            $("#attempts_number").prop "selectedIndex", 0
+            $("#examInquiries tr").remove()
+            $("#examInquiriesHeaders").hide()
+            $("#name_exam").val ""
+            checkedGroups = $("input[name=groups]:checked").map(->
+              $(this).attr('checked', false);
+            )
 
-          $("#language").prop "selectedIndex", 0
-          $("#filteredMQ tr").remove()
-          $("#concept option").remove()
-          $("#concept").append $("<option />").val(-1).text("Selecciona un Concepto").prop "selectedIndex", 0
-          $("#subconcept option").remove()
-          $("#subconcept").append $("<option />").val(-1).text("Selecciona un Suboncepto").prop "selectedIndex", 0
-          $("#attempts_number").prop "selectedIndex", 0
-          $("#examInquiries tr").remove()
-          $("#examInquiriesHeaders").hide()
-          $("#name_exam").val ""
-          checkedGroups = $("input[name=groups]:checked").map(->
-            $(this).attr('checked', false);
-          )
-
-          i = 1
+            i = 1
+          true
         else
           window.console and console.log("Debe seleccionar por lo menos un grupo")
           alert "No hay grupos seleccionados"
