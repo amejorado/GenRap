@@ -15,7 +15,8 @@
   <tbody>
   <% 
   @masterQuestions.each do |mq| 
-    if mq.borrado == 0%>
+    if mq.borrado == 0
+  %>
     <tr>
       <td><%=   mq.language %></td>
       <td><%=   mq.concept %></td>
@@ -23,13 +24,15 @@
       <td><%=   mq.inquiry %></td>
       <td><%=   link_to 'Ver más', mq %></td>
       <td><%=   link_to 'Editar', edit_master_question_path(mq) %></td>
-      <td><%=   link_to 'Borrar', edit_master_question_path(mq) %></td>
-    </tr>
-  <% 
+      <td><%=   link_to 'Borrar', :action => "deleteQuestion", :id => mq.id %></td>
 
+    </tr>
+    <% 
+    else
+      flash[:error] = 'No se definido ninguna pregunta.'
     end
   end
-   %>
+  %>
   </tbody>
 </table>
  

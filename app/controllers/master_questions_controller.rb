@@ -115,8 +115,7 @@ class MasterQuestionsController < ApplicationController
   #Update actions
   def edit
     if check_prof || check_admin
-      @master_question = MasterQuestion.find(params[:id])
-      
+      @master_question = MasterQuestion.find(params[:id]) 
       $randomizer = @master_question.randomizer
       $solver = @master_question.solver 
 
@@ -249,4 +248,22 @@ class MasterQuestionsController < ApplicationController
       format.json { render json: languages.to_json }
     end
   end
+
+
+     
+  def deleteQuestion
+    if check_prof || check_admin
+      @master_question = MasterQuestion.find(params[:id])      
+      if @master_question.update_attributes(:borrado => "1")
+        flash[:notice] = 'La pregunta maestra fue borrada de manera correcta.'
+      else
+        flash[:error] = 'No se pudieron actualizar los datos de la pregunta maestra.'
+      end
+      redirect_to root_path
+    else
+      #flash[:error] = "Acceso restringido."
+    end
+  end
+
+
 end

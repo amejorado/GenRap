@@ -11,7 +11,7 @@ class MasterQuestion < ActiveRecord::Base
   validates :solver,	:presence => true
   validates :subconcept, :presence => true
 
-  attr_accessible :concept, :inquiry, :language, :randomizer, :solver, :subconcept
+  attr_accessible :concept, :inquiry, :language, :randomizer, :solver, :subconcept, :borrado
 
   before_save :capitalizeAttributes
 
