@@ -316,10 +316,9 @@ $(document).ready ->
           else
             addition += 1
             $(this).find("td:nth-child(3) input:first").val 1
-
         rows.each (index, value) ->
           temp = $(this).find("td:nth-child(3) input:first").val()
-          $(this).find("td:nth-child(3) input:first").val (parseInt(temp) / parseInt(addition)) * 100  if $.isNumeric(temp) is true
+          $(this).find("td:nth-child(3) input:first").val (parseInt(100) / parseInt(numInquiries))  if $.isNumeric(temp) is true
 
       else
         alert "Ya fue calculado. Modifique el valor de algún reactivo para poder volver a calcular."
