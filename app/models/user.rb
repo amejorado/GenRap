@@ -2,7 +2,7 @@
 
 class User < ActiveRecord::Base
   has_secure_password
-  attr_accessible :fname, :lname, :password, :username, :password_confirmation, :group_ids, :mail, :utype
+  attr_accessible :fname, :lname, :password, :username, :email, :password_confirmation, :group_ids, :mail, :utype
 
   has_and_belongs_to_many :groups #, :inverse_of => :users
   has_many :cantakes

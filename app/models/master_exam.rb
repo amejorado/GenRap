@@ -14,6 +14,7 @@ class MasterExam < ActiveRecord::Base
   validates :startDate,	:presence => true
   validates :finishDate,	:presence => true
   validates :user, :presence => true
+  validates :duracion, :presence => true
 
   attr_accessible :attempts, :dateCreation, :finishDate, :startDate, :name, :user, :duracion
 end
