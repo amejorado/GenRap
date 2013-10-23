@@ -6,8 +6,10 @@
       <th>Nombre</th>
       <th>Dueño</th>
       <th></th>
-      <th></th>
-      <th></th>
+      <% if check_admin %>
+        <th></th>
+        <th></th>
+      <% end %>
     </tr>
   </thead>
  
@@ -17,8 +19,10 @@
       <td><%= group.name %></td>
       <td><%= group.user.username %></td>
       <td><%= link_to 'Mostrar', group %></td>
-      <td><%= link_to 'Editar', edit_group_path(group) %></td>
-      <td><%= link_to 'Borrar', group, :confirm => '¿Está seguro que quiere borrar este grupo?', :method => :delete %></td>
+      <% if check_admin %>
+        <td><%= link_to 'Editar', edit_group_path(group) %></td>
+        <td><%= link_to 'Borrar', group, :confirm => '¿Está seguro que quiere borrar este grupo?', :method => :delete %></td>
+      <% end %>
     </tr>
   <% end %>
   </tbody>
@@ -26,4 +30,6 @@
  
 <br />
  
-<%= link_to 'Nuevo Grupo', new_group_path %>
+<% if check_admin %>
+  <%= link_to 'Nuevo Grupo', new_group_path %>
+<% end %>

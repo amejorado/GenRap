@@ -7,7 +7,8 @@ class GroupsController < ApplicationController
 		if check_admin
 			@groups = Group.all
 		elsif check_prof
-			@groups = @current_user.groups
+			#@groups = @current_user.groups
+			@groups = Group.where(user_id: session[:user_id])
 		else
 			flash[:error] = "Usted necesita ser un administrador para accesar esta página."
 			redirect_to(root_path)
@@ -21,10 +22,12 @@ class GroupsController < ApplicationController
 	def create
 		if check_prof
 			@group = Group.new(params[:group])
-			@group.user = @current_user
-			if !@group.users.include? @current_user
-				@group.users << @current_user
-			end
+			@group.user = User.find(params[:profesor])
+			#if !@group.users.include? @current_user
+			#	@group.users << @current_user
+			#end
+
+			puts "GROUP CONTROLLER " + @group.users.to_s  			
 
 			group_file = params[:upload]
 			to_add = '';
