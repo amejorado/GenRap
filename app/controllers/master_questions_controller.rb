@@ -24,7 +24,7 @@ class MasterQuestionsController < ApplicationController
   
   def create
     if check_prof || check_admin
-      params[:master_question_borrado] = 0
+      params[:master_question][:borrado] = 0
       @master_question = MasterQuestion.new(params[:master_question], :without_protection => true)
       
       # Generate random name for solver and randomizer
