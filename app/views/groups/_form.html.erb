@@ -3,7 +3,9 @@
 		<!-- <legend>Registro de usuario</legend> -->
 
 		<%= f.input :name, :label => 'Nombre del grupo' %>
-		<%= f.association :users, as: :check_boxes, :label => 'Integrantes', label_method: :username %>
+		<% @students = User.where(utype: 0) %>
+
+		<%= f.input :id, as: :check_boxes, collection: @students, :label_method => :username %>
 		
 		<%= file_field_tag 'upload' %></p>
 
