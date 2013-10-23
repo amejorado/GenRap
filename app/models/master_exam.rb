@@ -5,6 +5,7 @@ class MasterExam < ActiveRecord::Base
   has_many :master_questions, :through => :exam_definition
   has_many :exams
   has_many :exam_definition
+  has_one :language
 
   validates :name, presence: true
   validates :dateCreation,	:presence => true

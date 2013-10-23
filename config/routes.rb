@@ -1,5 +1,8 @@
 
 GenRap::Application.routes.draw do
+  resources :languages
+
+
   # get "sessions/login,"
 
   # get "sessions/home,"

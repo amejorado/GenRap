@@ -2,7 +2,7 @@
 	<fieldset>
 		<div class = "inline-div">
     	<%= label_tag(:language, "Lenguaje:") %>
-    	<%= f.select(:language, ['C++', 'C#', 'Java']) %>
+    	<%= f.collection_select(:language, Language.all, :id, :name) %>
   	</div>
   	
     <div class = "inline-div">

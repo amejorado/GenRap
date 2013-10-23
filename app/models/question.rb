@@ -1,6 +1,7 @@
 class Question < ActiveRecord::Base
   belongs_to :exam
   belongs_to :master_question
+  has_one :language
 
   validates :exam,				:presence => true
   validates :master_question,	:presence => true
