@@ -60,8 +60,8 @@ $(document).ready ->
     $("#filteredMQ tr").remove()
     $.getJSON "/master_question/filtered_master_questions",
       language: $("#language").val()
-      concept: $("#concept option:selected").text()
-      subconcept: $("#subconcept option:selected").text()
+      concept: $("#concept option:selected").val()
+      subconcept: $("#subconcept option:selected").val()
     , (data) ->
       if data is null
         alert "No se encontró nada en la base de datos con las características anteriores."
