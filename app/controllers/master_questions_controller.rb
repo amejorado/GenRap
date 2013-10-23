@@ -232,7 +232,7 @@ class MasterQuestionsController < ApplicationController
 
   def filtered_master_questions
     # Get master questions based on the language, concept and subconcept
-    filteredMQs = MasterQuestion.select("inquiry, id").where("language = '#{params[:language]}'").where("concept = '#{params[:concept]}'").where("subconcept = '#{params[:subconcept]}'")
+    filteredMQs = MasterQuestion.select("inquiry, id").where("language_id = '#{params[:language]}'").where("concept_id = '#{params[:concept]}'").where("subconcept_id = '#{params[:subconcept]}'")
     respond_to do |format|
       format.json { render json: filteredMQs.to_json }
     end
