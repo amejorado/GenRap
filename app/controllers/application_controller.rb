@@ -21,6 +21,22 @@ class ApplicationController < ActionController::Base
 		end
 	end
 
+	def authenticate_admin
+		unless session[:user_id]
+			# flash[:error] = "Necesita una sesión de usuario válida para esta operación. Por favor inicie sesión."
+			redirect_to("/signup")
+			return false
+		else
+			if check_admin
+				return true
+			else 
+				flash[:error] = "Acceso restringido."
+				redirect_to(root_path)
+				return false
+			end
+		end
+	end
+
 	def save_login_state
 		if session[:user_id]
 			redirect_to(root_path)

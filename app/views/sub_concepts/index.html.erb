@@ -1,0 +1,25 @@
+<h1>Subconceptos</h1>
+
+<table>
+  <tr>
+    <th>Nombre</th>
+    <th>Concepto</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @sub_concepts.each do |sub_concept| %>
+  <tr>
+    <td><%= sub_concept.name %></td>
+    <td><%= sub_concept.concept.language.name + "/" + sub_concept.concept.name %></td>
+    <td><%= link_to 'Ver', sub_concept %></td>
+    <td><%= link_to 'Editar', edit_sub_concept_path(sub_concept) %></td>
+    <td><%= link_to 'Borrar', sub_concept, method: :delete, data: { confirm: '¿Estas seguro?' } %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'Nuevo Subconcepto', new_sub_concept_path %>

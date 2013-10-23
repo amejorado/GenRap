@@ -1,6 +1,8 @@
 
 GenRap::Application.routes.draw do
   resources :languages
+  resources :sub_concepts
+  resources :concepts
 
 
   # get "sessions/login,"

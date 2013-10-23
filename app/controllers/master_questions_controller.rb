@@ -24,7 +24,8 @@ class MasterQuestionsController < ApplicationController
   
   def create
     if check_prof || check_admin
-      @master_question = MasterQuestion.new(params[:master_question])
+      params[:master_question_borrado] = 0
+      @master_question = MasterQuestion.new(params[:master_question], :without_protection => true)
       
       # Generate random name for solver and randomizer
       uuid = SecureRandom.uuid
@@ -133,7 +134,7 @@ class MasterQuestionsController < ApplicationController
       @master_question = MasterQuestion.find(params[:id])
 
       # Create master temporal
-      master_temporal =  MasterQuestion.new(params[:master_question])
+      master_temporal =  MasterQuestion.new(params[:master_question], :without_protection => true)
 
       # Saves code to randomizer and solver files
       File.open(File.dirname(__FILE__) + "/../helpers/r/#{$randomizer}.rb","w") {|f| f.write("#{master_temporal.randomizer}")}
@@ -143,7 +144,7 @@ class MasterQuestionsController < ApplicationController
       master_temporal.randomizer = $randomizer
       master_temporal.solver = $solver
 
-      if @master_question.update_attributes(:language => master_temporal.language, :concept => master_temporal.concept, :subconcept => master_temporal.subconcept,
+      if @master_question.update_attributes(:language_id => master_temporal.language_id, :concept_id => master_temporal.concept_id, :subconcept_id => master_temporal.subconcept_id,
                                          :inquiry => master_temporal.inquiry, :randomizer => master_temporal.randomizer, :solver => master_temporal.solver)
         flash[:notice] = 'La pregunta maestra fue actualizada de manera correcta.'
       else
@@ -214,21 +215,24 @@ class MasterQuestionsController < ApplicationController
   end
 
   def concepts_for_question
-    concepts = MasterQuestion.select("DISTINCT(concept), id").group("upper(concept)").where("upper(language) = upper('#{params[:language]}')")
+    # Get concepts filtered by language
+    concepts = Concept.select("name, id").where("language_id = '#{params[:language]}'")
     respond_to do |format|
       format.json { render json: concepts.to_json }
     end
   end
 
   def subconcepts_for_question
-    subconcepts = MasterQuestion.select("DISTINCT(subconcept), id").group("upper(subconcept)").where("upper(language) = upper('#{params[:language]}')").where("upper(concept) = upper('#{params[:concept]}')")
+    # Get subconcepts filtered by parent concept
+    subconcepts = SubConcept.select("name, id").where("concept_id = '#{params[:concept]}'")
     respond_to do |format|
       format.json { render json: subconcepts.to_json }
     end
   end
 
   def filtered_master_questions
-    filteredMQs = MasterQuestion.select("inquiry, id").where("upper(language) = upper('#{params[:language]}')").where("upper(concept) = upper('#{params[:concept]}')").where("upper(subconcept) = upper('#{params[:subconcept]}')")
+    # Get master questions based on the language, concept and subconcept
+    filteredMQs = MasterQuestion.select("inquiry, id").where("language = '#{params[:language]}'").where("concept = '#{params[:concept]}'").where("subconcept = '#{params[:subconcept]}'")
     respond_to do |format|
       format.json { render json: filteredMQs.to_json }
     end
@@ -243,7 +247,7 @@ class MasterQuestionsController < ApplicationController
   end
 
   def get_languages
-    languages = MasterQuestion.select("DISTINCT(language), id").group("language")
+    languages = Language.select("id, name");
     respond_to do |format|
       format.json { render json: languages.to_json }
     end

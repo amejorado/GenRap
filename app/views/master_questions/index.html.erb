@@ -18,9 +18,9 @@
     if mq.borrado == 0
   %>
       <tr>
-        <td><%=   mq.language %></td>
-        <td><%=   mq.concept %></td>
-        <td><%=   mq.subconcept %></td>
+        <td><%=   mq.language.name %></td>
+        <td><%=   mq.concept.name %></td>
+        <td><%=   mq.sub_concept.name %></td>
         <td><%=   mq.inquiry %></td>
         <td><%=   link_to 'Ver más', mq %></td>
         <td><%=   link_to 'Editar', edit_master_question_path(mq) %></td>
