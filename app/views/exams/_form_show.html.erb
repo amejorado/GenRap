@@ -12,8 +12,11 @@
 			<p><%= question.questionNum.to_s+".  "+inquiry %></p>
 
 			<%= simple_fields_for ":questions[]", question do |question_field| %>
-				<% answers = format_answers(question.answers) %>
-				<%= question_field.select :givenAns, answers.map{ |ansNum| [ansNum.split(": ").second, ansNum.split(": ").first] } %>
+				<% answers = format_answers(question.answers) 
+				%>
+				<h6><%= "Respuesta Contestada = " + answers[question.givenAns.to_i-1].split(": ").second %></h6>
+				<h6><%= "Respuesta Correcta = " + answers[question.correctAns.to_i-1].split(": ").second %></h6>
+				<% #question_field.select :givenAns, answers.map{ |ansNum| [ansNum.split(": ").second, ansNum.split(": ").first] } %>
 			<% end %>
 		<% end %>
 	</fieldset>
