@@ -11,7 +11,6 @@
         <% link_to MasterExam.find(exam.master_exam_id).name, 
         :controller => "exams", :action => "show", :id => exam.id%>
       <% end %>
-      <% column :state, title: 'Estado' %>
       <% column :date, title: 'Tomado en' %>
       <% column :score, title: 'Calificación' %>
       <% column :attemptnumber, title: 'Intento No.' %>
