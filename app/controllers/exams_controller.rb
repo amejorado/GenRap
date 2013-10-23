@@ -144,7 +144,8 @@ class ExamsController < ApplicationController
 			if masterExam.startDate <= Time.now && masterExam.finishDate >= Time.now
 				examenTomado = @exam
 				#checara que la hora en la que se guarda el servidor esta dentro del tiempo de duración y 30 segundos del alert que muestra
-				horaMaxima = examenTomado.date + (masterExam.duracion*60) + 30
+				horaMaxima = examenTomado.date 
+				horaMaxima += (masterExam.duracion*60) + 30
 				if Time.now <= horaMaxima
 					score = 0
 					masterExamId = masterExam.id
