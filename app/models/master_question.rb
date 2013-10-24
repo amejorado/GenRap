@@ -16,7 +16,7 @@ class MasterQuestion < ActiveRecord::Base
   validates :subconcept_id, :presence => true
   validates :borrado, :presence => true
 
-  attr_accessible :concept, :inquiry, :language, :randomizer, :solver, :subconcept, :borrado, :concept_id, :language_id, :subconcept_id
+  attr_accessible :concept, :inquiry, :language, :randomizer, :solver, :subconcept, :borrado, :questionDateDeleted, :concept_id, :language_id, :subconcept_id
 
   def self.all_languages
     select("DISTINCT language")

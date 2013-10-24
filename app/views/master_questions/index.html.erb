@@ -1,4 +1,26 @@
+
+<style type="text/css">
+  h3{
+    display: inline-block;
+  }
+  span#historial_ques a{
+    font-weight: bold !important;;
+    display: inline-block !important;;
+    float: right !important;;
+    color: #0088cc !important;;
+  }
+  span#historial_ques a:hover {
+    color: #005580 !important;
+    background: none !important;
+  }
+
+
+</style>
+
 <h3>Preguntas Maestras</h3>
+
+<span id="historial_ques"> <%= link_to 'Historial de Preguntas', :action => "deleted_questions" %> </span>
+
  
 <table class="table table-bordered table-striped">
   <thead>
@@ -7,8 +29,7 @@
       <th>Concepto</th>
       <th>Subconcepto</th>
       <th>Pregunta</th>
-      <th></th>
-      <th></th>
+      <th style="width: 1px;"></th>
     </tr>
   </thead>
  
@@ -21,10 +42,15 @@
         <td><%=   mq.language.name %></td>
         <td><%=   mq.concept.name %></td>
         <td><%=   mq.sub_concept.name %></td>
-        <td><%=   mq.inquiry %></td>
-        <td><%=   link_to 'Ver más', mq %></td>
-        <td><%=   link_to 'Editar', edit_master_question_path(mq) %></td>
-        <td><%=   link_to 'Borrar', :action => "deleteQuestion", :id => mq.id %></td>
+        
+        <td style="width:0;"><%=   mq.inquiry %></td>
+        <td style="width:0;">
+          <%=   link_to 'Ver más', mq , {class: "btn btn-mini"} %> <br/><br/>
+          <% if check_admin %>
+          <%=   link_to 'Editar', edit_master_question_path(mq) , {class: "btn btn-mini"}  %> <br/> <br/>
+          <%=   link_to 'Borrar', {:action => "deleteQuestion", :id => mq.id}, :class => "btn btn-mini"    %> <br/><br/>
+          <% end %>
+        </td>
 
       </tr>
     <% 

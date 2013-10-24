@@ -258,7 +258,7 @@ class MasterQuestionsController < ApplicationController
   def deleteQuestion
     if check_prof || check_admin
       @master_question = MasterQuestion.find(params[:id])      
-      if @master_question.update_attributes(:borrado => "1")
+      if @master_question.update_attributes(:borrado => "1", :questionDateDeleted => Time.now)
         flash[:notice] = 'La pregunta maestra fue borrada de manera correcta.'
       else
         flash[:error] = 'No se pudieron actualizar los datos de la pregunta maestra.'
@@ -266,6 +266,15 @@ class MasterQuestionsController < ApplicationController
       redirect_to root_path
     else
       #flash[:error] = "Acceso restringido."
+    end
+  end
+
+  def deleted_questions
+    if check_prof || check_admin
+     @master_question = MasterQuestion.where("borrado = '1'")
+    else
+      flash[:error] = "Acceso restringido."
+      redirect_to(root_path)
     end
   end
 
