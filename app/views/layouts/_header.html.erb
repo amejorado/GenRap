@@ -11,7 +11,7 @@
 	<div class="navbar-inner">
 		<div class="container">
 			
-			<%= link_to("<img style='height:26px;' src='/assets/logo3_small.png' /><i class='icon-home icon-white'></i>".html_safe, root_path, {:class => "brand"}) %>
+			<%= link_to("<img style='height:26px;' src='/assets/logo3_small.png' />".html_safe, root_path, {:class => "brand"}) %>
 
 			<% if session[:user_id].nil? %>
 			<%= form_tag({:controller=>"sessions", :action => 'login'}, {:class => "navbar-form pull-right"}) do %>
