@@ -1,6 +1,8 @@
 
 GenRap::Application.routes.draw do
   resources :languages
+  resources :sub_concepts
+  resources :concepts
 
 
   # get "sessions/login,"
@@ -31,6 +33,9 @@ GenRap::Application.routes.draw do
   match "mystats", to: "stats#mystats"
   match "profstats", to: "stats#profstats"
 
+  #match "deleted_questions", to: "master_questions#deleted_questions"
+
+
   #json routes in MasterQuestion controller
   match "master_question/concepts_for_question" => "master_questions#concepts_for_question"
   match "master_question/subconcepts_for_question" => "master_questions#subconcepts_for_question"
@@ -38,6 +43,8 @@ GenRap::Application.routes.draw do
   match "master_question/transmiting_JSON" => "master_questions#transmiting_JSON"
   match "master_question/get_languages" => "master_questions#get_languages"
   match "master_question/deleteQuestion" => "master_questions#deleteQuestion"
+  match "master_question/deleted_questions" => "master_questions#deleted_questions"
+  
   
   
 

@@ -1,0 +1,15 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Nombre:</b>
+  <%= @concept.name %>
+</p>
+
+<p>
+  <b>Lenguaje:</b>
+  <%= @concept.language.name %>
+</p>
+
+
+<%= link_to 'Editar', edit_concept_path(@concept) %> |
+<%= link_to 'Regresar', concepts_path %>

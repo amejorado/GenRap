@@ -11,11 +11,18 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131023021348) do
+ActiveRecord::Schema.define(:version => 20131028184527) do
 
   create_table "cantakes", :id => false, :force => true do |t|
     t.integer "master_exam_id"
     t.integer "user_id"
+  end
+
+  create_table "concepts", :force => true do |t|
+    t.string   "name"
+    t.integer  "language_id"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
   end
 
   create_table "exam_definitions", :force => true do |t|
@@ -81,15 +88,16 @@ ActiveRecord::Schema.define(:version => 20131023021348) do
   add_index "master_exams", ["user_id"], :name => "index_master_exams_on_user_id"
 
   create_table "master_questions", :force => true do |t|
-    t.string   "language"
+    t.string   "language_id"
     t.string   "solver"
     t.string   "randomizer"
     t.string   "inquiry"
-    t.string   "concept"
-    t.string   "subconcept"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.string   "concept_id"
+    t.string   "subconcept_id"
+    t.datetime "created_at",          :null => false
+    t.datetime "updated_at",          :null => false
     t.integer  "borrado"
+    t.date     "questionDateDeleted"
   end
 
   create_table "questions", :force => true do |t|
@@ -107,6 +115,13 @@ ActiveRecord::Schema.define(:version => 20131023021348) do
   add_index "questions", ["exam_id"], :name => "index_questions_on_exam_id"
   add_index "questions", ["master_question_id"], :name => "index_questions_on_master_question_id"
 
+  create_table "sub_concepts", :force => true do |t|
+    t.string   "name"
+    t.integer  "concept_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
   create_table "users", :force => true do |t|
     t.string   "username",        :null => false
     t.string   "fname",           :null => false
@@ -115,7 +130,6 @@ ActiveRecord::Schema.define(:version => 20131023021348) do
     t.datetime "created_at",      :null => false
     t.datetime "updated_at",      :null => false
     t.string   "password_digest"
-    t.string   "email"
     t.string   "mail"
   end
 

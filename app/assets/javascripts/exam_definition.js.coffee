@@ -14,7 +14,7 @@ $(document).ready ->
     $.getJSON "/master_question/get_languages"
       , (data) ->
         $.each data, (item) ->
-          languages.append $("<option />").val(data[item].language).text(data[item].language)
+          languages.append $("<option />").val(data[item].id).text(data[item].name)
 
 $(document).ready ->
   $("#language").change ->
@@ -32,7 +32,7 @@ $(document).ready ->
       options = $("#concept")
       options.append $("<option />").val(-1).text("Selecciona un Concepto")
       $.each data, (item) ->
-        options.append $("<option />").val(data[item].id).text(data[item].concept)
+        options.append $("<option />").val(data[item].id).text(data[item].name)
       $("#concept").prop "selectedIndex", 0
       $("#subconcept").append $("<option />").val(-1).text("Selecciona un Subconcepto")
       $("#subconcept").prop "selectedIndex", 0
@@ -44,7 +44,7 @@ $(document).ready ->
     $("#filteredMQ tr").remove()
     $.getJSON "/master_question/subconcepts_for_question",
       language: $("#language").val()
-      concept: $("#concept option:selected").text()
+      concept: $("#concept").val()
     , (data) ->
       if data is null
         window.console and console.log("null :(")
@@ -52,7 +52,7 @@ $(document).ready ->
       options = $("#subconcept")
       options.append $("<option />").val(-1).text("Selecciona un Subconcepto")
       $.each data, (item) ->
-        options.append $("<option />").val(data[item].id).text(data[item].subconcept)
+        options.append $("<option />").val(data[item].id).text(data[item].name)
         $("#subconcept").prop "selectedIndex", 0
 
 $(document).ready ->
@@ -60,8 +60,8 @@ $(document).ready ->
     $("#filteredMQ tr").remove()
     $.getJSON "/master_question/filtered_master_questions",
       language: $("#language").val()
-      concept: $("#concept option:selected").text()
-      subconcept: $("#subconcept option:selected").text()
+      concept: $("#concept option:selected").val()
+      subconcept: $("#subconcept option:selected").val()
     , (data) ->
       if data is null
         alert "No se encontró nada en la base de datos con las características anteriores."

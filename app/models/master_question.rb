@@ -3,27 +3,23 @@ class MasterQuestion < ActiveRecord::Base
   has_many :master_exams, :through => :exam_definition
   has_many :questions
   has_many :exam_definition
-  has_one :language
+  belongs_to :language
+  belongs_to :concept
+  belongs_to :sub_concept, :foreign_key => 'subconcept_id'
 
-  validates :concept,	:presence => true
+
+  validates :concept_id,	:presence => true
   validates :inquiry,	:presence => true
-  validates :language,	:presence => true
+  validates :language_id,	:presence => true
   validates :randomizer, :presence => true
   validates :solver,	:presence => true
-  validates :subconcept, :presence => true
+  validates :subconcept_id, :presence => true
+  validates :borrado, :presence => true
 
-  attr_accessible :concept, :inquiry, :language, :randomizer, :solver, :subconcept, :borrado
-
-  before_save :capitalizeAttributes
+  attr_accessible :concept, :inquiry, :language, :randomizer, :solver, :subconcept, :borrado, :questionDateDeleted, :concept_id, :language_id, :subconcept_id
 
   def self.all_languages
     select("DISTINCT language")
-  end
-
-  def capitalizeAttributes
-    self.language = self.language.capitalize
-    self.concept = self.concept.capitalize
-    self.subconcept = self.subconcept.capitalize
   end
 
 end

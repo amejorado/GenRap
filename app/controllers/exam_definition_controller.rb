@@ -5,7 +5,7 @@ class ExamDefinitionController < ApplicationController
 
 	def new
 		@examDefinition = ExamDefinition.new
-		@master_questions = MasterQuestion.all_languages
+		# @master_questions = MasterQuestion.all_languages
 		@examUsers = nil
 
     if check_prof

@@ -1,0 +1,45 @@
+
+
+<h3>Preguntas Borradas</h3>
+
+ 
+<table class="table table-bordered table-striped">
+  <thead>
+    <tr>
+      <th>Lenguaje</th>
+      <th>Concepto</th>
+      <th>Subconcepto</th>
+      <th>Pregunta Borrada</th>
+      <th>Fecha en la que se borr&oacute;</th>
+      
+    </tr>
+  </thead>
+ 
+  <tbody>
+  <% 
+  if @master_question.blank?
+    flash[:error] = 'No se ha borrado ninguna pregunta.'
+  else
+    @master_question.each do |mq|
+  
+  %>
+      <tr>
+        <td><%=  mq.language.name %></td>
+        <td><%=  mq.concept.name %></td>
+        <td><%=  mq.sub_concept.name %></td>
+        <td style="width:0;"><%=  mq.inquiry %></td>
+        <td><%= mq.questionDateDeleted%></td>
+      </tr>
+    <% 
+    
+    end
+  end
+  
+  %>
+  
+    
+  </tbody>
+</table>
+ 
+<br />
+ 

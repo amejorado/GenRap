@@ -4,12 +4,12 @@ class StatsController < ApplicationController
 	before_filter :authenticate_user, :only => [:mystats, :profstats]
 
 	def mystats
-		@exams_taken = @current_user.exams
+		@exams_taken = @current_user.exams.where(state: 2)
 
 		@q_taken = @exams_taken.map { |e| e.questions }
 		@q_taken = @q_taken.flatten
 
-		q_info = @q_taken.map { |q| [MasterQuestion.find(q.master_question_id).language.capitalize, MasterQuestion.find(q.master_question_id).concept.capitalize, MasterQuestion.find(q.master_question_id).subconcept.capitalize, right_answer?(q)] }
+		q_info = @q_taken.map { |q| [MasterQuestion.find(q.master_question_id).language.name.capitalize, MasterQuestion.find(q.master_question_id).concept.name.capitalize, MasterQuestion.find(q.master_question_id).sub_concept.name.capitalize, right_answer?(q)] }
 
 		@q_taken_by_language = {}
 		for quad in q_info do

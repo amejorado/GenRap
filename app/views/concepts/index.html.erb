@@ -1,0 +1,25 @@
+<h1>Conceptos</h1>
+
+<table>
+  <tr>
+    <th>Concepto</th>
+    <th>Lenguaje</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @concepts.each do |concept| %>
+  <tr>
+    <td><%= concept.name %></td>
+    <td><%= concept.language.name %></td>
+    <td><%= link_to 'Ver', concept %></td>
+    <td><%= link_to 'Editar', edit_concept_path(concept) %></td>
+    <td><%= link_to 'Borrar', concept, method: :delete, data: { confirm: "Estas seguro?" } %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'Nuevo Concepto', new_concept_path %>
