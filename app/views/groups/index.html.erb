@@ -6,10 +6,6 @@
       <th>Nombre</th>
       <th>Dueño</th>
       <th></th>
-      <% if check_admin %>
-        <th></th>
-        <th></th>
-      <% end %>
     </tr>
   </thead>
  
@@ -18,10 +14,11 @@
     <tr>
       <td><%= group.name %></td>
       <td><%= group.user.username %></td>
-      <td><%= link_to 'Mostrar', group %></td>
+      <td><%= link_to 'Mostrar', group, {class: "btn btn-mini"}%>
       <% if check_admin %>
-        <td><%= link_to 'Editar', edit_group_path(group) %></td>
-        <td><%= link_to 'Borrar', group, :confirm => '¿Está seguro que quiere borrar este grupo?', :method => :delete %></td>
+      <%=   link_to 'Editar', edit_group_path(group), {class: "btn btn-mini"} %>
+      <%=   link_to 'Borrar', group, :confirm => '¿Está seguro que quiere borrar este grupo?', :method => :delete, :class => "btn btn-mini"  %>
+      </td>
       <% end %>
     </tr>
   <% end %>
