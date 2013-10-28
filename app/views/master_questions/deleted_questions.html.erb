@@ -17,20 +17,27 @@
  
   <tbody>
   <% 
-  @masterQuestions.each do |mq|
-    if mq.borrado == 1
+  if @master_question.blank?
+    flash[:error] = 'No se ha borrado ninguna pregunta.'
+  else
+    @master_question.each do |mq|
+  
   %>
       <tr>
         <td><%=  mq.language.name %></td>
         <td><%=  mq.concept.name %></td>
         <td><%=  mq.sub_concept.name %></td>
         <td style="width:0;"><%=  mq.inquiry %></td>
-        <td></td>
+        <td><%= mq.questionDateDeleted%></td>
       </tr>
     <% 
+    
     end
   end
+  
   %>
+  
+    
   </tbody>
 </table>
  
