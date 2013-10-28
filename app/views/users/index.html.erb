@@ -1,5 +1,5 @@
 <h1>Usuarios</h1>
- 
+
 <table class="table table-bordered table-striped">
   <thead>
     <tr>
@@ -12,10 +12,10 @@
         <th>Cambiar tipo</th>
       <% end %>
       <th></th>
-      
+
     </tr>
   </thead>
- 
+
   <tbody>
   <% @users.each do |user| %>
     <tr>
@@ -38,20 +38,20 @@
         <%= type %></td>
       <% if check_admin %>
         <td>
-          <%= link_to "Admin", "user/change_admin/" + user.id.to_s, {class: "btn btn-mini btn-primary"} %> <br />
-          <%= link_to "Profesor", "user/change_professor/" + user.id.to_s, {class: "btn btn-mini btn-warning"} %> <br />
-          <%= link_to "Estudiante", "user/change_student/" + user.id.to_s, {class: "btn btn-mini btn-success"} %>
+          <%= link_to "Admin", "user/change_admin/" + user.id.to_s, {class: "btn btn-xs btn-primary"} %> <br />
+          <%= link_to "Profesor", "user/change_professor/" + user.id.to_s, {class: "btn btn-xs btn-warning"} %> <br />
+          <%= link_to "Estudiante", "user/change_student/" + user.id.to_s, {class: "btn btn-xs btn-success"} %>
         </td>
       <% end %>
       <td>
-      <%= link_to 'Mostrar', user, {class: "btn btn-mini"} %><br/>
-      <%= link_to 'Editar', edit_user_path(user) , {class: "btn btn-mini"}%><br/>
-      <%= link_to 'Borrar', user, :confirm => '¿Está seguro que quiere borrar a este usuario?', :method => :delete , :class => "btn btn-mini" %></td>
+      <%= link_to 'Mostrar', user, {class: "btn btn-default btn-mini"} %><br/>
+      <%= link_to 'Editar', edit_user_path(user) , {class: "btn btn-default btn-mini"}%><br/>
+      <%= link_to 'Borrar', user, :confirm => '¿Está seguro que quiere borrar a este usuario?', :method => :delete , :class => "btn btn-danger btn-mini" %></td>
     </tr>
   <% end %>
   </tbody>
 </table>
- 
+
 <br />
- 
+
 <%= link_to 'Nuevo usuario', new_user_path %>

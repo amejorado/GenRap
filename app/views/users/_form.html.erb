@@ -1,20 +1,26 @@
 <%= simple_form_for(@user) do |f| %>
 	<fieldset>
 		<!-- <legend>Registro de usuario</legend> -->
-
+	
 		<%= f.input :username, :label => 'Usuario' %>
 		<%= f.input :fname, :label => 'Nombre' %>
 		<%= f.input :lname, :label => 'Apellidos' %>
 		<%= f.input :mail, :label => 'Correo' %>
-		<%= f.label :password, 'Password' %>
-  		<%= f.password_field :password %>
-  		<%= f.label :password_confirmation, 'Confirmar Password' %>
-		<%= f.password_field :password_confirmation %>
 
-		<div class="control-group">
-			<div class="controls">
-				<%= f.button :submit %>
+		<div class="form-group">
+			<div class="col-md-6">
+			<%= f.label :password, 'Password' %>
+	  		<%= f.password_field :password, {:class => "form-control"} %>
 			</div>
+
+			<div class="col-md-6">
+	  		<%= f.label :password_confirmation, 'Confirmar Password' %>
+			<%= f.password_field :password_confirmation, {:class => "form-control"} %>
+			</div>
+			<div class="clearfix"></div>
+		</div>
+		<div class="col-md-12">
+			<%= f.button :submit, "Crear usuario", {:class => "btn btn-primary btn-lg"} %>
 		</div>
 	</fieldset>
 <% end %>

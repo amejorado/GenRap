@@ -81,7 +81,7 @@ $(document).ready ->
         rows.append $("<td />").append($("<button/>",
           text: "Agregar Reactivo"
           type: "button"
-          class: "btn"
+          class: "btn btn-default"
           click: ->
             calculated = false
             $("#examInquiriesHeaders").show()
