@@ -59,10 +59,10 @@ class Exam < ActiveRecord::Base
 					end
 					#Revisa si la respuesta esta repetida
 					if answers[answersIndex] == answersTemp[temporalIndex]
-						answers[answersIndex] = answers[answersIndex] + Random.rand(1..100)
+						answers[answersIndex] = answers[answersIndex].to_i + Random.rand(1..100)
 						#Revisa que la respuesta generada no sea igual a la correcta
 						if answers[answersIndex].to_s == correctAnswer
-							answers[answersIndex] = answers[answersIndex] + Random.rand(1..100)
+							answers[answersIndex] = answers[answersIndex].to_i + Random.rand(1..100)
 						end	
 					end
 				end
