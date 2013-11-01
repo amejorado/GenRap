@@ -61,9 +61,11 @@
 			1000,
 			true
 		);	
+
 	//Para que no mande alert al dar clic en boton de Enviar
 	$(".edit_exam").on("submit", function(e) {
 		window.onbeforeunload = null;	//se cancela la funcion onbeforeunload
+
 	})
 
 	//funcion para enviar una alerta al momento en que el usuario actualiza o cierra la pestaña

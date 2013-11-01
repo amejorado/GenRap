@@ -29,7 +29,13 @@
     %>
   -->
  
-      <%= link_to "Continuar", pending_path, class: "btn" %>
+      <!--
+      <%= #link_to "Continuar", pending_path, class: "btn" %>
+    -->
+  
+    <%=   link_to 'Continuar', {:controller => "emailer_controller" , :action => "sendmail", :id => mq.id}, :class => "btn"    %> 
+
+
     
 
   <% else %>
