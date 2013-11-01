@@ -94,10 +94,13 @@ ActiveRecord::Schema.define(:version => 20131028184527) do
     t.string   "inquiry"
     t.string   "concept_id"
     t.string   "subconcept_id"
-    t.datetime "created_at",          :null => false
-    t.datetime "updated_at",          :null => false
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
     t.integer  "borrado"
+<<<<<<< Updated upstream
     t.date     "questionDateDeleted"
+=======
+>>>>>>> Stashed changes
   end
 
   create_table "questions", :force => true do |t|
