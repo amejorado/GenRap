@@ -33,7 +33,15 @@ class UsersController < ApplicationController
 		if @user.save
 			flash[:notice] = "usuario creado de manera exitosa. haga sign in."
 		else
-			flash[:error] = @user.errors.messages[:username].last
+			if(@user.errors.messages[:username]) 
+				flash[:error] = "El nombre de usuario no es único"
+			elsif(@user.errors.messages[:mail]) 
+				#flash[:error] = @user.errors.messages[:mail].last
+				flash[:error] = "El correo no es único"
+			else 
+				flash[:error] = "Hubo un error al crear el usuario"
+			end
+			#flash[:error] = @user.errors.messages[:username].last
 		end
 
 		redirect_to("/signup")

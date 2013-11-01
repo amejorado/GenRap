@@ -22,6 +22,7 @@ class User < ActiveRecord::Base
           										:greater_than_or_equal_to => 0 }
   validates :mail,  :presence => true,
 		  			:uniqueness => true
+  validates_uniqueness_of :mail, :message => "El correo no es unico"
   VALID_PASSWORD_REGEX = /^(?=.*[a-zA-Z])(?=.*[0-9]).{6,}$/
   validates_presence_of :password,	:on => :create
   #validates_confirmation_of :password, message: "debería coincidir con el password", presence: true
