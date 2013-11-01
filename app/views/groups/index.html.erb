@@ -1,5 +1,23 @@
+<style type="text/css">
+  #newGroupBtn{
+    float:right;
+    margin-bottom:20px;
+  }
+  #newGroupBtn a{
+    color: white !important;
+  }
+
+</style>
+
 <h1>Grupos</h1>
- 
+ <% if check_admin %>
+  <div id="newGroupBtn" > 
+
+    <%= link_to 'Nuevo Grupo', new_group_path , {class: "btn btn-primary"}%> 
+  </div>
+<% end %>
+
+<br/>
 <table class="table table-bordered table-striped">
   <thead>
     <tr>
@@ -27,6 +45,3 @@
  
 <br />
  
-<% if check_admin %>
-  <%= link_to 'Nuevo Grupo', new_group_path %>
-<% end %>
