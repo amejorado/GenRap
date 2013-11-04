@@ -27,6 +27,9 @@ class ExamsController < ApplicationController
 		@masterExercises = Array.new
 		@exer_info = Array.new
 
+		#@user = User.find(params[:id])
+		#UserMailer.welcome_email(@user).deliver
+
 		# Se obtienen los examenes cuya fecha de inicio sea menor a la actual y fecha de termino sea mayor a la actual
 		# Además, estos deben ser creados por personas diferentes al usuario actual
 		availableExams = MasterExam.where("startDate <= ? AND finishDate >= ? AND user_id <> ?", Time.now, Time.now, @current_user.id)
