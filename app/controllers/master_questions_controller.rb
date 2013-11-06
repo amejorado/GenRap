@@ -7,7 +7,8 @@ class MasterQuestionsController < ApplicationController
   before_filter :authenticate_user, :only => [:new, :index, :create,:show, :edit, :update, :destroy]
   # Create actions
   def new
-    if check_admin || check_prof
+    #if check_admin || check_prof
+    if check_admin
       if @master_question == nil
         @master_question = MasterQuestion.new
         @master_question.randomizer = initialize_file('randomizer')
@@ -23,7 +24,8 @@ class MasterQuestionsController < ApplicationController
   end
   
   def create
-    if check_prof || check_admin
+    #if check_prof || check_admin
+    if check_admin
       params[:master_question][:borrado] = 0
       @master_question = MasterQuestion.new(params[:master_question], :without_protection => true)
       
@@ -115,7 +117,8 @@ class MasterQuestionsController < ApplicationController
 
   #Update actions
   def edit
-    if check_prof || check_admin
+    #if check_prof || check_admin
+    if check_admin
       @master_question = MasterQuestion.find(params[:id]) 
       $randomizer = @master_question.randomizer
       $solver = @master_question.solver 
@@ -130,7 +133,8 @@ class MasterQuestionsController < ApplicationController
   end
 
   def update
-    if check_prof || check_admin
+    #if check_prof || check_admin
+    if check_admin
       @master_question = MasterQuestion.find(params[:id])
 
       # Create master temporal
@@ -193,7 +197,8 @@ class MasterQuestionsController < ApplicationController
 
   # Delete actions
   def destroy
-    if check_prof || check_admin
+    #if check_prof || check_admin
+    if check_admin
       @master_question = MasterQuestion.find(params[:id])
       
       # Delete randomizer and solver files
@@ -256,7 +261,8 @@ class MasterQuestionsController < ApplicationController
 
      
   def deleteQuestion
-    if check_prof || check_admin
+    #if check_prof || check_admin
+    if check_admin
       @master_question = MasterQuestion.find(params[:id])      
       if @master_question.update_attributes(:borrado => "1", :questionDateDeleted => Time.now)
         flash[:notice] = 'La pregunta maestra fue borrada de manera correcta.'
@@ -270,13 +276,12 @@ class MasterQuestionsController < ApplicationController
   end
 
   def deleted_questions
-    if check_prof || check_admin
+    #if check_prof || check_admin
+    if check_admin
      @master_question = MasterQuestion.where("borrado = '1'")
     else
       flash[:error] = "Acceso restringido."
       redirect_to(root_path)
     end
   end
-
-
 end

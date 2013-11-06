@@ -16,11 +16,17 @@ class GroupsController < ApplicationController
 	end
 
 	def new
-		@group = Group.new
+		if check_admin
+			@group = Group.new
+		else
+			flash[:error] = "Usted necesita ser un administrador para accesar esta página."
+			redirect_to(root_path)
+		end
 	end
 
 	def create
-		if check_prof
+		#if check_prof
+		if check_admin
 			@group = Group.new(params[:group])
 			@group.user = User.find(params[:profesor])
 			#if !@group.users.include? @current_user
@@ -79,7 +85,8 @@ class GroupsController < ApplicationController
 	end
 
 	def edit
-		if check_prof
+		#if check_prof
+		if check_admin
 			@group = Group.find(params[:id])
 		else
 			flash[:error] = "Acceso restringido."
@@ -88,7 +95,8 @@ class GroupsController < ApplicationController
 	end
 
 	def update
-		if check_prof
+		#if check_prof
+		if check_admin
 			@group = Group.find(params[:id])
 		 
 			group_file = params[:upload]
@@ -133,7 +141,8 @@ class GroupsController < ApplicationController
 	end
 
 	def destroy
-		if check_prof
+		#if check_prof
+		if check_admin
 			@group = Group.find(params[:id])
 			@group.destroy
 
