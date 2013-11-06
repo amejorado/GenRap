@@ -17,11 +17,7 @@
 </div>
 
 
-
- 
- 
-<%= link_to 'Editar', edit_group_path(@group) %>
-
 <% if check_admin %>
+  <%= link_to 'Editar', edit_group_path(@group) %>
 	| <%= link_to 'Grupos', groups_path %>
 <% end %>
