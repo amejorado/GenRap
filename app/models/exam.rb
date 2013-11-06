@@ -31,10 +31,12 @@ class Exam < ActiveRecord::Base
 
 	  def self.check_correct_answers(answers, correct)
 		#Variables declaration/inicialization
+		stringAnswers = ['Ninguna de las anteriores', 'Todas las anteriores']
 		answersTemp = Hash.new ('')
-		answersTemp[1] = answers[1];
+		answersTemp[1] = answers[1]
 		correctAnswer = answers[correct].to_s
 		count = answers.length
+		stringRepetidos = 0
 		
 		#Debugging variables
 		#puts "Contador check_correct_answers " + count.to_s + " correctAnswer = " + correctAnswer
@@ -53,16 +55,36 @@ class Exam < ActiveRecord::Base
 			while temporalIndex <= answersTemp.length 
 				#Se revisa que las respuestas no sean igual que la correcta
 				if answersIndex != correct
+					#Empieza prueba
+						if answers[answersIndex].is_a? String
+							puts "Encontre un string"
+						end
+					#Termina prueba
+
 					#Revisa si la respuesta es igual a la respuesta correcta y si es igual la cambia
 					if answers[answersIndex].to_s == correctAnswer
 						answers[answersIndex] = answers[answersIndex] + Random.rand(1..100)
 					end
 					#Revisa si la respuesta esta repetida
 					if answers[answersIndex] == answersTemp[temporalIndex]
-						answers[answersIndex] = answers[answersIndex].to_i + Random.rand(1..100)
+						#Revisa si la respuesta es un string la cambia por otro string sino por un numero random
+						if answers[answersIndex].is_a? String
+							puts "Encontre un string"
+							answers[answersIndex] = stringAnswers[stringRepetidos]
+							stringRepetidos = stringRepetidos + 1
+						else
+							answers[answersIndex] = answers[answersIndex] + Random.rand(1..100)
+						end
 						#Revisa que la respuesta generada no sea igual a la correcta
 						if answers[answersIndex].to_s == correctAnswer
-							answers[answersIndex] = answers[answersIndex].to_i + Random.rand(1..100)
+							if answers[answersIndex].is_a? String
+								puts "Encontre un string"
+								answers[answersIndex] = stringAnswers[stringRepetidos]
+								stringRepetidos = stringRepetidos + 1
+							else
+								answers[answersIndex] = answers[answersIndex] + Random.rand(1..100)
+							end
+							#answers[answersIndex] = answers[answersIndex] + Random.rand(1..100)
 						end	
 					end
 				end
