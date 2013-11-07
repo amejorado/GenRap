@@ -31,18 +31,16 @@ class StatsController < ApplicationController
 
 	# Returns 1 if question was answered correctly, 0 otherwise
 	# private
-		def right_answer? (q)
-			if q.correctAns == q. givenAns
-				return 1
-			else 
-				return 0
-			end
+	def right_answer? (q)
+		if q.correctAns == q. givenAns
+			return 1
+		else 
+			return 0
 		end
+	end
 
 	def profstats
-
 		if check_prof
-
 			@exams_agg = {}
 			for e in MasterExam.where("user_id = ?", @current_user.id) do
 				actualExams = e.exams
@@ -55,6 +53,55 @@ class StatsController < ApplicationController
 				end
 
 				@exams_agg[e] = [average, actualExams.length, e.users.length]
+
+				#Retroalimentacion de areas
+				languagesHashCorrect = Hash.new
+				languagesHashIncorrect = Hash.new
+
+				#Se buscan las estadisticas por lenguaje
+				for language in Language.select(:id) do
+					puts "Lenguaje => " + language.id.to_s
+					
+					#Se crean las hash tables con los conceptos del lenguaje para
+					#guardar las preguntas correctas e incorrectas
+					for conceptHash in Concept.where("language_id = ?", language.id) do
+						languagesHashCorrect[conceptHash.name] = 0
+						languagesHashIncorrect[conceptHash.name] = 0
+					end
+
+					puts "Language correct size = " + languagesHashCorrect.keys.to_s
+					puts "Language incorrect size = " + languagesHashIncorrect.keys.to_s
+
+					#Se recorren cada uno de los examenes del usuario actual
+					for exam in actualExams do
+						questions = exam.questions #preguntas del examen
+						for question in questions do
+							correctAns = question.correctAns #respuesta correcta del examen
+							givenAns = question.givenAns #respuesta contestada
+							masterquestion = MasterQuestion.where("id = ?", question.master_question_id).first
+							
+							if masterquestion.language.id == language.id
+								if correctAns == givenAns
+									puts "Entre respuesta correcta"
+									languagesHashCorrect[masterquestion.concept.name] = languagesHashCorrect[masterquestion.concept.name] + 1
+								else
+									languagesHashIncorrect[masterquestion.concept.name] = languagesHashIncorrect[masterquestion.concept.name] + 1
+								end
+							end
+							#puts "Retroalimentacion => " + masterquestion.concept.name.to_s
+						end
+					end
+
+					languagesHashCorrect.each { |key,value| puts "#{key} is #{value}" }
+					languagesHashIncorrect.each { |key,value| puts "#{key} is #{value}" }
+
+					languagesHashCorrect.clear
+					languagesHashIncorrect.clear
+				end
+
+				
+				#Fin Retroalimentacion de areas
+
 			end
 
 			# Information returned is about questions from all professors, in aggregate
