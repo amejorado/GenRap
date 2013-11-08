@@ -1,0 +1,48 @@
+<div class="table">
+
+  <!-- Languages 2: <%= @questions_agg %><br /> -->
+
+
+  <h2>Resultados del examen</h2>
+  <%= @hola %>
+  <% if @exams_agg != nil and @exams_agg.length > 0 %>
+  
+    <table class="table table-bordered table-striped">
+      <thead>
+        <tr>
+          <th>Matrícula</th>
+          <th>Veces tomado</th>
+          <th>Mayor</th>
+          <th>Menor</th>
+         
+        </tr>
+      </thead>
+     
+
+
+      <tbody>
+
+      <% @groups.each do |group| %>
+        <tr>
+          <td><%= group.name%></td>
+          <td><%= group.user.username %></td>
+          <td><%= "100" %></td>
+          <td><%= "90" %></td>
+          
+        </tr>
+      <% end %>
+      </tbody>
+    </table>
+
+  <% else %>
+    
+    <table class="table table-striped table-bordered table-condensed">
+      <tbody>
+        <tr>
+          <td>Usted no ha creado exámenes aún.</td>
+        </tr>
+      </tbody>
+    </table>
+  
+  <% end %>
+</div>

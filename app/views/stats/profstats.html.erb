@@ -23,7 +23,7 @@
       <tbody>
       <% @exams_agg.keys.each do |e| %>
         <tr>
-          <td><%= e.name %></td>
+          <td><%= link_to e.name,{:action => "profstats_exam" }%></td>
           <td><%= e.attempts %></td>
           <td><%= e.startDate %></td>
           <td><%= e.finishDate %></td>

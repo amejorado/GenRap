@@ -32,6 +32,7 @@ GenRap::Application.routes.draw do
   match "edit/:id", to: "exam_definition#edit"
   match "mystats", to: "stats#mystats"
   match "profstats", to: "stats#profstats"
+  match "profstats_exam", to: "stats#profstats_exam"
 
   #match "deleted_questions", to: "master_questions#deleted_questions"
 
