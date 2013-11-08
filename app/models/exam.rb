@@ -31,7 +31,7 @@ class Exam < ActiveRecord::Base
 
 	  def self.check_correct_answers(answers, correct)
 		#Variables declaration/inicialization
-		stringAnswers = ['Ninguna de las anteriores', 'Todas las anteriores']
+		stringAnswers = ['Ninguna de las opciones', 'Todas las opciones', 'Error al ejecutar' ]
 		answersTemp = Hash.new ('')
 		answersTemp[1] = answers[1]
 		correctAnswer = answers[correct].to_s
