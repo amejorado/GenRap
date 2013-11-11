@@ -133,88 +133,28 @@ class StatsController < ApplicationController
 
 	def profstats_exam
 		if check_prof
-			@groups = Group.where(user_id: session[:user_id])
-			@exams_agg = {}
-			for e in MasterExam.where("user_id = ?", @current_user.id) do
-				actualExams = e.exams
-				average = 0
-				for a in actualExams do
-					average += a.score
-				end
-				if actualExams.length > 0
-					average /= actualExams.length
-				end
+			#Estadisticas para las preguntas de examen por concepto/subconcepto
+			@exams_taken = MasterExam.where("user_id = ? AND id = ?", @current_user.id, params[:id]).first.exams
 
-				@exams_agg[e] = [average, actualExams.length, e.users.length]
+			@q_taken = @exams_taken.map { |e| e.questions }
+			@q_taken = @q_taken.flatten
 
-				#Retroalimentacion de areas
-				languagesHashCorrect = Hash.new
-				languagesHashIncorrect = Hash.new
+			q_info = @q_taken.map { |q| [MasterQuestion.find(q.master_question_id).language.name.capitalize, MasterQuestion.find(q.master_question_id).concept.name.capitalize, MasterQuestion.find(q.master_question_id).sub_concept.name.capitalize, right_answer?(q)] }
 
-				#Se buscan las estadisticas por lenguaje
-				for language in Language.select(:id) do
-					puts "Lenguaje => " + language.id.to_s
-					
-					#Se crean las hash tables con los conceptos del lenguaje para
-					#guardar las preguntas correctas e incorrectas
-					for conceptHash in Concept.where("language_id = ?", language.id) do
-						languagesHashCorrect[conceptHash.name] = 0
-						languagesHashIncorrect[conceptHash.name] = 0
-					end
-
-					puts "Language correct size = " + languagesHashCorrect.keys.to_s
-					puts "Language incorrect size = " + languagesHashIncorrect.keys.to_s
-
-					#Se recorren cada uno de los examenes del usuario actual
-					for exam in actualExams do
-						questions = exam.questions #preguntas del examen
-						for question in questions do
-							correctAns = question.correctAns #respuesta correcta del examen
-							givenAns = question.givenAns #respuesta contestada
-							masterquestion = MasterQuestion.where("id = ?", question.master_question_id).first
-							
-							if masterquestion.language.id == language.id
-								if correctAns == givenAns
-									puts "Entre respuesta correcta"
-									languagesHashCorrect[masterquestion.concept.name] = languagesHashCorrect[masterquestion.concept.name] + 1
-								else
-									languagesHashIncorrect[masterquestion.concept.name] = languagesHashIncorrect[masterquestion.concept.name] + 1
-								end
-							end
-							#puts "Retroalimentacion => " + masterquestion.concept.name.to_s
-						end
-					end
-
-					languagesHashCorrect.each { |key,value| puts "#{key} is #{value}" }
-					languagesHashIncorrect.each { |key,value| puts "#{key} is #{value}" }
-
-					languagesHashCorrect.clear
-					languagesHashIncorrect.clear
-				end
-
-				
-				#Fin Retroalimentacion de areas
-
-			end
-
-			# Information returned is about questions from all professors, in aggregate
-			# not only from exams by professor
-			@questions_agg = {}
-			for e in MasterExam.where("user_id = ?", @current_user.id) do
-				for q in e.master_questions do
-					actualQuestions = q.questions
-					
-					if actualQuestions.length > 0
-						right = actualQuestions.map { |a| right_answer? a }
-						right = right.inject{|sum,x| sum + x }
-
-						if @questions_agg.has_key? q
-							@questions_agg[q][0] += right
-							@questions_agg[q][1] += (actualQuestions.length - right)
+			@q_taken_by_language = {}
+			for quad in q_info do
+				if @q_taken_by_language.has_key? quad[0]
+					if @q_taken_by_language[quad[0]].has_key? quad[1]
+						if @q_taken_by_language[quad[0]][quad[1]].has_key? quad[2]
+							@q_taken_by_language[quad[0]][quad[1]][quad[2]] << quad[3]
 						else
-							@questions_agg[q] = [right, actualQuestions.length - right]
+							@q_taken_by_language[quad[0]][quad[1]][quad[2]] = [quad[3]]
 						end
+					else
+						@q_taken_by_language[quad[0]][quad[1]] = { quad[2] => [quad[3]] }
 					end
+				else
+					@q_taken_by_language[quad[0]] = { quad[1] => { quad[2] => [quad[3]] } }
 				end
 			end
 
