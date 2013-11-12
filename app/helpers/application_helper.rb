@@ -7,6 +7,8 @@ module ApplicationHelper
       javascript_tag %Q{$.notification({ message:"#{message}", type:"#{type}" });}
     end
   end
+
+  
   
   # def fading_flash_notice
   #   # note: you must have a div with id='notices' or rename the div appended to below with your element which

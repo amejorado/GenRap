@@ -36,6 +36,12 @@ group :production, :staging do
   gem "pg"
 end
 
+gem 'rest-client', :require => 'rest-client'
+gem  'multimap'
+
+
+
+
 # To use ActiveModel has_secure_password
  gem 'bcrypt-ruby', '~> 3.0.0'
 # gem 'bcrypt-ruby'

@@ -45,7 +45,10 @@ GenRap::Application.routes.draw do
   match "master_question/get_languages" => "master_questions#get_languages"
   match "master_question/deleteQuestion" => "master_questions#deleteQuestion"
   match "master_question/deleted_questions" => "master_questions#deleted_questions"
-  match "exams/:id/edit/" => "emailer#sendmail"
+  match "exam/afterExam" => "exams#afterExam"
+  #match "exams/:id/edit/" => "emailer#sendmail"
+  
+
   
   
 
