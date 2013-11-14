@@ -6,7 +6,7 @@
 	<% if check_admin %>
 		<%= link_to "Regresar", request.referer, {class: "btn"} %>
 	<% else %>
-		<%= link_to "Regresar", request.referer, {class: "btn"} %>
+		<%= link_to "Regresar", "http://codeafeliz.com/mystats", {class: "btn"} %>
 	<% end %>
 
 	<% if @exam.errors.any? %>

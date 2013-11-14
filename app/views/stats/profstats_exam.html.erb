@@ -1,7 +1,70 @@
+  <script type="text/javascript" charset="utf-8">
+    function createChart(language, xLabels, right, wrong) {
+
+      new Highcharts.Chart({
+        chart: { renderTo: language, type: 'column' },
+        title: { text: 'Preguntas de ' + language },
+        xAxis: { categories: xLabels },
+        yAxis: {
+          min: 0,
+          title: {
+            text: 'Preguntas'
+          },
+          stackLabels: {
+            enabled: true,
+            style: {
+              fontWeight: 'bold',
+              color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
+            }
+          }
+        },
+        plotOptions: {
+          column: {
+            stacking: 'normal',
+            dataLabels: {
+              enabled: true,
+              color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'white'
+            }
+          }
+        },
+        series: [{
+          name: 'Correctas',
+          data: right
+        },{
+          name: 'Incorrectas',
+          data: wrong
+        }]
+      });
+
+    }
+  </script>
+
 <div class="table">
-
   <!-- Languages 2: <%= @questions_agg %><br /> -->
+  <h2>Estadisticas de preguntas</h2>
 
+  <% for language in @q_taken_by_language.keys %>
+    <%= content_tag(:div, nil, :id => language, :style => "width:100%; height:400px;") %>
+    <%= javascript_tag do %>
+      var xAxis = new Array();
+      var right = new Array();
+      var wrong = new Array();
+      <%
+        for concept in @q_taken_by_language[language].keys
+          for subconcept in @q_taken_by_language[language][concept].keys
+            right = @q_taken_by_language[language][concept][subconcept].inject{ |sum,x| sum + x }
+            wrong = @q_taken_by_language[language][concept][subconcept].length - right
+      %>
+            xAxis.push('<%= concept + '-' + subconcept %>');
+            right.push(<%= right %>);
+            wrong.push(<%= wrong %>);
+      <%
+          end
+        end 
+      %>
+      createChart('<%= language %>', xAxis, right, wrong);
+    <% end %> 
+  <% end %>
 
   <h2>Resultados del examen</h2>
   <%= @hola %>
@@ -25,13 +88,21 @@
 
       <% @cantakes.each do |can| %>
         <% cont = 1 %>
-        <% @h[can.user_id].each do |h| %>
+        <% if !@h[can.user_id].empty? %>
+          <% @h[can.user_id].each do |h| %>
+            <tr>
+              <td class="usuario"><%= can.user.username %></td>
+              <td><%= cont %></td>
+              <td><%=  link_to @h[can.user_id][cont-1].score,  :controller => "exams", :action => "show", :id => @h[can.user_id][cont-1].id%></td> 
+            </tr>
+            <% cont = cont + 1 %>
+          <% end %>
+        <%else %>
           <tr>
-            <td class="usuario"><%= can.user.username %></td>
-            <td><%= cont %></td>
-            <td><%=  link_to @h[can.user_id][cont-1].score,  :controller => "exams", :action => "show", :id => @h[can.user_id][cont-1].id%></td> 
+            <td class="usuario bad"><%= can.user.username %></td>
+            <td>0</td>
+            <td>----</td> 
           </tr>
-          <% cont = cont + 1 %>
         <% end %>
           <tr><td class="finish" colspan="3"></td></tr>
       <% end %>

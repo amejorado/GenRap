@@ -4,4 +4,4 @@
 $(document).ready ->
   $(window).load ->
     $(".finish").css({"background-color": "gray", "padding": "3px"})
-    $(".usuario").colSpan = "2"
+    $(".bad").css({"color":"red"})

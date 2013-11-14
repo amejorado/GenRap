@@ -27,8 +27,6 @@ class ExamsController < ApplicationController
 		@masterExercises = Array.new
 		@exer_info = Array.new
 
-		#@user = User.find(params[:id])
-		#UserMailer.welcome_email(@user).deliver
 
 		# Se obtienen los examenes cuya fecha de inicio sea menor a la actual y fecha de termino sea mayor a la actual
 		# Además, estos deben ser creados por personas diferentes al usuario actual
@@ -66,6 +64,46 @@ class ExamsController < ApplicationController
 				@exer_info.push([grade, actual_exams.length])
 			end
 		end
+	end
+
+	def sendEmailExam(user, idExam)
+		@userName = user[0].fname
+		@userMail = user[0].mail
+    	@idExam = idExam
+    	@url  = 'http://codeafeliz.com/exams/' + @idExam.to_s
+    	data = Multimap.new
+		data[:from] = "Codea Feliz Team <info@codigofeliz.com>"
+		data[:to] = @userMail
+		data[:subject] = "Codea Feliz Feedback"
+		data[:html] = "
+		<html>
+			<h2>Codea Feliz Feedback </h1><hr/>
+			<h3>Buen día " + @userName + ",</h3>
+		    <h4>
+		      Has contestado un examen en CodeaFeliz.<br/>
+		      Para ver tus resultados puedes ingresar al siguiente link: " + @url + "
+		    </h4>
+		    <h4>Gracias por usar CodeaFeliz!</h4>
+		</html>"
+		RestClient.post "https://api:key-4e3j9-vt6dvv9al93usavq800of2j6l3@api.mailgun.net/v2/mg.scitus.mx/messages",data
+
+  	end
+
+	def afterExam
+		@masterExams = Array.new
+		@attempts_exams = Array.new
+
+		@masterExercises = Array.new
+		@exer_info = Array.new
+
+		#id del examen presentado
+		@answeredExam = Exam.find(params[:id])    
+		#usuario que presento el examen
+		@userOfExam = User.select("fname, mail").where("id = ?", @answeredExam.user_id)
+		#manda llamar metodo que envia el correo
+		sendEmailExam(@userOfExam, @answeredExam.id)
+		#redireccionar a pagina principal
+		redirect_to(pending_path)
 	end
 
 	def create

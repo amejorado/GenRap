@@ -144,6 +144,30 @@ class StatsController < ApplicationController
 				end
 				@h[c.user_id] = exams_result
 			end
+			#Estadisticas para las preguntas de examen por concepto/subconcepto
+			@exams_taken = MasterExam.where("user_id = ? AND id = ?", @current_user.id, params[:id]).first.exams
+
+			@q_taken = @exams_taken.map { |e| e.questions }
+			@q_taken = @q_taken.flatten
+
+			q_info = @q_taken.map { |q| [MasterQuestion.find(q.master_question_id).language.name.capitalize, MasterQuestion.find(q.master_question_id).concept.name.capitalize, MasterQuestion.find(q.master_question_id).sub_concept.name.capitalize, right_answer?(q)] }
+
+			@q_taken_by_language = {}
+			for quad in q_info do
+				if @q_taken_by_language.has_key? quad[0]
+					if @q_taken_by_language[quad[0]].has_key? quad[1]
+						if @q_taken_by_language[quad[0]][quad[1]].has_key? quad[2]
+							@q_taken_by_language[quad[0]][quad[1]][quad[2]] << quad[3]
+						else
+							@q_taken_by_language[quad[0]][quad[1]][quad[2]] = [quad[3]]
+						end
+					else
+						@q_taken_by_language[quad[0]][quad[1]] = { quad[2] => [quad[3]] }
+					end
+				else
+					@q_taken_by_language[quad[0]] = { quad[1] => { quad[2] => [quad[3]] } }
+				end
+			end
 		else
 			flash[:error] = "Acceso restringido."
 			redirect_to(root_path)
