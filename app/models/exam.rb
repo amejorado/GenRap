@@ -9,7 +9,7 @@ class Exam < ActiveRecord::Base
   					:numericality => { :greater_than_or_equal_to => 0.0,
   										:less_than_or_equal_to => 100.0 }
 
-  attr_accessible :date, :questions_attributes, :score
+  attr_accessible :date, :questions_attributes, :score, :id
   accepts_nested_attributes_for :questions
 
   before_save :check_attempts

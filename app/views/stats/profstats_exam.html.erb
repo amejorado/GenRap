@@ -5,15 +5,14 @@
 
   <h2>Resultados del examen</h2>
   <%= @hola %>
-  <% if @exams_agg != nil and @exams_agg.length > 0 %>
+  <% if @cantakes!= nil %>
   
     <table class="table table-bordered table-striped">
       <thead>
         <tr>
           <th>Matrícula</th>
-          <th>Veces tomado</th>
-          <th>Mayor</th>
-          <th>Menor</th>
+          <th>Intento Número </th>
+          <th>Resultado</th>
          
         </tr>
       </thead>
@@ -21,16 +20,22 @@
 
 
       <tbody>
+    
 
-      <% @groups.each do |group| %>
-        <tr>
-          <td><%= group.name%></td>
-          <td><%= group.user.username %></td>
-          <td><%= "100" %></td>
-          <td><%= "90" %></td>
-          
-        </tr>
+
+      <% @cantakes.each do |can| %>
+        <% cont = 1 %>
+        <% @h[can.user_id].each do |h| %>
+          <tr>
+            <td class="usuario"><%= can.user.username %></td>
+            <td><%= cont %></td>
+            <td><%=  link_to @h[can.user_id][cont-1].score,  :controller => "exams", :action => "show", :id => @h[can.user_id][cont-1].id%></td> 
+          </tr>
+          <% cont = cont + 1 %>
+        <% end %>
+          <tr><td class="finish" colspan="3"></td></tr>
       <% end %>
+
       </tbody>
     </table>
 
