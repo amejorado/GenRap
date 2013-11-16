@@ -5,12 +5,16 @@
     <div class="span4">
       <blockquote>
         <p><%= @group.name %></p>
-      </blockquote>
+      </blockquote><hr/>
       <p>
-        <i class="icon-user"></i> Due&ntilde;o: <%= @group.user.username %> <br>
-        <i class="icon-th-list"></i> Miembros: <br/>
+        <i class="icon-user"></i> Due&ntilde;o: <%= @group.user.username %> <hr/>
+        <i class="icon-th-list"></i> Miembros:<br/><br/>
+        <table class="table table-striped">
         <% for user in @group.users %>
-		<i class="icon-minus"></i>  <%= user.username %> <br/>
+          <tr><td><i class="icon-minus"></i>  <%= user.username %> </td></tr>
+        </table>
+  
+		
 		<% end %>
       </p>
     </div>
