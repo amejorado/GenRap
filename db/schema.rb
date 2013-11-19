@@ -11,11 +11,12 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131028184527) do
+ActiveRecord::Schema.define(:version => 20131119073110) do
 
-  create_table "cantakes", :id => false, :force => true do |t|
+  create_table "cantakes", :force => true do |t|
     t.integer "master_exam_id"
     t.integer "user_id"
+    t.integer "group_id"
   end
 
   create_table "concepts", :force => true do |t|
@@ -94,13 +95,10 @@ ActiveRecord::Schema.define(:version => 20131028184527) do
     t.string   "inquiry"
     t.string   "concept_id"
     t.string   "subconcept_id"
-    t.datetime "created_at",    :null => false
-    t.datetime "updated_at",    :null => false
+    t.datetime "created_at",          :null => false
+    t.datetime "updated_at",          :null => false
     t.integer  "borrado"
-<<<<<<< Updated upstream
     t.date     "questionDateDeleted"
-=======
->>>>>>> Stashed changes
   end
 
   create_table "questions", :force => true do |t|
