@@ -8,17 +8,17 @@ class ExamDefinitionController < ApplicationController
 		# @master_questions = MasterQuestion.all_languages
 		@examUsers = nil
 
-    if check_prof
-      render "new"
-    else
-      render "new_student"
-    end
+      if check_prof
+        render "new"
+      else
+        render "new_student"
+      end
 	end
 
 	def create
-    if check_prof
-  		@examDefinition = ExamDefinition.new(params[:examID])
-  		@examDefinition.utype = 0
+      if check_prof
+  	  	@examDefinition = ExamDefinition.new(params[:examID])
+  	  	@examDefinition.utype = 0
   		
   		if @examDefinition.save
   			flash[:notice] = "Definición de examen creada de manera exitosa."
@@ -27,14 +27,20 @@ class ExamDefinitionController < ApplicationController
   		end
 
   		redirect_to root_path
-    else
+      else
         flash[:error] = "Acceso restringido."
         redirect_to root_path
-    end
+      end
 	end
 
-	# def edit
-	# end
+	def edit
+	   if check_admin
+			@examDefinition = ExamDefinition.find(params[:id])
+	   else
+			flash[:error] = "Acceso restringido."
+			redirect_to(root_path)
+	   end	
+	end
 
 	# def update
 	# end
