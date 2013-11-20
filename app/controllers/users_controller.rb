@@ -132,16 +132,23 @@ class UsersController < ApplicationController
 		if check_prof
 			exam_name = params[:exam_name]
 			checked_groups = params[:checked_groups]
-	      	usersFromGroups = User.joins(:groups).select("DISTINCT users.id").where("groups_users.group_id in (?)", checked_groups)
+			usersFromGroups = []
 			thisMasterExam = MasterExam.where(name: exam_name).where(user_id: session[:user_id]).last
-	      	usersFromGroups.each do |user|
-	      		if !Cantake.exists?(master_exam_id: thisMasterExam.id, user_id: user[:id])
-		  			cantake = Cantake.new
-		  			cantake.master_exam_id = thisMasterExam.id
-		  			cantake.user_id = user[:id]
-		  			cantake.save!
-	  			end
-	      	end
+			checked_groups.each do |group_id|
+				usersFromGroups = Group.find(group_id).users
+		      	usersFromGroups.each do |user|
+		      		if !Cantake.exists?(master_exam_id: thisMasterExam.id, user_id: user[:id], group_id: group_id)
+			  			cantake = Cantake.new
+			  			cantake.master_exam_id = thisMasterExam.id
+			  			cantake.user_id = user[:id]
+			  			cantake.group_id = group_id
+			  			cantake.save!
+			  		else
+			  			logger.info @collection.inspect
+		  			end
+		      	end
+			end
+	      	usersFromGroups = User.joins(:groups).where("groups_users.group_id in (?)", checked_groups)
 		
 			respond_to do |format|
 				format.json { render json: usersFromGroups.to_json }

@@ -111,6 +111,7 @@ class GroupsController < ApplicationController
 			to_add = to_add.gsub(/\r\n?|\n/, ",")
 			users = to_add.split(/,/)
 			errors = []
+			cantakes = Cantake.select("DISTINCT master_exam_id").where("group_id = (?)", @group.id)
 			users.each do |user|
 				user = user.gsub(/\s+|\n+|\r+/, "")
 				if (user == "") 
@@ -123,6 +124,22 @@ class GroupsController < ApplicationController
 					params[:group][:user_ids] << curr_user.id
 				end
 			end
+
+			params[:group][:user_ids].reject! { |c| c.empty? }
+			params[:group][:user_ids].each do |curr_user_id|
+				curr_user = User.find(curr_user_id)
+				cantakes.each do |curr_cantake|
+					if !Cantake.exists?(master_exam_id: curr_cantake.master_exam_id, user_id: curr_user_id, group_id: @group.id)
+						cantake = Cantake.new
+						cantake.master_exam_id = curr_cantake.master_exam_id
+						cantake.user = curr_user
+						cantake.group_id = @group.id
+						cantake.save!
+					end
+				end
+			end
+			@cantakes = Cantake.where("group_id	= (?) and user_id not in (?)", @group.id, params[:group][:user_ids])
+			@cantakes.destroy_all
 			if errors.length > 0
 				flash[:error] = errors.join("<br />").html_safe
 			end

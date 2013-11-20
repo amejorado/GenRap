@@ -66,11 +66,20 @@
     <% end %> 
   <% end %>
 
-  <h2>Resultados del examen</h2>
+  <br/><br/>
+
+  <h2 style="display: inline-block;">Resultados del examen</h2>
+  <span style="display: inline-block;float:right;">
+  <%= link_to '<i class="icon-download  icon-white" style="margin-right: 5px;"></i>Descargar versión Excel'.html_safe, 
+          {:action => "profstats"},
+          class: "btn btn-info" %>
+        </span>
+
+
   <%= @hola %>
   <% if @cantakes!= nil %>
   
-    <table class="table table-bordered table-striped">
+    <table class="table table-striped">
       <thead>
         <tr>
           <th>Matrícula</th>
@@ -79,19 +88,18 @@
          
         </tr>
       </thead>
-     
-
-
       <tbody>
-    
-
-
+ 
       <% @cantakes.each do |can| %>
         <% cont = 1 %>
         <% if !@h[can.user_id].empty? %>
-          <% @h[can.user_id].each do |h| %>
             <tr>
               <td class="usuario"><%= can.user.username %></td>
+              <td></td><td></td>
+            </tr> <!-- ******* -->
+          <% @h[can.user_id].each do |h| %>
+            <tr>  <!-- ******* -->
+              <td></td>
               <td><%= cont %></td>
               <td><%=  link_to @h[can.user_id][cont-1].score,  :controller => "exams", :action => "show", :id => @h[can.user_id][cont-1].id%></td> 
             </tr>
