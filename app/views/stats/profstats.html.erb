@@ -16,7 +16,8 @@
           <th>Fecha de fin</th>
           <th>Promedio</th>
           <th>Veces tomado</th>
-          <th>Disponible a __ usuarios</th>
+		  <th>Disponible a __ usuarios</th>
+		  
         </tr>
       </thead>
      
@@ -29,7 +30,12 @@
           <td><%= e.finishDate %></td>
           <td><%= @exams_agg[e][0] %></td>
           <td><%= @exams_agg[e][1] %></td>
-          <td><%= @exams_agg[e][2] %></td>
+		  <td><%= @exams_agg[e][2] %></td>
+		  <td>
+		  	<% if check_admin %>
+					<%=   link_to 'Editar', edit_exam_definition_path(e), {class:"btn btn-mini"}  %>
+		    <% end %>	
+		 </td>
         </tr>
       <% end %>
       </tbody>
