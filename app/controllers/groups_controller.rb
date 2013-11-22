@@ -125,7 +125,7 @@ class GroupsController < ApplicationController
 				end
 			end
 
-			params[:group][:user_ids].reject! { |c| c.empty? }
+			params[:group][:user_ids].reject! { |c| c =~ /\A[0-9]+\Z/ }
 			params[:group][:user_ids].each do |curr_user_id|
 				curr_user = User.find(curr_user_id)
 				cantakes.each do |curr_cantake|
