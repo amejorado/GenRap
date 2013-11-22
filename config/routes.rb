@@ -1,4 +1,8 @@
 GenRap::Application.routes.draw do
+  resources :languages
+  resources :sub_concepts
+  resources :concepts
+
 
   # get "sessions/login,"
 
@@ -14,22 +18,22 @@ GenRap::Application.routes.draw do
   root :to => 'exams#pending'
 
 
-  resources :users, :groups, :master_questions, :exam_definition, :exams, :languages, :sub_concepts, :concepts, :exam_definitions
+  resources :users, :groups, :master_questions, :exam_definitions, :exams
   
   match "signup", :to => "users#new"
   match "login", :to => "sessions#login"
   match "logout", :to => "sessions#logout"
   # match "mq", :to => "master_question#new"
-  match "def", to: "exam_definition#new"
+  match "def", to: "exam_definitions#new"
   match "results/exam/:id", to: "exams#results", as: "exam_results"
   match "create/exam/:id", to: "exams#create", as: "create_exam"
   match "pending", to: "exams#pending"
+  match "edit/:id", to: "exam_definitions#edit"
   match "mystats", to: "stats#mystats"
   match "profstats", to: "stats#profstats"
   match "profstats_exam", to: "stats#profstats_exam"
 
   #match "deleted_questions", to: "master_questions#deleted_questions"
-  #match "exam_definitions/:id/edit" => "exam_definition#edit#:id"
 
 
   #json routes in MasterQuestion controller
@@ -44,12 +48,15 @@ GenRap::Application.routes.draw do
   #match "exams/:id/edit/" => "emailer#sendmail"
   
 
+  
+  
+
   #json routes in Exams controller
   match "exam/get_exams" => "exams#get_exams"
 
   #json routes in ExamDefinition controller
-  match "exam_definitions/exam_def" => "exam_definition#exam_def"
-  match "exam_definition/:id/edit" => "exam_definition#edit#:id"
+  match "exam_definitions/:id/edit" => "exam_definitions#edit"
+  match "exam_definitions/exam_def" => "exam_definitions#exam_def"
 
   #json routes in Groups controller 
   match "group/get_groups" => "groups#get_groups"
@@ -63,12 +70,6 @@ GenRap::Application.routes.draw do
   match "user/change_professor/:id" => "users#change_professor"
   match "user/change_student/:id" => "users#change_student"
 
-  #match 'exam_definition_edit/:id' => 'exam_definition#edit#id', :as =>'exam_edit'
-
-  #map.connect '/exam_definition/edit', :controller => :exam_definitions, :action => :edit
-
   # map.exam_show, '/exams/:id', :controller => :exams, :action => :show
-  #map.edit_exam_definition, '/exam_definition/edit/:id' 
 
 end
-
