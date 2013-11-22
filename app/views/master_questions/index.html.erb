@@ -19,8 +19,18 @@
 
 <h3>Preguntas Maestras</h3>
 
-<span id="historial_ques"> <%= link_to 'Historial de Preguntas Borradas', {:action => "deleted_questions" }%> </span>
+<span id="historial_ques"> <%= link_to 'Historial de Preguntas Borradas', {:action => "deleted_questions" }%> </span><br/>
+<% if check_admin %>
 
+  <span style="display: inline-block;float:right;">
+  <%= link_to '<i class="icon-plus-sign  icon-white" style="margin-right: 5px;"></i>Nueva Pregunta'.html_safe, 
+            {:controller => :master_questions, :action => :new },
+            :class => "btn btn-info" %>
+  </span>
+
+  <br/><br/>
+
+<% end %>
  
 <table class="table table-bordered table-striped">
   <thead>
