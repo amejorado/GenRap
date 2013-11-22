@@ -127,14 +127,16 @@ class GroupsController < ApplicationController
 			end
 
 			params[:group][:user_ids].each do |curr_user_id|
-				curr_user = User.find(curr_user_id)
-				cantakes.each do |curr_cantake|
-					if !Cantake.exists?(master_exam_id: curr_cantake.master_exam_id, user_id: curr_user_id, group_id: @group.id)
-						cantake = Cantake.new
-						cantake.master_exam_id = curr_cantake.master_exam_id
-						cantake.user = curr_user
-						cantake.group_id = @group.id
-						cantake.save!
+				curr_user = User.find_by_id(curr_user_id)
+				if curr_user != nil
+					cantakes.each do |curr_cantake|
+						if !Cantake.exists?(master_exam_id: curr_cantake.master_exam_id, user_id: curr_user_id, group_id: @group.id)
+							cantake = Cantake.new
+							cantake.master_exam_id = curr_cantake.master_exam_id
+							cantake.user = curr_user
+							cantake.group_id = @group.id
+							cantake.save!
+						end
 					end
 				end
 			end
