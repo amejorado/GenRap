@@ -1,5 +1,10 @@
 <h1>Conceptos</h1>
-
+<span style="display: inline-block;float:right;">
+<%= link_to '<i class="icon-plus-sign  icon-white" style="margin-right: 5px;"></i>Nuevo Concepto'.html_safe, 
+          new_concept_path ,
+          class: "btn btn-info" %>
+</span>
+<br/><br/>
 <table class="table table-bordered table-striped">
   <tr>
     <th>Concepto</th>
@@ -28,4 +33,4 @@
 
 <br />
 
-<%= link_to 'Nuevo Concepto', new_concept_path %>
+
