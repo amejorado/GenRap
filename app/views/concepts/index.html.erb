@@ -1,21 +1,27 @@
 <h1>Conceptos</h1>
 
-<table>
+<table class="table table-bordered table-striped">
   <tr>
     <th>Concepto</th>
     <th>Lenguaje</th>
-    <th></th>
-    <th></th>
-    <th></th>
+    <th style="width: 1px;"></th>
+    <th style="width: 1px;"></th>
+    <th style="width: 1px;"></th>
   </tr>
 
 <% @concepts.each do |concept| %>
   <tr>
     <td><%= concept.name %></td>
     <td><%= concept.language.name %></td>
-    <td><%= link_to 'Ver', concept %></td>
-    <td><%= link_to 'Editar', edit_concept_path(concept) %></td>
-    <td><%= link_to 'Borrar', concept, method: :delete, data: { confirm: "Estas seguro?" } %></td>
+    <td>
+    <%= link_to 'Ver', concept, {class: "btn btn-mini"}  %> 
+    </td>
+    <td>
+    <%= link_to 'Editar', edit_concept_path(concept), {class: "btn btn-mini"} %>
+    </td>
+    <td>
+    <%= link_to 'Borrar', concept, method: :delete, data: { confirm: "Estas seguro?" }, :class => "btn btn-mini"  %>
+    </td>
   </tr>
 <% end %>
 </table>
