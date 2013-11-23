@@ -1,10 +1,25 @@
 
 <h3>Detalle de Grupo</h3>
+<ul class="nav nav-tabs">
+  
+  <% if check_admin %>
+  <li >
+  <%= link_to 'Editar', edit_group_path(@group) %>
+  </li>
+  <% end %>
+
+  
+  <li>
+    <%= link_to 'Grupos', groups_path %>
+  </li>
+  
+
+</ul>
 
 <div class="row">
     <div class="span4">
       <blockquote>
-        <p><%= @group.name %></p>
+        <p>Nombre de grupo: <%= @group.name %></p>
       </blockquote><hr/>
       <p>
         <i class="icon-user"></i> Due&ntilde;o: <%= @group.user.username %> <hr/>
@@ -21,7 +36,6 @@
 </div>
 
 
-<% if check_admin %>
-  <%= link_to 'Editar', edit_group_path(@group) %>
-	| <%= link_to 'Grupos', groups_path %>
-<% end %>
+
+
+  
