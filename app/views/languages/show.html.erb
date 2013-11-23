@@ -1,10 +1,11 @@
 <p id="notice"><%= notice %></p>
+<h3>Detalle de lenguaje</h3>
 
 <p>
-  <b>Name:</b>
+  <h5>Nombre de lenguaje:</h5>
   <%= @language.name %>
 </p>
 
-
-<%= link_to 'Edit', edit_language_path(@language) %> |
-<%= link_to 'Back', languages_path %>
+<hr/>
+<%= link_to 'Editar', edit_language_path(@language) %> |
+<%= link_to 'Regresar', languages_path %>

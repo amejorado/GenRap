@@ -1,15 +1,18 @@
+
+<h3>Detalle de subconcepto</h3>
 <p id="notice"><%= notice %></p>
 
 <p>
-  <b>Nombre:</b>
+  <h5>Nombre:</h5>
   <%= @sub_concept.name %>
 </p>
 
 <p>
-  <b>Concepto:</b>
+  <h5>Concepto:</h5>
   <%= @sub_concept.concept.language.name + "/" + @sub_concept.concept.name %>
 </p>
 
+<hr/>
 
 <%= link_to 'Editar', edit_sub_concept_path(@sub_concept) %> |
 <%= link_to 'Regresar', sub_concepts_path %>

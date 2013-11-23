@@ -1,15 +1,17 @@
 <p id="notice"><%= notice %></p>
+<h3>Detalle de concepto</h3>
 
 <p>
-  <b>Nombre:</b>
+  <h5>Nombre:</h5>
   <%= @concept.name %>
 </p>
 
 <p>
-  <b>Lenguaje:</b>
+  <h5>Lenguaje:</h5>
   <%= @concept.language.name %>
 </p>
 
+<hr/>
 
 <%= link_to 'Editar', edit_concept_path(@concept) %> |
 <%= link_to 'Regresar', concepts_path %>
