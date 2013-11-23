@@ -1,35 +1,47 @@
+<h3>Detalle de Pregunta</h3>
+<ul class="nav nav-tabs">
+  
+  <% if check_admin %>
+  <li >
+  <%= link_to 'Editar', edit_master_question_path(@master_question) %>
+  </li>
+  <% end %>
+
+  <% if check_prof %>
+  <li>
+    <%= link_to 'Preguntas maestras', master_questions_path %>
+  </li>
+  <% end %>
+
+</ul>
+
 <p>
-  <span>Lenguaje:</span>
+  <span><h5>Lenguaje:</h5></span>
   <%= @master_question.language.name %>
 </p>
 
 <p>
-  <span>Concepto a evaluar:</span>
+  <span><h5>Concepto a evaluar:</h5></span>
   <%= @master_question.concept.name %>
 </p>
  
 <p>
-  <span>Subconcepto a evaluar:</span>
+  <span><h5>Subconcepto a evaluar:</h5></span>
   <%= @master_question.sub_concept.name %>
 </p>
  
 <p>
-  <span>Pregunta:</span>
+  <span><h5>Pregunta:</h5></span>
   <%= @master_question.inquiry %>
 </p>
 
 <p>
-  <span>Randomizer:</span>
+  <span><h5>Randomizer:</h5></span>
   <textarea disabled><%= @master_question.randomizer %></textarea>
 </p> 
 
 <p>
-  <span>Solver:</span>
+  <span><h5>Solver:</h5></span>
   <textarea disabled><%= @master_question.solver %></textarea>
 </p>
 
-<%= link_to 'Editar', edit_master_question_path(@master_question) %>
-
-<% if check_prof %>
-	| <%= link_to 'Preguntas maestras', master_questions_path %>
-<% end %>
