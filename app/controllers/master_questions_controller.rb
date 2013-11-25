@@ -91,7 +91,12 @@ class MasterQuestionsController < ApplicationController
   # Read actions
   def index
     if check_prof || check_admin
-      @masterQuestions = MasterQuestion.all(:order => "language_id ASC")
+      if(params[:id])
+        @masterQuestions = MasterQuestion.where("language_id = ?",params[:id]).order("language_id")
+      else
+        @masterQuestions = MasterQuestion.all(:order => "language_id ASC")
+      end
+      @masterSelections = MasterQuestion.all(:order => "language_id ASC", :group => "language_id")
     else
       flash[:error] = "Acceso restringido."
       redirect_to(root_path)
