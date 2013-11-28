@@ -39,11 +39,10 @@ class Exam < ActiveRecord::Base
 		stringRepetidos = 0
 		
 		#Debugging variables
-		#puts "Contador check_correct_answers " + count.to_s + " correctAnswer = " + correctAnswer
-		#puts "The actual answers are = " + answers.to_s
-		#puts "The temporal answers are = " + answersTemp.to_s 
-		#puts "Temporal answers count = " + answersTemp.length.to_s
-
+		puts "Contador check_correct_answers " + count.to_s + " correctAnswer = " + correctAnswer
+		puts "The actual answers are = " + answers.to_s
+		puts "The temporal answers are = " + answersTemp.to_s 
+		puts "Temporal answers count = " + answersTemp.length.to_s
 
 		answersIndex = 1
 		temporalIndex = 1
@@ -52,6 +51,7 @@ class Exam < ActiveRecord::Base
 
 		#Se recorre todo el arreglo para revisar si existen valores repetidos
 		while answersIndex <= count
+			puts "The temporal answers are = " + answersTemp.to_s
 			while temporalIndex <= answersTemp.length 
 				#Se revisa que las respuestas no sean igual que la correcta
 				if answersIndex != correct
@@ -66,10 +66,10 @@ class Exam < ActiveRecord::Base
 						answers[answersIndex] = answers[answersIndex] + Random.rand(1..100)
 					end
 					#Revisa si la respuesta esta repetida
-					if answers[answersIndex] == answersTemp[temporalIndex]
+					if answers[answersIndex] == answersTemp[temporalIndex] && answersTemp.length > 1
 						#Revisa si la respuesta es un string la cambia por otro string sino por un numero random
 						if answers[answersIndex].is_a? String
-							puts "Encontre un string"
+							puts "Encontre el string = " + answers[answersIndex]
 							answers[answersIndex] = stringAnswers[stringRepetidos]
 							stringRepetidos = stringRepetidos + 1
 						else
