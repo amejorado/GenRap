@@ -152,6 +152,8 @@ class ExamsController < ApplicationController
 		if check_prof || (@current_user.id.to_i == Exam.find(params[:id]).user_id.to_i && Exam.find(params[:id]).state.to_i == 0)
 			# Declarar el examen como comenzado
 			@exam = Exam.find(params[:id])
+			@masterExamId = @exam.master_exam_id
+			@examName = MasterExam.find(@masterExamId).name
 			#master_examen es un objeto
 			@examenMaestro = @exam.master_exam
 			# Se guarda el examen para cambiarse a comenzado
@@ -169,6 +171,8 @@ class ExamsController < ApplicationController
 	def show
 		if check_prof || @current_user.id == Exam.find(params[:id]).user_id
 			@exam = Exam.find(params[:id])
+			@masterExamId = @exam.master_exam_id
+			@examName = MasterExam.find(@masterExamId).name
 		else
 			flash[:error] = "Acceso restringido."
 			redirect_to(pending_path)
