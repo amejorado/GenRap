@@ -22,19 +22,19 @@ class MasterQuestionsController < ApplicationController
       redirect_to(root_path)
     end
   end
-  
+
   def create
     #if check_prof || check_admin
     if check_admin
       params[:master_question][:borrado] = 0
       @master_question = MasterQuestion.new(params[:master_question], :without_protection => true)
-      
+
       # Generate random name for solver and randomizer
       uuid = SecureRandom.uuid
       $randomizer = "#{uuid}_randomizer"
       $solver = "#{uuid}_solver"
-      
-      # Create solver and randomizer files in /helpers/s and /helpers/r 
+
+      # Create solver and randomizer files in /helpers/s and /helpers/r
       rand_file = File.dirname(__FILE__) + "/../helpers/r/#{$randomizer}.rb"
       solv_file = File.dirname(__FILE__) + "/../helpers/s/#{$solver}.rb"
 
@@ -109,7 +109,7 @@ class MasterQuestionsController < ApplicationController
 
       # Get files path
       $randomizer = @master_question.randomizer
-      $solver = @master_question.solver 
+      $solver = @master_question.solver
 
       # Retrieve code from files
       @master_question.randomizer = read_file(File.dirname(__FILE__) + "/../helpers/r/#{$randomizer}.rb")
@@ -124,9 +124,9 @@ class MasterQuestionsController < ApplicationController
   def edit
     #if check_prof || check_admin
     if check_admin
-      @master_question = MasterQuestion.find(params[:id]) 
+      @master_question = MasterQuestion.find(params[:id])
       $randomizer = @master_question.randomizer
-      $solver = @master_question.solver 
+      $solver = @master_question.solver
 
       # Retrieve code from files
       @master_question.randomizer = read_file(File.dirname(__FILE__) + "/../helpers/r/#{$randomizer}.rb")
@@ -186,14 +186,14 @@ class MasterQuestionsController < ApplicationController
     when 'randomizer'
       text << "def randomize(inquiry)\n  values = Hash.new('')\n" +
               "  #Inserte su codigo para llenar values aqui\n" +
-              "  #values['^1'] = Random.rand(1..2)\n  #values['^2'] = Random.rand(5..10)\n" + 
+              "  values['^1'] = Random.rand(1..2)\n  values['^2'] = Random.rand(5..10)\n" +
               "  values\nend"
     when 'solver'
       text << "def solve(inquiry, values)\n  answers = Hash.new('')\n" +
               "  #Inserte su codigo para llenar generar answers aqui\n" +
-              "  #answers[1] = values['^1'] + values['^2']\n  #answers[2] = values['^1'] - values['^2']\n" +
+              "  answers[1] = values['^1'] + values['^2']\n  answers[2] = values['^1'] - values['^2']\n" +
               "  #Inserte su codigo para indicar la respuesta correcta\n" +
-              "  #correct = 1\n [answers, correct]\nend\n\n"
+              "  correct = 1\n [answers, correct]\nend\n\n"
     when 'inquiry'
       text << "¿Cuánto es ^1 + ^2?"
     end
@@ -205,7 +205,7 @@ class MasterQuestionsController < ApplicationController
     #if check_prof || check_admin
     if check_admin
       @master_question = MasterQuestion.find(params[:id])
-      
+
       # Delete randomizer and solver files
       if File.exists?(@master_question.randomizer)
         File.delete(@master_question.randomizer)
@@ -264,11 +264,11 @@ class MasterQuestionsController < ApplicationController
   end
 
 
-     
+
   def deleteQuestion
     #if check_prof || check_admin
     if check_admin
-      @master_question = MasterQuestion.find(params[:id])      
+      @master_question = MasterQuestion.find(params[:id])
       if @master_question.update_attributes(:borrado => "1", :questionDateDeleted => Time.now)
         flash[:notice] = 'La pregunta maestra fue borrada de manera correcta.'
       else
