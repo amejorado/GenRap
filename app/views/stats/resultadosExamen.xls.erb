@@ -1,0 +1,33 @@
+<style type="text/css">
+ table{
+  font-size: 15px;
+  width: 500px;
+  border-collapse: separate;
+  border-spacing: 2px;
+ }
+
+
+</style>
+
+<h1>EXAMEN : <%= @examenMaestro.name %></h1>
+<h3>Fecha Comienzo: <%= @examenMaestro.startDate %></h3>
+<h3>Fecha Cierre: <%= @examenMaestro.finishDate %></h3>
+
+<table border="1" >
+  <tr >
+    <th>Matricula</th>
+    <th>Intentos</th>
+    <th>Resultados</th>
+  </tr>
+  <% @examenest.each do |examen| %>
+  <tr>
+    <td><%= examen.usuario %></td>
+    <td><%= examen.intentos %></td>
+    <td><%= examen.resultados %></td>
+  </tr>
+
+
+  <% end %>
+
+
+</table>
