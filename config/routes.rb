@@ -33,6 +33,7 @@ GenRap::Application.routes.draw do
   match "mystats", to: "stats#mystats"
   match "profstats", to: "stats#profstats"
   match "profstats_exam", to: "stats#profstats_exam"
+  match "resultadosExamen", to: "stats#resultadosExamen"
 
   #match "deleted_questions", to: "master_questions#deleted_questions"
 

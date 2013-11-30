@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131119073110) do
+ActiveRecord::Schema.define(:version => 20131130033820) do
 
   create_table "cantakes", :force => true do |t|
     t.integer "master_exam_id"
@@ -53,6 +53,14 @@ ActiveRecord::Schema.define(:version => 20131119073110) do
 
   add_index "exams", ["master_exam_id"], :name => "index_exams_on_master_exam_id"
   add_index "exams", ["user_id"], :name => "index_exams_on_user_id"
+
+  create_table "excel_formats", :force => true do |t|
+    t.string   "usuario"
+    t.integer  "intentos"
+    t.float    "resultados"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
 
   create_table "groups", :force => true do |t|
     t.string   "name"

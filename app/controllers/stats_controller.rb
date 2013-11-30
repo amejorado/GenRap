@@ -134,18 +134,20 @@ class StatsController < ApplicationController
 
 	def profstats_exam
 		if check_prof
-			@cantakes = Cantake.where("master_exam_id = ?",params[:id]).order ("user_id")
+			@examId = params[:id]
+			@examName = MasterExam.find(@examId).name
+			@cantakes = Cantake.where("master_exam_id = ?",@examId).order ("user_id")
 			@h = Hash.new
 			for c in @cantakes do
 				exams_result = Array.new
-				@exams =  Exam.where("master_exam_id = ? and user_id=?", params[:id], c.user_id)
+				@exams =  Exam.where("master_exam_id = ? and user_id=?", @examId, c.user_id)
 				for e in @exams do
 					exams_result.push(e)
 				end
 				@h[c.user_id] = exams_result
 			end
 			#Estadisticas para las preguntas de examen por concepto/subconcepto
-			@exams_taken = MasterExam.where("user_id = ? AND id = ?", @current_user.id, params[:id]).first.exams
+			@exams_taken = MasterExam.where("user_id = ? AND id = ?", @current_user.id, @examId).first.exams
 
 			@q_taken = @exams_taken.map { |e| e.questions }
 			@q_taken = @q_taken.flatten
@@ -172,6 +174,72 @@ class StatsController < ApplicationController
 			flash[:error] = "Acceso restringido."
 			redirect_to(root_path)
 		end
+	end
+
+	def resultadosExamen
+		#se crea objeto nuevo
+		
+		
+		#id del examen maestro
+		@examId = params[:id]
+		@examenMaestro = MasterExam.find(@examId)
+
+
+		@cantakes = Cantake.where("master_exam_id = ?",@examId).order ("user_id")
+		@h = Hash.new
+		for c in @cantakes do
+			exams_result = Array.new
+			@exams =  Exam.where("master_exam_id = ? and user_id=?", @examId, c.user_id)
+			for e in @exams do
+				exams_result.push(e)
+			end
+			@h[c.user_id] = exams_result
+		end
+
+		
+   		@cantakes.each do |can|
+	        cont = 1
+	        @examenes = ExcelFormat.new
+	        if !@h[can.user_id].empty?
+	        	#format.html
+    			#format.csv { send_data @products.to_csv }
+    			#format.xls { send_data can.user.name.to_csv(col_sep: "\t") }
+	        	#can.user.username
+	        	#arr.push(can.user.username)
+	        	#@examenes.usuario = can.user.username
+	        	@h[can.user_id].each do |h|
+	        		@examenes_anidados = ExcelFormat.new
+	        		@examenes_anidados.usuario =  can.user.username
+	            	#cont
+	            	#format.xls { send_data cont.to_csv(col_sep: "\t") }
+	              	#format.xls { send_data @h[can.user_id][cont-1].score.to_csv(col_sep: "\t") }
+                    #@examenes.usuario  = nil
+                    @examenes_anidados.intentos = cont
+                    @examenes_anidados.resultados= @h[can.user_id][cont-1].score
+                    @examenes_anidados.save
+	              	#@examenes.usuario  = nil
+	            	cont = cont + 1
+	          	end
+	        else
+	        	@examenes.usuario = can.user.username
+	        	@examenes.intentos  = 0.0 
+	        	@examenes.resultados = 0
+	        	@examenes.save
+	        	#can.user.username
+	        	#format.xls { send_data can.user.name.to_csv(col_sep: "\t") }
+	        	#format.xls { send_data zero.to_csv(col_sep: "\t") }
+	            #0
+	        end
+
+      	end
+	    @examenest = ExcelFormat.select("usuario ,intentos, resultados").order(:usuario)
+	    
+	    respond_to do |format|
+		    format.html
+		    format.csv { send_data @examenest.to_csv }
+		    format.xls #{ send_data @examenest.to_csv(col_sep: "\t") }	
+	  	end
+	  	ExcelFormat.delete_all
 	end
 	
 

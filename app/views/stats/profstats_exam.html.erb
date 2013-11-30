@@ -68,15 +68,14 @@
 
   <br/><br/>
 
-  <h2 style="display: inline-block;">Resultados del examen</h2>
+  <h2 style="display: inline-block;">Resultados del examen:  <%= @examName %> </h2>
   <span style="display: inline-block;float:right;">
   <%= link_to '<i class="icon-download  icon-white" style="margin-right: 5px;"></i>Descargar versión Excel'.html_safe, 
-          {:action => "profstats"},
+          {:action => 'resultadosExamen', :id => @examId, :format => "xls"},
           class: "btn btn-info" %>
         </span>
 
-
-  <%= @hola %>
+  
   <% if @cantakes!= nil %>
   
     <table class="table table-striped">
