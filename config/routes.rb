@@ -1,5 +1,8 @@
 
 GenRap::Application.routes.draw do
+  resources :exam_definitions
+
+
   resources :languages
   resources :sub_concepts
   resources :concepts
