@@ -1,5 +1,14 @@
-<h1>New exam_definition</h1>
-
-<%= render 'form' %>
-
+<% content_for = "Create Exam Definition" %>
+<div class="hero-unit">
+	<h1>Definición de Examen</h1>
+	<br />
+	<%= render 'form' %>
+	<% if @exam_definition.errors.any? %>
+		<ul>
+			<% for message_error in @exam_definition.errors.full_messages %>
+			<li>- <%= message_error %></li>
+			<% end %>
+		</ul>
+	<% end %>
+</div>
 <%= link_to 'Back', exam_definitions_path %>

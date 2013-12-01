@@ -25,13 +25,13 @@ class ExamDefinitionsController < ApplicationController
   # GET /exam_definitions/new.json
   def new
     @exam_definition = ExamDefinition.new
-
-    respond_to do |format|
-      format.html # new.html.erb
-      format.json { render json: @exam_definition }
+    @exam_users = nil
+    if check_prof
+      render "new"
+    else
+      render "new_student"
     end
   end
-
   # GET /exam_definitions/1/edit
   def edit
     @exam_definition = ExamDefinition.find(params[:id])
