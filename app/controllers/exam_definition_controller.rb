@@ -19,7 +19,7 @@ class ExamDefinitionController < ApplicationController
     if check_prof
   		@examDefinition = ExamDefinition.new(params[:examID])
   		@examDefinition.utype = 0
-  		
+
   		if @examDefinition.save
   			flash[:notice] = "Definición de examen creada de manera exitosa."
   		else
@@ -39,8 +39,20 @@ class ExamDefinitionController < ApplicationController
 	# def update
 	# end
 
-	# def destroy
-	# end
+  def destroy
+    @master_exam = MasterExam.find_by_id(params[:id])
+
+    if check_admin || (check_prof && @master_exam.user_id == session[:user_id])
+      @exam_definitions = @master_exam.exam_definition
+      @exam_definitions.destroy
+      @master_exam.destroy
+
+      redirect_to '/profstats'
+    else
+      flash[:error] = "Acceso restringido."
+      redirect_to(master_questions_path)
+    end
+  end
 
 	# def index
 	# end
@@ -81,12 +93,12 @@ class ExamDefinitionController < ApplicationController
       finishDate: Time.strptime("#{endYear}-#{endMonth}-#{endDay} #{endHour}:#{endMinute}", '%Y-%m-%d %H:%M').in_time_zone(timeZone),
       user: user
     )
-        
+
     hash.each_with_index do |(key, value), index|
-      ExamDefinition.create( 
+      ExamDefinition.create(
         master_question: MasterQuestion.find_by_id( hash[key]['master_question_id'].to_i ),
         master_exam: MasterExam.find_by_id(master_exam.id),
-        questionNum: index+1, 
+        questionNum: index+1,
         weight: hash[key]['value'].to_f
       )
     end

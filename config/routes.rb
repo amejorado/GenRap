@@ -20,12 +20,13 @@ GenRap::Application.routes.draw do
 
 
   resources :users, :groups, :master_questions, :exam_definitions, :exams
-  
+
   match "signup", :to => "users#new"
   match "login", :to => "sessions#login"
   match "logout", :to => "sessions#logout"
   # match "mq", :to => "master_question#new"
   match "def", to: "exam_definition#new"
+  match "exam_definition/destroy/:id", to: "exam_definition#destroy"
   match "results/exam/:id", to: "exams#results", as: "exam_results"
   match "create/exam/:id", to: "exams#create", as: "create_exam"
   match "pending", to: "exams#pending"
@@ -48,10 +49,10 @@ GenRap::Application.routes.draw do
   match "master_question/deleted_questions" => "master_questions#deleted_questions"
   match "exam/afterExam" => "exams#afterExam"
   #match "exams/:id/edit/" => "emailer#sendmail"
-  
 
-  
-  
+
+
+
 
   #json routes in Exams controller
   match "exam/get_exams" => "exams#get_exams"
@@ -59,7 +60,7 @@ GenRap::Application.routes.draw do
   #json routes in ExamDefinition controller
   match "exam_definition/exam_def" => "exam_definition#exam_def"
 
-  #json routes in Groups controller 
+  #json routes in Groups controller
   match "group/get_groups" => "groups#get_groups"
 
   #json routes in Users controller
