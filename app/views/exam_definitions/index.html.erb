@@ -1,0 +1,21 @@
+<h1>Listing exam_definitions</h1>
+
+<table>
+  <tr>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @exam_definitions.each do |exam_definition| %>
+  <tr>
+    <td><%= link_to 'Show', exam_definition %></td>
+    <td><%= link_to 'Edit', edit_exam_definition_path(exam_definition) %></td>
+    <td><%= link_to 'Destroy', exam_definition, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Exam definition', new_exam_definition_path %>
