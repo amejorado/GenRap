@@ -25,12 +25,15 @@ class ExamDefinitionsController < ApplicationController
   # GET /exam_definitions/new.json
   def new
     @exam_definition = ExamDefinition.new
+    # @master_questions = MasterQuestion.all_languages
     @exam_users = nil
+
     if check_prof
       render "new"
     else
       render "new_student"
     end
+
   end
   # GET /exam_definitions/1/edit
   def edit

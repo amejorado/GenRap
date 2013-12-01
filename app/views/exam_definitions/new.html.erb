@@ -1,8 +1,10 @@
 <% content_for = "Create Exam Definition" %>
+
 <div class="hero-unit">
 	<h1>Definición de Examen</h1>
 	<br />
 	<%= render 'form' %>
+
 	<% if @exam_definition.errors.any? %>
 		<ul>
 			<% for message_error in @exam_definition.errors.full_messages %>
