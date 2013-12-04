@@ -5,8 +5,8 @@ module ExamsHelper
 	end
 
 	def format_answers(answers)
-		#answers.gsub("-","").gsub("\n",",").sub(",","").gsub(/(.*),(.*)/,'\\1\\2').split(/,/)
-		answers.gsub("\n",",").sub(",","").gsub(/(.*),(.*)/,'\\1\\2').split(/,/)
+		answers.gsub("---","").gsub("\n",",").sub(",","").gsub(/(.*),(.*)/,'\\1\\2').split(/,/)
+		#answers.gsub("\n",",").sub(",","").gsub(/(.*),(.*)/,'\\1\\2').split(/,/)
 	end
 
 		#Funcion que acomoada las respuestas de los examenes de manera aleatoria
