@@ -10,14 +10,12 @@
 				<p><% inquiry = inquiry.gsub(key,value.to_s) %></p>
 
 			<% end %>
+
 			<pre style="border: none; background: transparent;"><%= question.questionNum.to_s.html_safe+".  "+inquiry %></pre>
 
 			<%= simple_fields_for ":questions[]", question do |question_field| %>
-				<% puts "Respuesta de pregunta en examen = " + question.answers.to_s %>
 				<% answers = format_answers(question.answers) %>
-				<% puts "format_answers(question.answers) = " + answers.to_s %>
 				<% answers = random_answers(answers) %>
-				<% puts "random_answers(answers) = " + answers.to_s %>
 				<%= question_field.select :givenAns, answers.map{ |ansNum| [ansNum.split(": ").second, ansNum.split(": ").first] } %>
 			<% end %>
 			<hr style="border-color: rgb(216, 213, 213);">
