@@ -44,7 +44,7 @@ class SubConceptsController < ApplicationController
 
     respond_to do |format|
       if @sub_concept.save
-        format.html { redirect_to @sub_concept, notice: 'Sub concept was successfully created.' }
+        format.html { redirect_to @sub_concept, notice: 'El subconcepto fue creado de manera exitosa!' }
         format.json { render json: @sub_concept, status: :created, location: @sub_concept }
       else
         format.html { render action: "new" }
@@ -60,7 +60,7 @@ class SubConceptsController < ApplicationController
 
     respond_to do |format|
       if @sub_concept.update_attributes(params[:sub_concept])
-        format.html { redirect_to @sub_concept, notice: 'Sub concept was successfully updated.' }
+        format.html { redirect_to @sub_concept, notice: 'El subconcepto fue actualizado de manera exitosa!' }
         format.json { head :no_content }
       else
         format.html { render action: "edit" }
@@ -74,7 +74,7 @@ class SubConceptsController < ApplicationController
   def destroy
     @sub_concept = SubConcept.find(params[:id])
     @sub_concept.destroy
-
+    flash[:notice] = 'El subconcepto fue borrado de manera exitosa!'
     respond_to do |format|
       format.html { redirect_to sub_concepts_url }
       format.json { head :no_content }

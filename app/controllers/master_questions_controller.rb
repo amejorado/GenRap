@@ -274,7 +274,7 @@ class MasterQuestionsController < ApplicationController
       else
         flash[:error] = 'No se pudieron actualizar los datos de la pregunta maestra.'
       end
-      redirect_to root_path
+      redirect_to :controller => 'master_questions', :action => 'index'
     else
       #flash[:error] = "Acceso restringido."
     end

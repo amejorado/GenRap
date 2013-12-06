@@ -25,36 +25,37 @@
 	<%= text_field "duracion", "exam", placeholder:"Duración del examen" %> 
 
 	<select id="language">
-		<option>Selecciona un Lenguaje</option>
+		<option value="0">Selecciona un Lenguaje</option>
 	</select>
 	
 
+	<div id="seccionPreguntas">
+		<h3>Preguntas</h3>
 
-	<h3>Preguntas</h3>
+		<table>
+			<tr>
 
-	<table>
-		<tr>
+				<td>
+					<select id="concept">
+						<option>Selecciona un Concepto</option>
+					</select>
+				</td>
+				<td>
+					<select id="subconcept">
+						<option>Selecciona un Subconcepto</option>
+					</select>
 
-			<td>
-				<select id="concept">
-					<option>Selecciona un Concepto</option>
-				</select>
-			</td>
-			<td>
-				<select id="subconcept">
-					<option>Selecciona un Subconcepto</option>
-				</select>
-
-			</td>
-		</tr>
-		<tr>
-			<td colspan="3" >
-				<table id="filteredMQ" class="table"></table>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="3" >
+					<table id="filteredMQ" class="table"></table>
+					
 				
-			
-			</td>
-		</tr>
-	</table>
+				</td>
+			</tr>
+		</table>
+	</div>
 	<br />
 	<table id="examInquiriesHeaders" class="table">
 		<tbody>
