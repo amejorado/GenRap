@@ -4,7 +4,7 @@ class MasterQuestionsController < ApplicationController
   $solver = ''
   @inquiriesMasterQuestionsIDs = {}
 
-  before_filter :authenticate_user, :only => [:new, :index, :create,:show, :edit, :update, :destroy]
+  before_filter :authenticate_user, :only => [:new, :index, :create,:show, :edit, :update, :destroy, :backup]
   # Create actions
   def new
     #if check_admin || check_prof
@@ -21,6 +21,56 @@ class MasterQuestionsController < ApplicationController
       flash[:error] = "Acceso restringido."
       redirect_to(root_path)
     end
+  end
+
+  def backup
+
+    $file_name = "Questions_backup"
+	prebackup_file = File.dirname(__FILE__) + "/../../#{$file_name}.txt"
+	File.open(File.dirname(__FILE__) + "/../../#{$file_name}.txt", "w"){ |somefile| somefile.puts "
+			Reslpaldo de MasterQuestions "}
+	separator = "\r\n **************** \r\n"
+	blankspace = "\r\n\r\n"
+
+    MasterQuestion.all.each do |mq|
+		inquiry = mq.inquiry
+		$randomizer = mq.randomizer
+        $solver = mq.solver
+
+        # Retrieve code from files
+        crandomizer = read_file(File.dirname(__FILE__) + "/../helpers/r/#{$randomizer}.rb")
+        csolver = read_file(File.dirname(__FILE__) + "/../helpers/s/#{$solver}.rb")
+
+		File.open(prebackup_file,"a+") do |outfile| 
+			outfile << inquiry 
+			outfile << blankspace
+			outfile << csolver
+			outfile << blankspace
+			outfile << crandomizer
+			outfile << blankspace
+			outfile << blankspace
+			outfile << separator
+			outfile << blankspace
+		end
+	end
+	
+
+	begin
+        load backup_file
+    rescue Exception => exc
+        file_error = true
+    end
+
+	if file_error
+        flash[:error] = "Error al ejecutar el respaldo"
+        render :action => "index" and return
+	else
+		flash[:notice] = "Backup realizado exitosamente."
+		@masterSelections = MasterQuestion.all(:order => "language_id ASC", :group => "language_id")
+      	redirect_to(master_questions_path)
+	end
+    
+
   end
 
   def create
@@ -92,7 +142,7 @@ class MasterQuestionsController < ApplicationController
   def index
     if check_prof || check_admin
       if(params[:id])
-        @masterQuestions = MasterQuestion.where("language_id = ?",params[:id]).order("language_id").order("concept_id").order("subconcept_id")
+        @masterQuestions = MasterQuestion.where("language_id = ?",params[:id]).order("subconcept_id")
       else
         @masterQuestions = MasterQuestion.all(:order => "language_id ASC, concept_id, subconcept_id")
       end

@@ -59,3 +59,5 @@ gem  'multimap'
 #
 # Rails ERD for diagrams
 gem 'rails-erd'
+
+gem 'quiet_assets', group: [:development, :production]

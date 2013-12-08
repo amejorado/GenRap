@@ -29,8 +29,7 @@
         <span class="caret"></span>
       </a>
       <ul class="dropdown-menu">
-      <% 
-      @masterSelections.each do |mq|
+      <%   @masterSelections.each do |mq|
         if mq.borrado == 0
       %>
 
@@ -48,7 +47,11 @@
     <%= link_to '<i class="icon-plus-sign  icon-white" style="margin-right: 5px;"></i>Nueva Pregunta'.html_safe, 
               {:controller => :master_questions, :action => :new },
               :class => "btn btn-info" %>
-    </span>
+	</span>
+    <span style="display: inline-block;float:right;">
+    <%= link_to 'Respaldar Preguntas', {:action => "backup" },
+              :class => "btn btn-default" %>
+	</span>
 
     <br/><br/>
 
