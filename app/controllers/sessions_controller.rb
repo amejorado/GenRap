@@ -10,10 +10,16 @@ class SessionsController < ApplicationController
   	if authorized_user && authorized_user.authenticate(params[:gpassword])
   		session[:user_id] = authorized_user.id
   		flash[:notice] = "Bienvenido #{authorized_user.fname} #{authorized_user.lname}."
-  		redirect_to(root_path)
+      if check_admin
+        redirect_to(root_path)
+      elsif check_prof
+          redirect_to(:controller => "stats", :action => "profstats")
+      else
+          redirect_to(root_path)
+      end
   	else
   		flash[:error] = "Usuario o password inválidos."
-  		redirect_to('/signup')
+  		redirect_to('/signup')  
   	end
   end
 

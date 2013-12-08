@@ -10,6 +10,7 @@ groups_ids = []
 $(document).ready ->
   $(window).load ->
     $("#examInquiriesHeaders").hide()
+    $("#seccionPreguntas").hide()
     languages = $("#language")
     $.getJSON "/master_question/get_languages"
       , (data) ->
@@ -19,10 +20,15 @@ $(document).ready ->
 $(document).ready ->
   $("#language").change ->
     i = 1
+    $("#seccionPreguntas").show()
     $("#concept option").remove()
     $("#subconcept option").remove()
     $("#filteredMQ tr").remove()
     $("#examInquiries tr").remove()
+    $("#examInquiriesHeaders").hide()
+
+    if($("#language").val() == '0')
+      $("#seccionPreguntas").hide()
     $.getJSON "/master_question/concepts_for_question",
       language: $("#language").val()
     , (data) ->
@@ -177,7 +183,7 @@ $(document).ready ->
               exam_name: $("#name_exam").val()
             , (data) ->
               alert "Examen creado exitosamente"
-              window.location = "/exams"
+              window.location = "/profstats"
 
             $("#language").prop "selectedIndex", 0
             $("#filteredMQ tr").remove()

@@ -4,7 +4,8 @@ class ConceptsController < ApplicationController
   before_filter :authenticate_admin, :only => [:new, :index, :create,:show, :edit, :update, :destroy]
 
   def index
-    @concepts = Concept.all
+    @concepts = Concept.all(:order => "language_id ASC")
+
 
     respond_to do |format|
       format.html # index.html.erb
@@ -46,7 +47,7 @@ class ConceptsController < ApplicationController
 
     respond_to do |format|
       if @concept.save
-        format.html { redirect_to @concept, notice: 'Concept was successfully created.' }
+        format.html { redirect_to @concept, notice: 'El concepto fue creado de manera exitosa!' }
         format.json { render json: @concept, status: :created, location: @concept }
       else
         format.html { render action: "new" }
@@ -62,7 +63,7 @@ class ConceptsController < ApplicationController
 
     respond_to do |format|
       if @concept.update_attributes(params[:concept])
-        format.html { redirect_to @concept, notice: 'Concept was successfully updated.' }
+        format.html { redirect_to @concept, notice: 'El concepto fue actualizado de manera exitosa!' }
         format.json { head :no_content }
       else
         format.html { render action: "edit" }
@@ -76,6 +77,7 @@ class ConceptsController < ApplicationController
   def destroy
     @concept = Concept.find(params[:id])
     @concept.destroy
+    flash[:notice] = 'El concepto fue borrado de manera exitosa!'
 
     respond_to do |format|
       format.html { redirect_to concepts_url }

@@ -60,6 +60,7 @@
 
 
 </div>
+ <br/>
  
 <table class="table table-bordered table-striped">
   <thead>
@@ -88,7 +89,7 @@
           <%=   link_to 'Ver más', mq , {class: "btn btn-mini"} %> <br/><br/>
           <% if check_admin %>
           <%=   link_to 'Editar', edit_master_question_path(mq) , {class: "btn btn-mini"}  %> <br/> <br/>
-          <%=   link_to 'Borrar', {:action => "deleteQuestion", :id => mq.id}, :class => "btn btn-mini"    %> <br/><br/>
+          <%=   link_to 'Borrar', {:action => "deleteQuestion", :id => mq.id},  data: { confirm: '¿Estas seguro?' } , :class => "btn btn-mini"    %> <br/><br/>
           <% end %>
         </td>
 

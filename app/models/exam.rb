@@ -164,7 +164,7 @@ class Exam < ActiveRecord::Base
 				puts "loaded " + full_solver_path
 				answers, correctAns = solve(inquiry, values)
 				answers = check_correct_answers(answers, correctAns)
-				# puts "answers " + answers.to_s
+				puts "answers " + answers.to_s
 				# puts "correctAns " + correctAns.to_s
 
 				# We finally create the question
