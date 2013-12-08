@@ -32,10 +32,10 @@
     <tr>
       <td><%= group.name %></td>
       <td><%= group.user.username %></td>
-      <td><%= link_to 'Mostrar', group, {class: "btn btn-mini"}%>
+      <td><%= link_to 'Mostrar', group, {class: "btn btn-default btn-xs"}%>
       <% if check_admin %>
-      <%=   link_to 'Editar', edit_group_path(group), {class: "btn btn-mini"} %>
-      <%=   link_to 'Borrar', group, :confirm => '¿Está seguro que quiere borrar este grupo?', :method => :delete, :class => "btn btn-mini"  %>
+      <%=   link_to 'Editar', edit_group_path(group), {class: "btn btn-default btn-xs"} %>
+      <%=   link_to 'Borrar', group, :confirm => '¿Está seguro que quiere borrar este grupo?', :method => :delete, :class => "btn btn-default btn-xs"  %>
       </td>
       <% end %>
     </tr>
