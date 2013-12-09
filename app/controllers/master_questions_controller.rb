@@ -35,12 +35,12 @@ class MasterQuestionsController < ApplicationController
 
     MasterQuestion.all.each do |mq|
 		inquiry = mq.inquiry
-		$randomizer = mq.randomizer
-        $solver = mq.solver
+		randomizer = mq.randomizer
+        solver = mq.solver
 
         # Retrieve code from files
-        crandomizer = read_file(File.dirname(__FILE__) + "/../helpers/r/#{$randomizer}.rb")
-        csolver = read_file(File.dirname(__FILE__) + "/../helpers/s/#{$solver}.rb")
+        crandomizer = read_file(File.dirname(__FILE__) + "/../helpers/r/#{randomizer}.rb")
+        csolver = read_file(File.dirname(__FILE__) + "/../helpers/s/#{solver}.rb")
 
 		File.open(prebackup_file,"a+") do |outfile| 
 			outfile << inquiry 
