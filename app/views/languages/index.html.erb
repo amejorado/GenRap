@@ -1,9 +1,13 @@
 <h1>Listado de lenguajes</h1>
+
+
 <span style="display: inline-block;float:right;">
-<%= link_to '<i class="icon-plus-sign  icon-white" style="margin-right: 5px;"></i>Nuevo Lenguaje'.html_safe, 
-          new_language_path,
-          :class => "btn btn-info" %>
-</span><br/><br/>
+<%= link_to '<span class="glyphicon glyphicon-plus" style="margin-right: 5px;"></span>Nuevo Lenguaje'.html_safe, 
+              new_language_path,
+              :class => "btn btn-info" %>
+</span>
+
+<br/><br/>
 
 <table class="table table-bordered table-striped">
   <tr>
@@ -16,9 +20,9 @@
 <% @languages.each do |language| %>
   <tr>
     <td><%= language.name %></td>
-    <td><%= link_to 'Ver más', language , {class: "btn btn-mini"}%></td>
-    <td><%= link_to 'Editar', edit_language_path(language), {class: "btn btn-mini"} %></td>
-    <td><%= link_to 'Borrar', language, method: :delete, data: { confirm: 'Are you sure?' } , :class => "btn btn-mini" %></td>
+    <td><%= link_to 'Ver más', language , {class: "btn btn-default btn-xs"}%></td>
+    <td><%= link_to 'Editar', edit_language_path(language), {class: "btn btn-default btn-xs"} %></td>
+    <td><%= link_to 'Borrar', language, method: :delete, data: { confirm: 'Are you sure?' } , :class => "btn btn-default btn-xs" %></td>
   </tr>
 <% end %>
 </table>

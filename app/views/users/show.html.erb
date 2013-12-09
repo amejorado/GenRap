@@ -11,7 +11,21 @@
         %>
 
 <h3>Perfil del Usuario</h3>
+<br/>
+<%= link_to '<span class="gglyphicon glyphicon-pencil" style="margin-right: 5px;"></span>Editar Usuario'.html_safe, 
+              edit_user_path(@user),
+              :class => "btn btn-default btn-sm" %>
 
+<% if check_admin %>
+
+<span style="display: inline-block;float:right;">
+ <%= link_to '<span class="glyphicon glyphicon-arrow-left" style="margin-right: 5px;"></span>Ir a Usuarios'.html_safe, 
+              users_path,
+              :class => "btn btn-default btn-sm" %>
+</span>
+<% end %>
+
+<hr>
 <div class="row">
     <div class="span2">
       <img src="http://www.clker.com/cliparts/c/4/0/e/1197115544208915882acspike_male_user_icon.svg.med.png"  alt="" class="img-rounded">
@@ -31,9 +45,3 @@
 </div>
 <br/>
 
- 
-<%= link_to 'Editar', edit_user_path(@user) %>
-
-<% if check_admin %>
-	| <%= link_to 'Usuarios', users_path %>
-<% end %>

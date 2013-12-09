@@ -1,10 +1,11 @@
 <h1>Subconceptos</h1>
 
 <span style="display: inline-block;float:right;">
-<%= link_to '<i class="icon-plus-sign  icon-white" style="margin-right: 5px;"></i>Nuevo Subconcepto'.html_safe, 
-          new_sub_concept_path ,
-          class: "btn btn-info" %>
+  <%= link_to '<span class="glyphicon glyphicon-plus" style="margin-right: 5px;"></span>Nuevo Subconcepto'.html_safe, 
+              new_sub_concept_path,
+              :class => "btn btn-info" %>
 </span>
+
 
 <br/><br/>
 
@@ -21,9 +22,9 @@
   <tr>
     <td><%= sub_concept.name %></td>
     <td><%= sub_concept.concept.language.name + "/" + sub_concept.concept.name %></td>
-    <td><%= link_to 'Ver', sub_concept , {class: "btn btn-mini"}%></td>
-    <td><%= link_to 'Editar', edit_sub_concept_path(sub_concept) , {class: "btn btn-mini"}%></td>
-    <td><%= link_to 'Borrar', sub_concept, method: :delete, data: { confirm: '¿Estas seguro?' } , :class => "btn btn-mini"%></td>
+    <td><%= link_to 'Ver', sub_concept , {class: "btn btn-default btn-xs"}%></td>
+    <td><%= link_to 'Editar', edit_sub_concept_path(sub_concept) , {class: "btn btn-default btn-xs"}%></td>
+    <td><%= link_to 'Borrar', sub_concept, method: :delete, data: { confirm: '¿Estas seguro?' } , :class => "btn btn-default btn-xs"%></td>
   </tr>
 <% end %>
 </table>

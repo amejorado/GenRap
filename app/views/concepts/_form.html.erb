@@ -1,14 +1,14 @@
 <%= simple_form_for(@concept) do |f| %>
   <%= f.error_notification %>
 
-  <div class="form-inputs">
+  	<div class="form-inputs">
 
-    <%= f.input :name %>
-    <%= f.association :language, as: :select, :label => 'Lenguage', label_method: :name %>
+    	<%= f.input :name, :label => "Nombre del concepto" %>
+    	<%= f.association :language, as: :select, :label => 'Lenguaje', label_method: :name %>
 
-  </div>
+	</div>
+    
+    <%= f.button :submit , "Crear concepto", :class => "btn btn-primary"%>
+	<%= link_to 'Cancelar', concepts_path, :class => "btn btn-danger"%>
 
-  <div class="form-actions">
-    <%= f.button :submit , {class: "btn btn-info"}%>
-  </div>
 <% end %>

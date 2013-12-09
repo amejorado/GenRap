@@ -31,24 +31,27 @@
       <ul class="dropdown-menu">
       <% 
       @masterSelections.each do |mq|
-        if mq.borrado == 0
+
       %>
 
         <li><%= link_to mq.language.name, :controller => :master_questions, :action => :index, :id => mq.language_id %></li>
          
     <% 
-        end
       end
     %>
     </ul>
   </div>
 
   <% if check_admin %>
-    <span style="display: inline-block;float:right;">
-    <%= link_to '<i class="icon-plus-sign  icon-white" style="margin-right: 5px;"></i>Nueva Pregunta'.html_safe, 
+  <span style="display: inline-block;float:right;">
+    <%= link_to '<span class="glyphicon glyphicon-plus" style="margin-right: 5px;"></span>Nueva Pregunta'.html_safe, 
               {:controller => :master_questions, :action => :new },
               :class => "btn btn-info" %>
-    </span>
+  </span>
+    <span style="display: inline-block;float:right;margin-right:5px;">
+    <%= link_to 'Respaldar Preguntas', {:action => "backup" },
+              :class => "btn btn-default" %>
+  </span>
 
     <br/><br/>
 
@@ -57,6 +60,7 @@
 
 
 </div>
+ <br/>
  
 <table class="table table-bordered table-striped">
   <thead>
@@ -82,10 +86,10 @@
         
         <td style="width:0;"><pre style="font-size: 11px; border: none; background: transparent;"><%=   mq.inquiry %></pre></td>
         <td style="width:0;">
-          <%=   link_to 'Ver más', mq , {class: "btn btn-mini"} %> <br/><br/>
+          <%=   link_to 'Ver más', mq , {class: "btn btn-default btn-xs"} %> <br/><br/>
           <% if check_admin %>
-          <%=   link_to 'Editar', edit_master_question_path(mq) , {class: "btn btn-mini"}  %> <br/> <br/>
-          <%=   link_to 'Borrar', {:action => "deleteQuestion", :id => mq.id},  data: { confirm: '¿Estas seguro?' } , :class => "btn btn-mini"    %> <br/><br/>
+          <%=   link_to 'Editar', edit_master_question_path(mq) , {class: "btn btn-default btn-xs"}  %> <br/> <br/>
+          <%=   link_to 'Borrar', {:action => "deleteQuestion", :id => mq.id},  data: { confirm: '¿Estas seguro?' } , :class => "btn btn-default btn-xs"    %> <br/><br/>
           <% end %>
         </td>
 
