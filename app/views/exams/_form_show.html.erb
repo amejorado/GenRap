@@ -9,7 +9,7 @@
 			<% parsed.each do |key, value| %>
 				<p><% inquiry = inquiry.gsub(key,value.to_s) %></p>
 			<% end %>
-			<p><%= question.questionNum.to_s+".  "+inquiry %></p>
+			<pre style="font-size: 11px; border: none; background: transparent;"><%= question.questionNum.to_s+".  "+inquiry %></pre>
 
 			<%= simple_fields_for ":questions[]", question do |question_field| %>
 				<% answers = format_answers(question.answers) 
