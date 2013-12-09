@@ -2,7 +2,7 @@
 
   <% if check_admin %>
   
-  <%= link_to '<span class="gglyphicon glyphicon-pencil" style="margin-right: 5px;"></span>Editar Grupo'.html_safe, 
+  <%= link_to '<span class="gglyphicon glyphicon-pencil" style="margin-right: 5px;"></span>Editar Pregunta'.html_safe, 
               edit_master_question_path(@master_question),
               :class => "btn btn-default btn-sm" %>
   <% end %>
@@ -10,7 +10,7 @@
   <% if check_prof %>
 
   <span style="display: inline-block;float:right;">
-  <%= link_to '<span class="glyphicon glyphicon-arrow-left" style="margin-right: 5px;"></span>Ir a Grupos'.html_safe, 
+  <%= link_to '<span class="glyphicon glyphicon-arrow-left" style="margin-right: 5px;"></span>Ir a Preguntas'.html_safe, 
               master_questions_path,
               :class => "btn btn-default btn-sm" %>
   </span>
