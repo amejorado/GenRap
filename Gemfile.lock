@@ -1,3 +1,11 @@
+GIT
+  remote: git://github.com/anjlab/bootstrap-rails.git
+  revision: 4f5c0167fc7722940f67701a5279a9427692d92f
+  specs:
+    anjlab-bootstrap-rails (3.0.0.3)
+      railties (>= 3.0)
+      sass (>= 3.2)
+
 GEM
   remote: http://rubygems.org/
   specs:
@@ -31,8 +39,6 @@ GEM
     arel (3.0.2)
     bcrypt-ruby (3.0.1)
     bcrypt-ruby (3.0.1-x86-mingw32)
-    bootstrap-sass (2.3.2.1)
-      sass (~> 3.2)
     builder (3.0.4)
     choice (0.1.6)
     coffee-rails (3.2.2)
@@ -138,8 +144,8 @@ PLATFORMS
   x86-mingw32
 
 DEPENDENCIES
+  anjlab-bootstrap-rails!
   bcrypt-ruby (~> 3.0.0)
-  bootstrap-sass (>= 2.1)
   coffee-rails (~> 3.2.1)
   debugger
   json

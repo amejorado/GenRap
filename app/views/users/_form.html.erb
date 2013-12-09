@@ -7,20 +7,28 @@
 		<%= f.input :fname, :label => 'Nombre' %>
 		<%= f.input :lname, :label => 'Apellidos' %>
 		<%= f.input :mail, :label => 'Correo' %>
-		<%= f.label :password, 'Contraseña' %>
-  		<%= f.password_field :password %>
-  		<%= f.label :password_confirmation, 'Confirmar Contraseña' %>
-		<%= f.password_field :password_confirmation %>
 
-		<div class="control-group">
-			<div class="controls">
-				
-				<%= f.button :submit, "Crear Usuario", :class => "btn btn-primary" %>
+		<div class="form-group">
+			<div class="col-md-6">
+			<%= f.label :password, 'Contraseña' %>
+	  		<%= f.password_field :password, {:class => "form-control"} %>
+			</div>
+
+			<div class="col-md-6">
+	  		<%= f.label :password_confirmation, 'Confirmar Contraseña' %>
+			<%= f.password_field :password_confirmation, {:class => "form-control"} %>
+
+
+			</div>
+			<div class="clearfix"></div>
+		</div>
+		<div class="col-md-12">
+			
+			<%= f.button :submit, "Crear Usuario", :class => "btn btn-primary" %>
 
 				<% if check_admin %>
 					<%= link_to 'Cancelar', users_path, :class => "btn btn-danger"%>
 				<% end %>
-			</div>
 		</div>
 	</fieldset>
 <% end %>

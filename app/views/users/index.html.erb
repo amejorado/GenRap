@@ -1,5 +1,6 @@
 <h1>Usuarios</h1>
 
+
 <span style="display: inline-block;float:right;">
   <%= link_to '<span class="glyphicon glyphicon-plus" style="margin-right: 5px;"></span>Nuevo Usuario'.html_safe, 
               new_user_path,
@@ -7,6 +8,7 @@
 </span>
 
 <br/><br/>
+
 <table class="table table-bordered table-striped">
   <thead>
     <tr>
@@ -19,10 +21,10 @@
         <th>Cambiar tipo</th>
       <% end %>
       <th></th>
-      
+
     </tr>
   </thead>
- 
+
   <tbody>
   <% @users.each do |user| %>
     <tr>
@@ -51,13 +53,14 @@
         </td>
       <% end %>
       <td>
+
       <%= link_to 'Mostrar', user, {class: "btn btn-default btn-xs"} %><br/>
       <%= link_to 'Editar', edit_user_path(user) , {class: "btn btn-default btn-xs"}%><br/>
       <%= link_to 'Borrar', user, :confirm => '¿Está seguro que quiere borrar a este usuario?', :method => :delete , :class => "btn btn-default btn-xs" %></td>
+
     </tr>
   <% end %>
   </tbody>
 </table>
- 
+
 <br />
- 

@@ -12,7 +12,8 @@ gem 'json'
 
 gem 'table_for_collection'
 
-gem 'bootstrap-sass', '>=2.1'
+gem 'anjlab-bootstrap-rails', :require => 'bootstrap-rails',
+                          :github => 'anjlab/bootstrap-rails'
 gem 'simple_form'
 
 # Gems used only for assets and not required

@@ -1,6 +1,6 @@
 <div class="table">
   <% if @exam != nil %>
-    
+
     <table id="results" class="summary table table-striped table-bordered table-condensed">
       <tbody>
         <tr>
@@ -17,21 +17,22 @@
     </table>
 
  <!--
-    <% #if check_admin 
+    <% #if check_admin
     %>
-      <%= #link_to "Continuar", exams_path, class: "btn" 
+      <%= #link_to "Continuar", exams_path, class: "btn"
       %>
-    <% #else 
+    <% #else
     %>
-      <%= #link_to "Continuar", pending_path, class: "btn" 
+      <%= #link_to "Continuar", pending_path, class: "btn"
       %>
-    <% #end 
+    <% #end
     %>
   -->
+
       <%= link_to 'Continuar', {:action => "afterExam", :id => @exam.id}, :class => "btn btn-default btn-xs"    %> <br/><br/>
-      
+
   <% else %>
-    
+
     <table class="table table-striped table-bordered table-condensed">
       <tbody>
         <tr>
@@ -39,6 +40,6 @@
         </tr>
       </tbody>
     </table>
-  
+
   <% end %>
 </div>

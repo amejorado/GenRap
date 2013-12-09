@@ -1,12 +1,12 @@
-<div class="hero-unit">
+<div class="jumbotron">
 	<h3 style="text-align: center;">Examen : "<%= @examName %> "</h3>
 
 	<%= render 'form_show' %>
 
 	<% if check_admin %>
-		<%= link_to "Regresar", request.referer, {class: "btn"} %>
+		<%= link_to "Regresar", request.referer, {class: "btn btn-default"} %>
 	<% else %>
-		<%= link_to "Regresar", "http://codeafeliz.com/mystats", {class: "btn"} %>
+		<%= link_to "Regresar", "/mystats", {class: "btn btn-default"} %>
 	<% end %>
 
 	<% if @exam.errors.any? %>
