@@ -96,7 +96,7 @@ class MasterQuestionsController < ApplicationController
       else
         @masterQuestions = MasterQuestion.all(:order => "language_id ASC, concept_id, subconcept_id")
       end
-      @masterSelections = MasterQuestion.all(:order => "language_id ASC", :group => "language_id")
+      @masterSelections = MasterQuestion.select("DISTINCT language_id").where("borrado = 0").order("language_id")
     else
       flash[:error] = "Acceso restringido."
       redirect_to(root_path)

@@ -31,13 +31,11 @@
       <ul class="dropdown-menu">
       <% 
       @masterSelections.each do |mq|
-        if mq.borrado == 0
       %>
 
         <li><%= link_to mq.language.name, :controller => :master_questions, :action => :index, :id => mq.language_id %></li>
          
     <% 
-        end
       end
     %>
     </ul>
