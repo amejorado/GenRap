@@ -1,17 +1,24 @@
 
 <h3>Detalle de subconcepto</h3>
 
-<p>
-  <h5>Nombre:</h5>
-  <%= @sub_concept.name %>
-</p>
+<%= link_to '<span class="gglyphicon glyphicon-pencil" style="margin-right: 5px;"></span>Editar Concepto'.html_safe, 
+              edit_sub_concept_path(@sub_concept),
+              :class => "btn btn-default btn-sm" %>
+
+<span style="display: inline-block;float:right;">
+ <%= link_to '<span class="glyphicon glyphicon-arrow-left" style="margin-right: 5px;"></span>Ir a Conceptos'.html_safe, 
+              sub_concepts_path,
+              :class => "btn btn-default btn-sm" %>
+</span>
+
+
+
+<hr>
+
+<blockquote>
+	<p>Nombre de subconcepto: <%= @sub_concept.name %></p>
+</blockquote>
 
 <p>
-  <h5>Concepto:</h5>
-  <%= @sub_concept.concept.language.name + "/" + @sub_concept.concept.name %>
+	<span class="glyphicon glyphicon-book"></span> Nombre de concepto: <%= @sub_concept.concept.language.name + "/" + @sub_concept.concept.name %>
 </p>
-
-<hr/>
-
-<%= link_to 'Editar', edit_sub_concept_path(@sub_concept) %> |
-<%= link_to 'Regresar', sub_concepts_path %>

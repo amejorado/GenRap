@@ -1,39 +1,42 @@
 
 <h3>Detalle de Grupo</h3>
-<ul class="nav nav-tabs">
+
   
   <% if check_admin %>
-  <li >
-  <%= link_to 'Editar', edit_group_path(@group) %>
-  </li>
+  
+  <%= link_to '<span class="gglyphicon glyphicon-pencil" style="margin-right: 5px;"></span>Editar Grupo'.html_safe, 
+              edit_group_path(@group),
+              :class => "btn btn-default btn-sm" %>
+  
   <% end %>
 
+<span style="display: inline-block;float:right;">
+ <%= link_to '<span class="glyphicon glyphicon-arrow-left" style="margin-right: 5px;"></span>Ir a Grupos'.html_safe, 
+              groups_path,
+              :class => "btn btn-default btn-sm" %>
+</span>
   
-  <li>
-    <%= link_to 'Grupos', groups_path %>
-  </li>
-  
-
-</ul>
-
+<hr><br/>
 <div class="row">
     <div class="span4">
       <blockquote>
         <p>Nombre de grupo: <%= @group.name %></p>
       </blockquote><hr/>
       <p>
-        <i class="icon-user"></i> Due&ntilde;o: <%= @group.user.username %> <hr/>
-        <i class="icon-th-list"></i> Miembros:<br/><br/>
+        <span class="glyphicon glyphicon-user"></span> Due&ntilde;o: <%= @group.user.username %> <hr/>
+        <span class="glyphicon glyphicon-th-list"></span> Miembros:<br/><br/>
         <table class="table table-striped">
         <% for user in @group.users %>
-          <tr><td><i class="icon-minus"></i>  <%= user.username %> </td></tr>
+          <tr><td><span class="glyphicon glyphicon-asterisk"></span>  <%= user.username %> </td></tr>
         </table>
   
-		
-		<% end %>
+    
+    <% end %>
       </p>
     </div>
 </div>
+
+<br/>
 
 
 

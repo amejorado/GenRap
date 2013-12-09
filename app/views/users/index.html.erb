@@ -1,8 +1,9 @@
 <h1>Usuarios</h1>
+
 <span style="display: inline-block;float:right;">
-  <%= link_to '<i class="icon-plus-sign  icon-white" style="margin-right: 5px;"></i>Nuevo Usuario'.html_safe, 
-    new_user_path,
-    :class => "btn btn-info" %>
+  <%= link_to '<span class="glyphicon glyphicon-plus" style="margin-right: 5px;"></span>Nuevo Usuario'.html_safe, 
+              new_user_path,
+              :class => "btn btn-info" %>
 </span>
 
 <br/><br/>
@@ -11,8 +12,8 @@
     <tr>
       <th>Usuario</th>
       <th>Nombre</th>
-	  <th>Apellidos</th>
-	  <th>Mail</th>
+    <th>Apellidos</th>
+    <th>Mail</th>
       <th>Tipo</th>
       <% if check_admin %>
         <th>Cambiar tipo</th>
@@ -27,8 +28,8 @@
     <tr>
       <td><%= user.username %></td>
       <td><%= user.fname %></td>
-	  <td><%= user.lname %></td>
-	  <td><%= user.mail %></td>
+    <td><%= user.lname %></td>
+    <td><%= user.mail %></td>
       <td>
         <%
             if user.utype == 0
@@ -44,9 +45,9 @@
         <%= type %></td>
       <% if check_admin %>
         <td>
-          <%= link_to "Admin", "user/change_admin/" + user.id.to_s, {class: "btn btn-default btn-xs btn-primary"} %> <br />
-          <%= link_to "Profesor", "user/change_professor/" + user.id.to_s, {class: "btn btn-default btn-xs btn-warning"} %> <br />
-          <%= link_to "Estudiante", "user/change_student/" + user.id.to_s, {class: "btn btn-default btn-xs btn-success"} %>
+          <%= link_to "Admin", "user/change_admin/" + user.id.to_s, {class: "btn btn-xs btn-primary"} %> <br />
+          <%= link_to "Profesor", "user/change_professor/" + user.id.to_s, {class: "btn btn-xs btn-warning"} %> <br />
+          <%= link_to "Estudiante", "user/change_student/" + user.id.to_s, {class: "btn btn-xs btn-success"} %>
         </td>
       <% end %>
       <td>

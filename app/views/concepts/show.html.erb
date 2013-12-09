@@ -1,16 +1,23 @@
 <h3>Detalle de concepto</h3>
 
-<p>
-  <h5>Nombre:</h5>
-  <%= @concept.name %>
-</p>
+<%= link_to '<span class="gglyphicon glyphicon-pencil" style="margin-right: 5px;"></span>Editar Concepto'.html_safe, 
+              edit_concept_path(@concept),
+              :class => "btn btn-default btn-sm" %>
+
+<span style="display: inline-block;float:right;">
+ <%= link_to '<span class="glyphicon glyphicon-arrow-left" style="margin-right: 5px;"></span>Ir a Conceptos'.html_safe, 
+              concepts_path,
+              :class => "btn btn-default btn-sm" %>
+</span>
+
+
+
+<hr>
+
+<blockquote>
+	<p>Nombre de concepto: <%= @concept.name %></p>
+</blockquote>
 
 <p>
-  <h5>Lenguaje:</h5>
-  <%= @concept.language.name %>
+	<span class="glyphicon glyphicon-book"></span> Lenguaje: <%= @concept.language.name %>
 </p>
-
-<hr/>
-
-<%= link_to 'Editar', edit_concept_path(@concept) %> |
-<%= link_to 'Regresar', concepts_path %>

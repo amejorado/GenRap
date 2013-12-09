@@ -1,5 +1,5 @@
 <%= simple_form_for(@master_question) do |f| %>
-	<fieldset>
+  <fieldset>
     <div class="row-fluid">
       <div class = "span4">
         <%= label_tag(:language_id, "Lenguaje:") %>
@@ -38,7 +38,7 @@
 
     <div class="control-group">
       <div class="controls">
-        <%= f.button :submit , {class: "btn btn-info"} %>
+        <%= f.button :submit , "Crear pregunta maestra", {class: "btn btn-primary"} %>
 
            
       </div>

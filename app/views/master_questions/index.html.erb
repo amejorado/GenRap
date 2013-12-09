@@ -43,15 +43,15 @@
   </div>
 
   <% if check_admin %>
-    <span style="display: inline-block;float:right;">
-    <%= link_to '<i class="icon-plus-sign  icon-white" style="margin-right: 5px;"></i>Nueva Pregunta'.html_safe, 
+  <span style="display: inline-block;float:right;">
+    <%= link_to '<span class="glyphicon glyphicon-plus" style="margin-right: 5px;"></span>Nueva Pregunta'.html_safe, 
               {:controller => :master_questions, :action => :new },
               :class => "btn btn-info" %>
-	</span>
-    <span style="display: inline-block;float:right;">
+  </span>
+    <span style="display: inline-block;float:right;margin-right:5px;">
     <%= link_to 'Respaldar Preguntas', {:action => "backup" },
               :class => "btn btn-default" %>
-	</span>
+  </span>
 
     <br/><br/>
 
