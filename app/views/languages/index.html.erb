@@ -16,9 +16,9 @@
 <% @languages.each do |language| %>
   <tr>
     <td><%= language.name %></td>
-    <td><%= link_to 'Ver más', language , {class: "btn btn-mini"}%></td>
-    <td><%= link_to 'Editar', edit_language_path(language), {class: "btn btn-mini"} %></td>
-    <td><%= link_to 'Borrar', language, method: :delete, data: { confirm: 'Are you sure?' } , :class => "btn btn-mini" %></td>
+    <td><%= link_to 'Ver más', language , {class: "btn btn-default btn-xs"}%></td>
+    <td><%= link_to 'Editar', edit_language_path(language), {class: "btn btn-default btn-xs"} %></td>
+    <td><%= link_to 'Borrar', language, method: :delete, data: { confirm: 'Are you sure?' } , :class => "btn btn-default btn-xs" %></td>
   </tr>
 <% end %>
 </table>
