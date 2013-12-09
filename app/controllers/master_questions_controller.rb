@@ -31,6 +31,7 @@ class MasterQuestionsController < ApplicationController
 			Reslpaldo de MasterQuestions "}
 	separator = "\r\n **************** \r\n"
 	blankspace = "\r\n\r\n"
+	file_error = false
 
     MasterQuestion.all.each do |mq|
 		inquiry = mq.inquiry
@@ -54,22 +55,11 @@ class MasterQuestionsController < ApplicationController
 		end
 	end
 	
-
-	begin
-        load backup_file
-    rescue Exception => exc
-        file_error = true
-    end
-
-	if file_error
-        flash[:error] = "Error al ejecutar el respaldo"
-        render :action => "index" and return
-	else
-		flash[:notice] = "Backup realizado exitosamente."
-		@masterSelections = MasterQuestion.all(:order => "language_id ASC", :group => "language_id")
-      	redirect_to(master_questions_path)
-	end
-    
+	@masterSelections = MasterQuestion.all(:order => "language_id ASC", :group => "language_id")
+	@masterQuestions = MasterQuestion.all
+	
+	flash[:notice] = "Backup realizado exitosamente."
+    redirect_to(master_questions_path)
 
   end
 
