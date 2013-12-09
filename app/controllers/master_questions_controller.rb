@@ -293,13 +293,8 @@ class MasterQuestionsController < ApplicationController
   def subconcepts_for_question
     # Get subconcepts filtered by parent concept
 	#subconcepts = SubConcept.find(:all,:conditions => ["sub_concepts.concept_id = ?","#{params[:concept]}"],:include => "master_questions",:group  => 'master_questions.id HAVING COUNT(master_questions.id) >= 1')
-	subconcepts = SubConcept.find_by_sql('SELECT DISTINCT
-"sub_concepts"."id" AS "id", "sub_concepts"."name" AS "name",
-"sub_concepts"."concept_id",
-"master_questions"."id", "master_questions"."concept_id", "master_questions"."subconcept_id",
-FROM "sub_concepts" LEFT OUTER JOIN "master_questions" ON "master_questions"."subconcept_id" = "sub_concepts"."id" WHERE (sub_concepts.concept_id = '+params[:concept]+')
-GROUP BY master_questions.id HAVING COUNT(master_questions.id) >= 1')
-#subconcepts = SubConcept.select("name, id").where("concept_id = '#{params[:concept]}'")
+	subconcepts = SubConcept.find_by_sql('SELECT DISTINCT "sub_concepts"."id", "sub_concepts"."name", "sub_concepts"."concept_id" FROM "sub_concepts" LEFT JOIN "master_questions" ON "master_questions"."subconcept_id" = "sub_concepts"."id" WHERE (sub_concepts.concept_id = '+params[:concept]+')')	
+	#subconcepts = SubConcept.select("name, id").where("concept_id = '#{params[:concept]}'")
     respond_to do |format|
       format.json { render json: subconcepts.to_json }
     end
