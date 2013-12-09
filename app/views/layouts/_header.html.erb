@@ -10,8 +10,14 @@
 <div class="navbar navbar-fixed-top navbar-inverse">
 	<div class="navbar-inner">
 		<div class="container">
+			<%  if check_prof %>
+				<%= link_to("<img style='height:26px;' src='/assets/logo3_small.png' />".html_safe, profstats_path, {:class => "brand"}) %>
 			
-			<%= link_to("<img style='height:26px;' src='/assets/logo3_small.png' />".html_safe, root_path, {:class => "brand"}) %>
+			<% else %>
+				<%= link_to("<img style='height:26px;' src='/assets/logo3_small.png' />".html_safe, root_path, {:class => "brand"}) %>
+			<% end %>
+
+			
 
 			<% if session[:user_id].nil? %>
 			<%= form_tag({:controller=>"sessions", :action => 'login'}, {:class => "navbar-form pull-right"}) do %>

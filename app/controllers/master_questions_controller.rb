@@ -138,11 +138,9 @@ class MasterQuestionsController < ApplicationController
   def index
     if check_prof || check_admin
       if(params[:id])
-        #@masterQuestions = MasterQuestion.where("language_id = ?",params[:id]).order("language_id").order("")
         @masterQuestions = MasterQuestion.find(:all,:conditions => ["master_questions.language_id = ?",params[:id]],:joins => :concept,:order => ["language_id","concepts.name"])
 	  else
         @masterQuestions = MasterQuestion.find(:all,:joins => :concept,:order => ["language_id","concepts.name"])
-        #@masterQuestions = MasterQuestion.all(:order => "language_id ASC, concept_id, subconcept_id")
       end
       @masterSelections = MasterQuestion.select("DISTINCT language_id").where("borrado = 0").order("language_id")
     else
