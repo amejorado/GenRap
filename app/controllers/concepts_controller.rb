@@ -76,6 +76,10 @@ class ConceptsController < ApplicationController
   # DELETE /concepts/1.json
   def destroy
     @concept = Concept.find(params[:id])
+    @sub_concepts = @concept.sub_concepts
+    @sub_concepts.each do |sc|
+      sc.destroy
+    end
     @concept.destroy
     flash[:notice] = 'El concepto fue borrado de manera exitosa!'
 
