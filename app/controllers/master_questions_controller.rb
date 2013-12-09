@@ -35,12 +35,12 @@ class MasterQuestionsController < ApplicationController
 
     MasterQuestion.all.each do |mq|
 		inquiry = mq.inquiry
-		$randomizer = mq.randomizer
-        $solver = mq.solver
+		randomizer = mq.randomizer
+        solver = mq.solver
 
         # Retrieve code from files
-        crandomizer = read_file(File.dirname(__FILE__) + "/../helpers/r/#{$randomizer}.rb")
-        csolver = read_file(File.dirname(__FILE__) + "/../helpers/s/#{$solver}.rb")
+        crandomizer = read_file(File.dirname(__FILE__) + "/../helpers/r/#{randomizer}.rb")
+        csolver = read_file(File.dirname(__FILE__) + "/../helpers/s/#{solver}.rb")
 
 		File.open(prebackup_file,"a+") do |outfile| 
 			outfile << inquiry 
@@ -294,6 +294,9 @@ class MasterQuestionsController < ApplicationController
     # Get subconcepts filtered by parent concept
 
 	  subconcepts = SubConcept.select("name, id").where("concept_id = '#{params[:concept]}'")
+
+	#subconcepts = SubConcept.find(:all,:conditions => ["sub_concepts.concept_id = ?","#{params[:concept]}"],:include => "master_questions",:group  => 'master_questions.id HAVING COUNT(master_questions.id) >= 1')
+
     respond_to do |format|
       format.json { render json: subconcepts.to_json }
     
