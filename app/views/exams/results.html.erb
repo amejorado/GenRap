@@ -9,8 +9,9 @@
           <th>Fecha</th>
         </tr>
         <tr>
-          <td><%= @exam.attemptnumber %></td>
-          <td><%= @exam.score %></td>
+          <td><%=link_to @exam.attemptnumber, 
+        :controller => "exams", :action => "show", :id => @exam.id%> </td>
+          <td><%= @exam.score  %></td>
           <td><%= @exam.updated_at %></td>
         </tr>
       </tbody>
