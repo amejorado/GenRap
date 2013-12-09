@@ -1,10 +1,21 @@
 <h3>Detalle de lenguaje</h3>
 
-<p>
-  <h5>Nombre de lenguaje:</h5>
-  <%= @language.name %>
-</p>
 
-<hr/>
-<%= link_to 'Editar', edit_language_path(@language) %> |
-<%= link_to 'Regresar', languages_path %>
+<%= link_to '<span class="gglyphicon glyphicon-pencil" style="margin-right: 5px;"></span>Editar Lenguaje'.html_safe, 
+              edit_language_path(@language),
+              :class => "btn btn-default btn-sm" %>
+
+<span style="display: inline-block;float:right;">
+ <%= link_to '<span class="glyphicon glyphicon-arrow-left" style="margin-right: 5px;"></span>Ir a Lenguajes'.html_safe, 
+              languages_path,
+              :class => "btn btn-default btn-sm" %>
+</span>
+
+
+
+<hr>
+
+<blockquote>
+	<p>Nombre de lenguaje: <%= @language.name %></p>
+</blockquote>
+
