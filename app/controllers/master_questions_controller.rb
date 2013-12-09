@@ -284,7 +284,7 @@ class MasterQuestionsController < ApplicationController
 
   def concepts_for_question
     # Get concepts filtered by language
-    concepts = Concept.select("name, id").where("language_id = '#{params[:language]}'")
+    concepts = Concept.find(:all,:conditions => ["concepts.language_id = ?","#{params[:language]}"],:include => "master_questions",:group  => 'master_questions.id HAVING COUNT(master_questions.id) >= 1')
     respond_to do |format|
       format.json { render json: concepts.to_json }
     end
@@ -292,7 +292,9 @@ class MasterQuestionsController < ApplicationController
 
   def subconcepts_for_question
     # Get subconcepts filtered by parent concept
-    subconcepts = SubConcept.select("name, id").where("concept_id = '#{params[:concept]}'")
+	#subconcepts = SubConcept.find(:all,:conditions => ["sub_concepts.concept_id = ?","#{params[:concept]}"],:include => "master_questions",:group  => 'master_questions.id HAVING COUNT(master_questions.id) >= 1')
+	subconcepts = SubConcept.find_by_sql('SELECT "sub_concepts"."id" AS "id", "sub_concepts"."name" AS "name", "sub_concepts"."concept_id" AS t0_r2, "sub_concepts"."created_at" AS t0_r3, "sub_concepts"."updated_at" AS t0_r4, "master_questions"."id" AS t1_r0, "master_questions"."language_id" AS t1_r1, "master_questions"."solver" AS t1_r2, "master_questions"."randomizer" AS t1_r3, "master_questions"."inquiry" AS t1_r4, "master_questions"."concept_id" AS t1_r5, "master_questions"."subconcept_id" AS t1_r6, "master_questions"."created_at" AS t1_r7, "master_questions"."updated_at" AS t1_r8, "master_questions"."borrado" AS t1_r9, "master_questions"."questionDateDeleted" AS t1_r10 FROM "sub_concepts" LEFT OUTER JOIN "master_questions" ON "master_questions"."subconcept_id" = "sub_concepts"."id" WHERE (sub_concepts.concept_id = '+params[:concept]+') GROUP BY master_questions.id HAVING COUNT(master_questions.id) >= 1')
+    #subconcepts = SubConcept.select("name, id").where("concept_id = '#{params[:concept]}'")
     respond_to do |format|
       format.json { render json: subconcepts.to_json }
     end
