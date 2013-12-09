@@ -138,7 +138,7 @@ class MasterQuestionsController < ApplicationController
   def index
     if check_prof || check_admin
       if(params[:id])
-        @masterQuestions = MasterQuestion.where("language_id = ?",params[:id]).order("subconcept_id")
+        @masterQuestions = MasterQuestion.where("language_id = ?",params[:id]).order("concept_id")
       else
         @masterQuestions = MasterQuestion.all(:order => "language_id ASC, concept_id, subconcept_id")
       end
