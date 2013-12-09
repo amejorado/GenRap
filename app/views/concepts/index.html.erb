@@ -19,13 +19,13 @@
     <td><%= concept.name %></td>
     <td><%= concept.language.name %></td>
     <td>
-    <%= link_to 'Ver', concept, {class: "btn btn-mini"}  %> 
+    <%= link_to 'Ver', concept, {class: "btn btn-default btn-xs"}  %> 
     </td>
     <td>
-    <%= link_to 'Editar', edit_concept_path(concept), {class: "btn btn-mini"} %>
+    <%= link_to 'Editar', edit_concept_path(concept), {class: "btn btn-default btn-xs"} %>
     </td>
     <td>
-    <%= link_to 'Borrar', concept, method: :delete, data: { confirm: "Estas seguro?" }, :class => "btn btn-mini"  %>
+    <%= link_to 'Borrar', concept, method: :delete, data: { confirm: "Estas seguro?" }, :class => "btn btn-default btn-xs"  %>
     </td>
   </tr>
 <% end %>

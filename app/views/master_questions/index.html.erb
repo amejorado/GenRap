@@ -86,10 +86,10 @@
         
         <td style="width:0;"><pre style="font-size: 11px; border: none; background: transparent;"><%=   mq.inquiry %></pre></td>
         <td style="width:0;">
-          <%=   link_to 'Ver más', mq , {class: "btn btn-mini"} %> <br/><br/>
+          <%=   link_to 'Ver más', mq , {class: "btn btn-default btn-xs"} %> <br/><br/>
           <% if check_admin %>
-          <%=   link_to 'Editar', edit_master_question_path(mq) , {class: "btn btn-mini"}  %> <br/> <br/>
-          <%=   link_to 'Borrar', {:action => "deleteQuestion", :id => mq.id},  data: { confirm: '¿Estas seguro?' } , :class => "btn btn-mini"    %> <br/><br/>
+          <%=   link_to 'Editar', edit_master_question_path(mq) , {class: "btn btn-default btn-xs"}  %> <br/> <br/>
+          <%=   link_to 'Borrar', {:action => "deleteQuestion", :id => mq.id},  data: { confirm: '¿Estas seguro?' } , :class => "btn btn-default btn-xs"    %> <br/><br/>
           <% end %>
         </td>
 
