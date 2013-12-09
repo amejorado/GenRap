@@ -252,14 +252,13 @@ class ExamsController < ApplicationController
 
 	#gets a list of users that can take the masterExam
 	# private
-		def who_cantake_masterExam(masterExamId)
-			validUsers = Array.new
-
-			masterExam = MasterExam.find(masterExamId)
-			masterExam.cantakes.each do |cantake|
-				validUsers.push(cantake.user_id) 
-			end
-			validUsers
+	def who_cantake_masterExam(masterExamId)
+		validUsers = Array.new
+		masterExam = MasterExam.find(masterExamId)
+		masterExam.cantakes.each do |cantake|
+			validUsers.push(cantake.user_id) 
 		end
+		validUsers
+	end
  	
 end
