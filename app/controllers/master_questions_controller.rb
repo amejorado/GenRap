@@ -293,7 +293,7 @@ class MasterQuestionsController < ApplicationController
   def subconcepts_for_question
     # Get subconcepts filtered by parent concept
 
-	  subconcepts = SubConcept.select("name, id").where("concept_id = '#{params[:concept]}'")
+	 subconcepts = SubConcept.find_by_sql('SELECT DISTINCT "sub_concepts"."id", "sub_concepts"."name", "sub_concepts"."concept_id" FROM "sub_concepts" LEFT JOIN "master_questions" ON "master_questions"."subconcept_id" = "sub_concepts"."id" WHERE (sub_concepts.concept_id = '+params[:concept]+')')
 
 	#subconcepts = SubConcept.find(:all,:conditions => ["sub_concepts.concept_id = ?","#{params[:concept]}"],:include => "master_questions",:group  => 'master_questions.id HAVING COUNT(master_questions.id) >= 1')
 
