@@ -71,12 +71,16 @@ class MasterQuestionsController < ApplicationController
 
       # Generate random name for solver and randomizer
       uuid = SecureRandom.uuid
-      $randomizer = "#{uuid}_randomizer"
-      $solver = "#{uuid}_solver"
+      #$randomizer = "#{uuid}_randomizer"
+      #$solver = "#{uuid}_solver"
+      randomizer = "#{uuid}_randomizer"
+      solver = "#{uuid}_solver"
 
       # Create solver and randomizer files in /helpers/s and /helpers/r
-      rand_file = File.dirname(__FILE__) + "/../helpers/r/#{$randomizer}.rb"
-      solv_file = File.dirname(__FILE__) + "/../helpers/s/#{$solver}.rb"
+      #rand_file = File.dirname(__FILE__) + "/../helpers/r/#{$randomizer}.rb"
+      #solv_file = File.dirname(__FILE__) + "/../helpers/s/#{$solver}.rb"
+      rand_file = File.dirname(__FILE__) + "/../helpers/r/#{randomizer}.rb"
+      solv_file = File.dirname(__FILE__) + "/../helpers/s/#{solver}.rb"
 
       randomizer_file = File.open(rand_file,"w") {|f| f.write("#{@master_question.randomizer}") }
       solver_file = File.open(solv_file,"w") {|f| f.write("#{@master_question.solver}")}
@@ -113,8 +117,10 @@ class MasterQuestionsController < ApplicationController
 
 
       # Save masterquestion solver and randomizer file path
-      @master_question.randomizer = "#{$randomizer}"
-      @master_question.solver = "#{$solver}"
+      #@master_question.randomizer = "#{$randomizer}"
+      #@master_question.solver = "#{$solver}"
+      @master_question.randomizer = "#{randomizer}"
+      @master_question.solver = "#{solver}"
 
       if @master_question.save
         flash[:notice] = "MasterQuestion creada exitosamente."
@@ -165,12 +171,17 @@ class MasterQuestionsController < ApplicationController
     #if check_prof || check_admin
     if check_admin
       @master_question = MasterQuestion.find(params[:id])
-      $randomizer = @master_question.randomizer
-      $solver = @master_question.solver
+      #$randomizer = @master_question.randomizer
+      #$solver = @master_question.solver
+
+      randomizer = @master_question.randomizer
+      solver = @master_question.solver
 
       # Retrieve code from files
-      @master_question.randomizer = read_file(File.dirname(__FILE__) + "/../helpers/r/#{$randomizer}.rb")
-      @master_question.solver = read_file(File.dirname(__FILE__) + "/../helpers/s/#{$solver}.rb")
+      #@master_question.randomizer = read_file(File.dirname(__FILE__) + "/../helpers/r/#{$randomizer}.rb")
+      #@master_question.solver = read_file(File.dirname(__FILE__) + "/../helpers/s/#{$solver}.rb")
+      @master_question.randomizer = read_file(File.dirname(__FILE__) + "/../helpers/r/#{randomizer}.rb")
+      @master_question.solver = read_file(File.dirname(__FILE__) + "/../helpers/s/#{solver}.rb")
     else
       flash[:error] = "Acceso restringido."
       redirect_to(root_path)
@@ -182,16 +193,23 @@ class MasterQuestionsController < ApplicationController
     if check_admin
       @master_question = MasterQuestion.find(params[:id])
 
+      randomizer = @master_question.randomizer
+      solver = @master_question.solver
+
       # Create master temporal
       master_temporal =  MasterQuestion.new(params[:master_question], :without_protection => true)
 
       # Saves code to randomizer and solver files
-      File.open(File.dirname(__FILE__) + "/../helpers/r/#{$randomizer}.rb","w") {|f| f.write("#{master_temporal.randomizer}")}
-      File.open(File.dirname(__FILE__) + "/../helpers/s/#{$solver}.rb","w") {|f| f.write("#{master_temporal.solver}")}
+      #File.open(File.dirname(__FILE__) + "/../helpers/r/#{$randomizer}.rb","w") {|f| f.write("#{master_temporal.randomizer}")}
+      #File.open(File.dirname(__FILE__) + "/../helpers/s/#{$solver}.rb","w") {|f| f.write("#{master_temporal.solver}")}
+      File.open(File.dirname(__FILE__) + "/../helpers/r/#{randomizer}.rb","w") {|f| f.write("#{master_temporal.randomizer}")}
+      File.open(File.dirname(__FILE__) + "/../helpers/s/#{solver}.rb","w") {|f| f.write("#{master_temporal.solver}")}
 
       # Updates randomizer and solver fields
-      master_temporal.randomizer = $randomizer
-      master_temporal.solver = $solver
+      #master_temporal.randomizer = $randomizer
+      #master_temporal.solver = $solver
+      master_temporal.randomizer = randomizer
+      master_temporal.solver = solver
 
       if @master_question.update_attributes(:language_id => master_temporal.language_id, :concept_id => master_temporal.concept_id, :subconcept_id => master_temporal.subconcept_id,
                                          :inquiry => master_temporal.inquiry, :randomizer => master_temporal.randomizer, :solver => master_temporal.solver)
