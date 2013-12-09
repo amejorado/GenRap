@@ -3,7 +3,7 @@
     <div class="row-fluid">
       <div class = "span4">
         <%= label_tag(:language_id, "Lenguaje:") %>
-        <%= f.select(:language_id, (Language.all.map { |language| [language.name, language.id] }).prepend(["Selecciona un Lenguaje", 0]), :select =>  @master_question.language_id ) %>
+        <%= f.select(:language_id, (Language.all.map { |language| [language.name, language.id] }).prepend(["elecciona un Lenguaje", 0]), :select =>  @master_question.language_id ) %>
       </div>
       
       <div class = "span4">

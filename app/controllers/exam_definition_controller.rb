@@ -45,6 +45,12 @@ class ExamDefinitionController < ApplicationController
     if check_admin || (check_prof && @master_exam.user_id == session[:user_id])
       @exam_definitions = @master_exam.exam_definition
       @exam_definitions.destroy
+      @exams = @master_exam.exams
+      @exams.each do |e|
+        @questions = e.questions
+        @questions.destroy
+      end
+      @exams.destroy
       @master_exam.destroy
 
       redirect_to '/profstats'
