@@ -1,19 +1,25 @@
 <h3>Detalle de Pregunta</h3>
-<ul class="nav nav-tabs">
-  
+
   <% if check_admin %>
-  <li >
-  <%= link_to 'Editar', edit_master_question_path(@master_question) %>
-  </li>
+  
+  <%= link_to '<span class="gglyphicon glyphicon-pencil" style="margin-right: 5px;"></span>Editar Grupo'.html_safe, 
+              edit_master_question_path(@master_question),
+              :class => "btn btn-default btn-sm" %>
   <% end %>
 
   <% if check_prof %>
-  <li>
-    <%= link_to 'Preguntas maestras', master_questions_path %>
-  </li>
+
+  <span style="display: inline-block;float:right;">
+  <%= link_to '<span class="glyphicon glyphicon-arrow-left" style="margin-right: 5px;"></span>Ir a Grupos'.html_safe, 
+              master_questions_path,
+              :class => "btn btn-default btn-sm" %>
+  </span>
   <% end %>
 
-</ul>
+
+
+
+<hr>
 
 <p>
   <span><h5>Lenguaje:</h5></span>
