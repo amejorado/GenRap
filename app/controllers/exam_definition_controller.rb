@@ -54,10 +54,9 @@ class ExamDefinitionController < ApplicationController
 
       @exams_taken =  Exam.where("master_exam_id = ?",params[:id])
       @exams_taken.each do |et|
-        @questions = et
-        @questions.destroy
+        et.destroy
       end
-      
+
       @master_exam.destroy
 
       redirect_to '/profstats'
