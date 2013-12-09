@@ -26,12 +26,10 @@
         <span class="glyphicon glyphicon-user"></span> Due&ntilde;o: <%= @group.user.username %> <hr/>
         <span class="glyphicon glyphicon-th-list"></span> Miembros:<br/><br/>
         <table class="table table-striped">
-        <% for user in @group.users %>
-          <tr><td><span class="glyphicon glyphicon-asterisk"></span>  <%= user.username %> </td></tr>
+        <% for user in @group.users do %>
+            <tr><td><span class="glyphicon glyphicon-asterisk"></span>  <%=   user.username %> </td></tr>
+        <%  end %>
         </table>
-  
-    
-    <% end %>
       </p>
     </div>
 </div>
