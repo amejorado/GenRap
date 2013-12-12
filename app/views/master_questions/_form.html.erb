@@ -3,17 +3,17 @@
     <div class="row-fluid">
       <div class = "span4">
         <%= label_tag(:language_id, "Lenguaje:") %>
-        <%= f.select(:language_id, (Language.all.map { |language| [language.name, language.id] }).prepend(["elecciona un Lenguaje", 0]), :select =>  @master_question.language_id ) %>
+        <%= f.select(:language_id, (Language.all.map { |language| [language.name, language.id] }).prepend(["Selecciona un Lenguaje", ""]), :select =>  @master_question.language_id ) %>
       </div>
       
       <div class = "span4">
         <%= label_tag(:concept_id, "Concepto:") %>
-        <%= f.select(:concept_id, (Concept.where("language_id = '#{@master_question.language_id}'").map { |concept| [concept.name, concept.id] }).prepend(["Selecciona un concepto", 0]), :select => @master_question.concept_id ) %>
+        <%= f.select(:concept_id, (Concept.where("language_id = '#{@master_question.language_id}'").map { |concept| [concept.name, concept.id] }).prepend([""]), :select => @master_question.concept_id ) %>
       </div>
       
       <div class ="span4">
         <%= label_tag(:subconcept_id, "Subconcepto:") %>
-        <%= f.select(:subconcept_id, (SubConcept.where("concept_id = '#{@master_question.concept_id}'").map { |concept| [concept.name, concept.id] }).prepend(["Selecciona un subconcepto", 0]), :select => @master_question.subconcept_id) %>
+        <%= f.select(:subconcept_id, (SubConcept.where("concept_id = '#{@master_question.concept_id}'").map { |concept| [concept.name, concept.id] }).prepend([""]), :select => @master_question.subconcept_id) %>
       </div>
     </div>
 
