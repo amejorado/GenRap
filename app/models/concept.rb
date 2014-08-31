@@ -1,6 +1,6 @@
 class Concept < ActiveRecord::Base
-  has_many :sub_concepts
-  has_many :master_questions
+  has_many :sub_concepts, dependent: :destroy
+  has_many :master_questions, dependent: :destroy
   belongs_to :language
 
   validates :name, presence: true

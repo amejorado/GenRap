@@ -73,14 +73,6 @@ class LanguagesController < ApplicationController
   # DELETE /languages/1.json
   def destroy
     @language = Language.find(params[:id])
-    @concepts = @language.concepts
-    @concepts.each do |c|
-      @sub_concepts = c.sub_concepts
-      @sub_concepts.each do |sc|
-        sc.destroy
-      end
-      c.destroy
-    end
     @language.destroy
     flash[:notice] = 'El lenguaje fue borrado de manera exitosa!'
     respond_to do |format|

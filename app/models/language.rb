@@ -1,5 +1,5 @@
 class Language < ActiveRecord::Base
-  has_many :concepts
+  has_many :concepts, dependent: :destroy
   belongs_to :master_question
   belongs_to :master_exam
   belongs_to :question
