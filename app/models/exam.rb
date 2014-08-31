@@ -172,7 +172,7 @@ class Exam < ActiveRecord::Base
         question.exam = exam
         question.master_question = master_question
         question.questionNum = mQuestion.questionNum
-        question.values = values
+        question.values = values.to_json
         question.answers = answers
         question.correctAns = correctAns
         question.givenAns = ''
