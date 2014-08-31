@@ -1,75 +1,73 @@
 <div class="hero-unit">
-	<div id="contenttimer" style="position: relative;margin: auto;">
-		<div id="timer" style="background: rgba(236, 236, 206, 0.61);position: fixed;right: 69px;padding: 20px;-webkit-box-shadow: 0px 0px 15px 1px rgba(0, 0, 0, 0.2);box-shadow:  0px 0px 15px 1px rgba(0, 0, 0, 0.2);">
-			<div style="background-image:url('/reloj.png');width: 58px;margin:auto;height: 58px;background-size: contain;"></div><h4> <span id="examen"><%= 
-		    #TOMA EL VALOR DE DURACION DE LA TABLA DE MASTER_EXAM
-		     @examenMaestro.duracion 
-		    %>:00</span> minutos</h4></div>
-	</div>
-	<h3  style="text-align: center;">Exámen : "<%= @examName %> "</h3>
-	<p>Selecciona la opci&oacute;n correcta para cada una de las preguntas.</p>
+  <div id="contenttimer" style="position: relative;margin: auto;">
+    <div id="timer" style="background: rgba(236, 236, 206, 0.61);position: fixed;right: 69px;padding: 20px;-webkit-box-shadow: 0px 0px 15px 1px rgba(0, 0, 0, 0.2);box-shadow:  0px 0px 15px 1px rgba(0, 0, 0, 0.2);">
+      <div style="background-image:url('/reloj.png');width: 58px;margin:auto;height: 58px;background-size: contain;"></div><h4> <span id="examen"><%= 
+        #TOMA EL VALOR DE DURACION DE LA TABLA DE MASTER_EXAM
+         @examenMaestro.duracion 
+        %>:00</span> minutos</h4></div>
+  </div>
+  <h3  style="text-align: center;">Exámen : "<%= @examName %> "</h3>
+  <p>Selecciona la opci&oacute;n correcta para cada una de las preguntas.</p>
    
-	<%= render 'form' %>
+  <%= render 'form' %>
 
-	<% if @exam.errors.any? %>
-		<ul>
-			<% for message_error in @exam.errors.full_messages %>
-			<li>- <%= message_error %></li>
-			<% end %>
-		</ul>
-	<% end %>
-
+  <% if @exam.errors.any? %>
+    <ul>
+      <% for message_error in @exam.errors.full_messages %>
+      <li>- <%= message_error %></li>
+      <% end %>
+    </ul>
+  <% end %>
 
 </div>
-
 
 <script type="text/javascript">
  var tiempo = <%= 
      @examenMaestro.duracion 
-    %>;				
+    %>;        
    var tiempoSeg = tiempo*60;
    //calcula las horas que tiene la duracion.
    var hrs = Math.floor(tiempoSeg/3600);
-		var timer = $.timer(
-			function() {
-				var hrs = Math.floor(tiempoSeg/3600);
-				var mins = Math.floor((tiempoSeg % 3600)/60);
-				//si es mayor a 60 min agrega la hora a los minutos
-				if(hrs > 0 ){
-					mins = mins + 60;
-				} 
-				var secs = tiempoSeg % 60;
-				var tock = /*(hrs < 10 ? "0" : "" ) + hrs+ ":" */
-				         + (mins < 10 ? "0" : "" ) + mins + ":" 
-				         + (secs < 10 ? "0" : "" ) + secs;
-				 $('#examen').html(tock);
-				 tiempoSeg--;
-				 //si el tiempo es de segundos
-				 if(tiempoSeg <= 60){
-					$('#timer').css({"background":"rgba(255, 2, 2, 0.66)", 
-										"color": "white",
-										"text-shadow": "0px 0px 3px #000000",
-										"filter": "dropshadow(color=#000000, offx=0, offy=0)"});
+    var timer = $.timer(
+      function() {
+        var hrs = Math.floor(tiempoSeg/3600);
+        var mins = Math.floor((tiempoSeg % 3600)/60);
+        //si es mayor a 60 min agrega la hora a los minutos
+        if(hrs > 0 ){
+          mins = mins + 60;
+        } 
+        var secs = tiempoSeg % 60;
+        var tock = /*(hrs < 10 ? "0" : "" ) + hrs+ ":" */
+                 + (mins < 10 ? "0" : "" ) + mins + ":" 
+                 + (secs < 10 ? "0" : "" ) + secs;
+         $('#examen').html(tock);
+         tiempoSeg--;
+         //si el tiempo es de segundos
+         if(tiempoSeg <= 60){
+          $('#timer').css({"background":"rgba(255, 2, 2, 0.66)", 
+                    "color": "white",
+                    "text-shadow": "0px 0px 3px #000000",
+                    "filter": "dropshadow(color=#000000, offx=0, offy=0)"});
 
-				 }
-				 if(tiempoSeg == 0){
-				 	window.onbeforeunload = null;	//se cancela la funcion onbeforeunload
-				 	var idExamen =  "edit_exam_" + <%= @exam.id %> ;
-				 	document.getElementById(idExamen).submit();
-				 }
-			},
-			1000,
-			true
-		);	
+         }
+         if(tiempoSeg == 0){
+           window.onbeforeunload = null;  //se cancela la funcion onbeforeunload
+           var idExamen =  "edit_exam_" + <%= @exam.id %> ;
+           document.getElementById(idExamen).submit();
+         }
+      },
+      1000,
+      true
+    );  
 
-	//Para que no mande alert al dar clic en boton de Enviar
-	$(".edit_exam").on("submit", function(e) {
-		window.onbeforeunload = null;	//se cancela la funcion onbeforeunload
+  //Para que no mande alert al dar clic en boton de Enviar
+  $(".edit_exam").on("submit", function(e) {
+    window.onbeforeunload = null;  //se cancela la funcion onbeforeunload
 
-	})
+  })
 
-	//funcion para enviar una alerta al momento en que el usuario actualiza o cierra la pestaña
-	window.onbeforeunload = function (e) {
+  //funcion para enviar una alerta al momento en que el usuario actualiza o cierra la pestaña
+  window.onbeforeunload = function (e) {
             e = e || window.event;
             var y = e.pageY || e.clientY;
             if (y < 0){
@@ -79,8 +77,6 @@
                 return "Al actualizar o cerrar la página perderas un intento del examen";
             }
             
-            
-
     }
     /*
     setInterval(function(){alert("Hello")},800);

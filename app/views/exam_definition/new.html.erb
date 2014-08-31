@@ -1,17 +1,17 @@
 <% content_for = "Create Exam Definition" %>
 
 <div class="hero-unit">
-	<h1>Definición de Examen</h1>
+  <h1>Definición de Examen</h1>
 
-	<br />
+  <br />
 
-	<%= render 'form' %>
+  <%= render 'form' %>
 
-	<% if @examDefinition.errors.any? %>
-		<ul>
-			<% for message_error in @examDefinition.errors.full_messages %>
-			<li>- <%= message_error %></li>
-			<% end %>
-		</ul>
-	<% end %>
+  <% if @examDefinition.errors.any? %>
+    <ul>
+      <% for message_error in @examDefinition.errors.full_messages %>
+      <li>- <%= message_error %></li>
+      <% end %>
+    </ul>
+  <% end %>
 </div>

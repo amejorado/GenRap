@@ -47,7 +47,7 @@ class SubConceptsController < ApplicationController
         format.html { redirect_to @sub_concept, notice: 'El subconcepto fue creado de manera exitosa!' }
         format.json { render json: @sub_concept, status: :created, location: @sub_concept }
       else
-        format.html { render action: "new" }
+        format.html { render action: 'new' }
         format.json { render json: @sub_concept.errors, status: :unprocessable_entity }
       end
     end
@@ -63,7 +63,7 @@ class SubConceptsController < ApplicationController
         format.html { redirect_to @sub_concept, notice: 'El subconcepto fue actualizado de manera exitosa!' }
         format.json { head :no_content }
       else
-        format.html { render action: "edit" }
+        format.html { render action: 'edit' }
         format.json { render json: @sub_concept.errors, status: :unprocessable_entity }
       end
     end

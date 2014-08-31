@@ -1,31 +1,31 @@
 <%= simple_form_for @exam do |exam_field| %>
-	<fieldset>
-		<% answers = Array.new %>
-		<% @exam.questions.each do |question| %>
-			<% inquiry = question.master_question.inquiry %>
-			<!-- gsub 1 no se debe de necesitar, hay algo mal en question.values -> randomizer -->
-			<% parsed = format_values(question.values) %>
-			<% parsed = parsed.stringify_keys() %>
-			<% parsed.each do |key, value| %>
-				<p><% inquiry = inquiry.gsub(key,value.to_s) %></p>
+  <fieldset>
+    <% answers = Array.new %>
+    <% @exam.questions.each do |question| %>
+      <% inquiry = question.master_question.inquiry %>
+      <!-- gsub 1 no se debe de necesitar, hay algo mal en question.values -> randomizer -->
+      <% parsed = format_values(question.values) %>
+      <% parsed = parsed.stringify_keys() %>
+      <% parsed.each do |key, value| %>
+        <p><% inquiry = inquiry.gsub(key,value.to_s) %></p>
 
-			<% end %>
+      <% end %>
 
-			<pre style="border: none; background: transparent;"><%= question.questionNum.to_s.html_safe+".  "+inquiry %></pre>
+      <pre style="border: none; background: transparent;"><%= question.questionNum.to_s.html_safe+".  "+inquiry %></pre>
 
-			<%= simple_fields_for ":questions[]", question do |question_field| %>
-				<% answers = format_answers(question.answers) %>
-				<% answers = random_answers(answers) %>
-				<%= question_field.select :givenAns, answers.map{ |ansNum| [ansNum.split(": ").second, ansNum.split(": ").first] } %>
-			<% end %>
-			<hr style="border-color: rgb(216, 213, 213);">
-		<% end %>
+      <%= simple_fields_for ":questions[]", question do |question_field| %>
+        <% answers = format_answers(question.answers) %>
+        <% answers = random_answers(answers) %>
+        <%= question_field.select :givenAns, answers.map{ |ansNum| [ansNum.split(": ").second, ansNum.split(": ").first] } %>
+      <% end %>
+      <hr style="border-color: rgb(216, 213, 213);">
+    <% end %>
 
-		<div class="control-group">
-			<div class="controls">
-				<%= exam_field.button :submit, "Enviar", :class => "btn btn-primary" %>
-			</div>
-		</div>
-	</fieldset>
+    <div class="control-group">
+      <div class="controls">
+        <%= exam_field.button :submit, "Enviar", :class => "btn btn-primary" %>
+      </div>
+    </div>
+  </fieldset>
 
 <% end %>

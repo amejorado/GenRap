@@ -1,43 +1,42 @@
-#encoding: utf-8
+# encoding: utf-8
 class ExamDefinitionController < ApplicationController
-
   before_filter :authenticate_user
 
-	def new
-		@examDefinition = ExamDefinition.new
-		# @master_questions = MasterQuestion.all_languages
-		@examUsers = nil
+  def new
+    @examDefinition = ExamDefinition.new
+    # @master_questions = MasterQuestion.all_languages
+    @examUsers = nil
 
     if check_prof
-      render "new"
-    else
-      render "new_student"
-    end
-	end
+      render 'new'
+  else
+    render 'new_student'
+  end
+  end
 
-	def create
+  def create
     if check_prof
-  		@examDefinition = ExamDefinition.new(params[:examID])
-  		@examDefinition.utype = 0
+      @examDefinition = ExamDefinition.new(params[:examID])
+      @examDefinition.utype = 0
 
-  		if @examDefinition.save
-  			flash[:notice] = "Definición de examen creada de manera exitosa."
-  		else
-  			flash[:error] = "Los datos no son válidos."
-  		end
+      if @examDefinition.save
+        flash[:notice] = 'Definición de examen creada de manera exitosa.'
+      else
+        flash[:error] = 'Los datos no son válidos.'
+      end
 
-  		redirect_to root_path
-    else
-        flash[:error] = "Acceso restringido."
-        redirect_to root_path
-    end
-	end
+      redirect_to root_path
+   else
+     flash[:error] = 'Acceso restringido.'
+     redirect_to root_path
+   end
+  end
 
-	# def edit
-	# end
+  # def edit
+  # end
 
-	# def update
-	# end
+  # def update
+  # end
 
   def destroy
     @master_exam = MasterExam.find_by_id(params[:id])
@@ -52,7 +51,7 @@ class ExamDefinitionController < ApplicationController
       end
       @exams.destroy
 
-      @exams_taken =  Exam.where("master_exam_id = ?",params[:id])
+      @exams_taken =  Exam.where('master_exam_id = ?', params[:id])
       @exams_taken.each do |et|
         et.destroy
       end
@@ -61,18 +60,18 @@ class ExamDefinitionController < ApplicationController
 
       redirect_to '/profstats'
     else
-      flash[:error] = "Acceso restringido."
+      flash[:error] = 'Acceso restringido.'
       redirect_to(master_questions_path)
     end
   end
 
-	# def index
-	# end
+  # def index
+  # end
 
-	def exam_def
-    #este no debería de ir aquí pero marca error al intentarlo hacer en otro controlador
-    #parece que una vez que hago un get en este controlador, ya no puedo cambiarlo.
-    #por lo tanto los queries los voy a hacer aquí
+  def exam_def
+    # este no debería de ir aquí pero marca error al intentarlo hacer en otro controlador
+    # parece que una vez que hago un get en este controlador, ya no puedo cambiarlo.
+    # por lo tanto los queries los voy a hacer aquí
     hash = params[:hash]
     exam_name = params[:exam_name]
     duracion_name = params[:duracion_name]
@@ -93,7 +92,7 @@ class ExamDefinitionController < ApplicationController
     endHour = params[:endHour].to_i
     endMinute = params[:endMinute].to_i
 
-    timeZone = "Monterrey"
+    timeZone = 'Monterrey'
 
     user = User.find_by_id session[:user_id]
     master_exam = MasterExam.create(
@@ -106,24 +105,23 @@ class ExamDefinitionController < ApplicationController
       user: user
     )
 
-    hash.each_with_index do |(key, value), index|
+    hash.each_with_index do |(key, _value), index|
       ExamDefinition.create(
-        master_question: MasterQuestion.find_by_id( hash[key]['master_question_id'].to_i ),
+        master_question: MasterQuestion.find_by_id(hash[key]['master_question_id'].to_i),
         master_exam: MasterExam.find_by_id(master_exam.id),
-        questionNum: index+1,
+        questionNum: index + 1,
         weight: hash[key]['value'].to_f
       )
     end
 
     if check_prof
-      flash[:notice] = "Examen agregado exitosamente"
+      flash[:notice] = 'Examen agregado exitosamente'
     else
-      flash[:notice] = "Ejercicio creado exitosamente"
+      flash[:notice] = 'Ejercicio creado exitosamente'
     end
 
     respond_to do |format|
       format.json { render json: hash.to_json }
     end
-
-	end
+  end
 end

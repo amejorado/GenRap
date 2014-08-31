@@ -1,19 +1,19 @@
 <div class="hero-unit">
-	<h3 style="text-align: center;">Examen : "<%= @examName %> "</h3>
+  <h3 style="text-align: center;">Examen : "<%= @examName %> "</h3>
 
-	<%= render 'form_show' %>
+  <%= render 'form_show' %>
 
-	<% if check_admin %>
-		<%= link_to "Regresar", request.referer, {class: "btn"} %>
-	<% else %>
-		<%= link_to "Regresar", "http://codeafeliz.com/mystats", {class: "btn"} %>
-	<% end %>
+  <% if check_admin %>
+    <%= link_to "Regresar", request.referer, {class: "btn"} %>
+  <% else %>
+    <%= link_to "Regresar", "http://codeafeliz.com/mystats", {class: "btn"} %>
+  <% end %>
 
-	<% if @exam.errors.any? %>
-		<ul>
-			<% for message_error in @exam.errors.full_messages %>
-			<li>- <%= message_error %></li>
-			<% end %>
-		</ul>
-	<% end %>
+  <% if @exam.errors.any? %>
+    <ul>
+      <% for message_error in @exam.errors.full_messages %>
+      <li>- <%= message_error %></li>
+      <% end %>
+    </ul>
+  <% end %>
 </div>

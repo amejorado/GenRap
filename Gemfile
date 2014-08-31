@@ -22,28 +22,25 @@ group :assets do
   gem 'coffee-rails', '~> 3.2.1'
 
   # See https://github.com/sstephenson/execjs#readme for more supported runtimes
-  gem 'therubyracer', :platforms => :ruby
+  gem 'therubyracer', platforms: :ruby
 
   gem 'uglifier', '>= 1.0.3'
 end
 
 # gem 'jquery-rails'
 
-# gem 'bcrypt-ruby', :require => 'bcrypt' 
+# gem 'bcrypt-ruby', :require => 'bcrypt'
 # gem 'debugger', group: [:development, :test]
 
 # group :production, :staging do
 #   gem "pg"
 # end
 
-gem 'rest-client', :require => 'rest-client'
-gem  'multimap'
-
-
-
+gem 'rest-client', require: 'rest-client'
+gem 'multimap'
 
 # To use ActiveModel has_secure_password
- gem 'bcrypt-ruby', '~> 3.0.0'
+gem 'bcrypt-ruby', '~> 3.0.0'
 # gem 'bcrypt-ruby'
 # To use Jbuilder templates for JSON
 # gem 'jbuilder'

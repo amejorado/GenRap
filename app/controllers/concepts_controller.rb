@@ -1,11 +1,10 @@
 class ConceptsController < ApplicationController
   # GET /concepts
   # GET /concepts.json
-  before_filter :authenticate_admin, :only => [:new, :index, :create,:show, :edit, :update, :destroy]
+  before_filter :authenticate_admin, only: [:new, :index, :create, :show, :edit, :update, :destroy]
 
   def index
-    @concepts = Concept.all(:order => "language_id ASC")
-
+    @concepts = Concept.all(order: 'language_id ASC')
 
     respond_to do |format|
       format.html # index.html.erb
@@ -50,7 +49,7 @@ class ConceptsController < ApplicationController
         format.html { redirect_to @concept, notice: 'El concepto fue creado de manera exitosa!' }
         format.json { render json: @concept, status: :created, location: @concept }
       else
-        format.html { render action: "new" }
+        format.html { render action: 'new' }
         format.json { render json: @concept.errors, status: :unprocessable_entity }
       end
     end
@@ -66,7 +65,7 @@ class ConceptsController < ApplicationController
         format.html { redirect_to @concept, notice: 'El concepto fue actualizado de manera exitosa!' }
         format.json { head :no_content }
       else
-        format.html { render action: "edit" }
+        format.html { render action: 'edit' }
         format.json { render json: @concept.errors, status: :unprocessable_entity }
       end
     end

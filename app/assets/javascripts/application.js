@@ -15,11 +15,10 @@
 //= require bootstrap
 //= require_tree .
 (function($) {
-        $(document).ready(function(){
-        	var currentDate = new Date();
+$(document).ready(function(){
+	var currentDate = new Date();
 
-            $("input.date_picker").datepicker({ dateFormat: 'yy-mm-dd'});
-            $("input.date_picker").datepicker("setDate", currentDate);
-        });
-
-    })(jQuery);
+		$("input.date_picker").datepicker({ dateFormat: 'yy-mm-dd'});
+		$("input.date_picker").datepicker("setDate", currentDate);
+	});
+})(jQuery);

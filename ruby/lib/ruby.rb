@@ -1,4 +1,4 @@
-require "ruby/version"
+require 'ruby/version'
 
 module Ruby
   # Your code goes here...
