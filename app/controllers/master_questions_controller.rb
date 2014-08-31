@@ -282,7 +282,7 @@ class MasterQuestionsController < ApplicationController
 
   def concepts_for_question
     # Get concepts filtered by language
-    concepts = Concept.find(:all, conditions: ['concepts.language_id = ?', "#{params[:language]}"], include: 'master_questions', group: 'master_questions.id HAVING COUNT(master_questions.id) >= 1')
+    concepts = Concept.find(:all, conditions: ['concepts.language_id = ?', "#{params[:language]}"])
     respond_to do |format|
       format.json { render json: concepts.to_json }
     end
