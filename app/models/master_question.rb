@@ -7,12 +7,12 @@ class MasterQuestion < ActiveRecord::Base
   belongs_to :concept
   belongs_to :sub_concept, foreign_key: 'subconcept_id'
 
-  validates :concept_id,  presence: true
-  validates :inquiry,  presence: true
-  validates :language_id,  presence: true
+  validates :concept, presence: true
+  validates :inquiry, presence: true
+  validates :language, presence: true
   validates :randomizer, presence: true
-  validates :solver,  presence: true
-  validates :subconcept_id, presence: true
+  validates :solver, presence: true
+  validates :sub_concept, presence: true
   validates :borrado, presence: true
 
   attr_accessible :concept, :inquiry, :language, :randomizer, :solver, :subconcept, :borrado, :questionDateDeleted, :concept_id, :language_id, :subconcept_id
