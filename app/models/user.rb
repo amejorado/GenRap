@@ -5,6 +5,8 @@ class User < ActiveRecord::Base
   attr_accessible :fname, :lname, :password, :username, :email, :password_confirmation, :group_ids, :mail, :utype
 
   has_and_belongs_to_many :groups # , :inverse_of => :users
+  has_many :groups_owned, class_name: 'Group', inverse_of: :user,
+                          dependent: :destroy
   has_many :cantakes
   has_many :master_exams, through: :cantakes # , :inverse_of => :users
   has_many :exams # , :inverse_of => :user
