@@ -30,11 +30,11 @@ end
 # gem 'jquery-rails'
 
 # gem 'bcrypt-ruby', :require => 'bcrypt' 
-gem 'debugger', group: [:development, :test]
+# gem 'debugger', group: [:development, :test]
 
-group :production, :staging do
-  gem "pg"
-end
+# group :production, :staging do
+#   gem "pg"
+# end
 
 gem 'rest-client', :require => 'rest-client'
 gem  'multimap'
