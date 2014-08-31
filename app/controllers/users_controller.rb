@@ -84,10 +84,6 @@ class UsersController < ApplicationController
   def destroy
     if check_admin
       @user = User.find(params[:id])
-      @user.groups.clear
-      @user.master_exams.clear
-      @user.cantakes.destroy
-      @user.exams.destroy
       @user.destroy
 
       redirect_to action: 'index'

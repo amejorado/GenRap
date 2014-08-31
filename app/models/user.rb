@@ -7,9 +7,9 @@ class User < ActiveRecord::Base
   has_and_belongs_to_many :groups # , :inverse_of => :users
   has_many :groups_owned, class_name: 'Group', inverse_of: :user,
                           dependent: :destroy
-  has_many :cantakes
+  has_many :cantakes, dependent: :destroy
   has_many :master_exams, through: :cantakes # , :inverse_of => :users
-  has_many :exams # , :inverse_of => :user
+  has_many :exams, dependent: :destroy # , :inverse_of => :user
 
   validates :username,  presence: true,
                         uniqueness: true

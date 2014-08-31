@@ -1,8 +1,9 @@
 # encoding: utf-8
 class MasterQuestion < ActiveRecord::Base
   has_many :master_exams, through: :exam_definition
-  has_many :questions
-  has_many :exam_definition
+  has_many :questions, dependent: :destroy
+  has_many :exam_definition, dependent: :destroy
+
   belongs_to :language
   belongs_to :concept
   belongs_to :sub_concept, foreign_key: 'subconcept_id'
