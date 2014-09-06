@@ -10,10 +10,13 @@
 // WARNING: THE FIRST BLANK LINE MARKS THE END OF WHAT'S TO BE PROCESSED, ANY BLANK LINE SHOULD
 // GO AFTER THE REQUIRES BELOW.
 //
-// require jquery
-// require jquery_ujs
+//= require jquery
 //= require bootstrap
+//= require jquery.ui.all
+//= require highcharts
+//= require jquery-migrate-1.1.1
 //= require_tree .
+
 (function($) {
 $(document).ready(function(){
 	var currentDate = new Date();

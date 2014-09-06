@@ -8,6 +8,11 @@ group :development, :test do
   gem 'sqlite3'
 end
 
+# group :development do
+#   gem 'better_errors'
+#   gem 'binding_of_caller'
+# end
+
 gem 'json'
 
 gem 'table_for_collection'
@@ -27,7 +32,8 @@ group :assets do
   gem 'uglifier', '>= 1.0.3'
 end
 
-# gem 'jquery-rails'
+gem 'jquery-rails'
+gem 'jquery-ui-rails'
 
 # gem 'bcrypt-ruby', :require => 'bcrypt'
 # gem 'debugger', group: [:development, :test]
