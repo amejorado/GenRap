@@ -52,9 +52,7 @@ class ExamDefinitionController < ApplicationController
       @exams.destroy
 
       @exams_taken =  Exam.where('master_exam_id = ?', params[:id])
-      @exams_taken.each do |et|
-        et.destroy
-      end
+      @exams_taken.each(&:destroy)
 
       @master_exam.destroy
 

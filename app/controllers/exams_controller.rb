@@ -54,7 +54,7 @@ class ExamsController < ApplicationController
         actual_exams = Exam.where('master_exam_id = ? and user_id = ?', masterExam.id, @current_user.id)
         @masterExercises.push(masterExam)
         if actual_exams.length > 0
-          grade = actual_exams.map { |e| e.score }.reduce { |sum, x| sum + x }
+          grade = actual_exams.map(&:score).reduce { |sum, x| sum + x }
           grade = grade / actual_exams.length.to_f
         else
           grade = '-'
@@ -86,7 +86,7 @@ class ExamsController < ApplicationController
     begin
       RestClient.post 'https://api:key-4e3j9-vt6dvv9al93usavq800of2j6l3@api.mailgun.net/v2/mg.scitus.mx/messages', data
     rescue => e
-      logger.info "Error al enviar el correo electronico"
+      logger.info 'Error al enviar el correo electronico'
     end
   end
 

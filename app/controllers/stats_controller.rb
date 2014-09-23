@@ -5,7 +5,7 @@ class StatsController < ApplicationController
   def mystats
     @exams_taken = @current_user.exams.where(state: 2)
 
-    @q_taken = @exams_taken.map { |e| e.questions }
+    @q_taken = @exams_taken.map(&:questions)
     @q_taken = @q_taken.flatten
 
     q_info = @q_taken.map { |q| [MasterQuestion.find(q.master_question_id).language.name.capitalize, MasterQuestion.find(q.master_question_id).concept.name.capitalize, MasterQuestion.find(q.master_question_id).sub_concept.name.capitalize, right_answer?(q)] }
@@ -147,7 +147,7 @@ class StatsController < ApplicationController
       # Estadisticas para las preguntas de examen por concepto/subconcepto
       @exams_taken = MasterExam.where('user_id = ? AND id = ?', @current_user.id, @examId).first.exams
 
-      @q_taken = @exams_taken.map { |e| e.questions }
+      @q_taken = @exams_taken.map(&:questions)
       @q_taken = @q_taken.flatten
 
       q_info = @q_taken.map { |q| [MasterQuestion.find(q.master_question_id).language.name.capitalize, MasterQuestion.find(q.master_question_id).concept.name.capitalize, MasterQuestion.find(q.master_question_id).sub_concept.name.capitalize, right_answer?(q)] }
@@ -209,8 +209,8 @@ class StatsController < ApplicationController
           # format.xls { send_data cont.to_csv(col_sep: "\t") }
           # format.xls { send_data @h[can.user_id][cont-1].score.to_csv(col_sep: "\t")  }
           # @examenes.usuario  = n il
-          @examenes_anidados.intentos = co nt
-          @examenes_anidados.resultados = @h[can.user_id][cont - 1].sco re
+          @examenes_anidados.intentos = cont
+          @examenes_anidados.resultados = @h[can.user_id][cont - 1].score
           @examenes_anidados.save
           # @examenes.usuario  = nil
           cont = cont + 1
