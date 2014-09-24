@@ -1,8 +1,10 @@
 # encoding: utf-8
 
 class User < ActiveRecord::Base
+  USER_TYPES = [STUDENT = 0, PROFESSOR = 1, ADMIN = 2]
   has_secure_password
-  attr_accessible :fname, :lname, :password, :username, :email, :password_confirmation, :group_ids, :mail, :utype
+  attr_accessible :fname, :lname, :password, :username, :email,
+                  :password_confirmation, :group_ids, :mail, :utype
 
   has_and_belongs_to_many :groups # , :inverse_of => :users
   has_many :groups_owned, class_name: 'Group', inverse_of: :user,
@@ -52,5 +54,17 @@ class User < ActiveRecord::Base
     end
 
     self.lname = l.lstrip
+  end
+
+  def admin?
+    utype == ADMIN
+  end
+
+  def professor?
+    utype == PROFESSOR || admin?
+  end
+
+  def student?
+    utype == STUDENT || professor?
   end
 end

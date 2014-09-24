@@ -1,7 +1,9 @@
 # encoding: utf-8
 class UsersController < ApplicationController
   # before_filter :save_login_state, :only => [:new, :create]
-  before_filter :authenticate_user, only: [:index, :show, :edit, :update, :destroy, :change_admin, :change_professor, :change_student]
+  before_filter :authenticate_user, only: [:index, :show, :edit, :update,
+                                           :destroy, :change_admin,
+                                           :change_professor, :change_student]
 
   def index
     if check_admin
@@ -20,7 +22,7 @@ class UsersController < ApplicationController
     if session[:user_id].nil?
       @user = User.new
     else
-      user = User.find session[:user_id]
+      user = User.find(session[:user_id])
       redirect_to(user)
     end
   end
@@ -35,12 +37,10 @@ class UsersController < ApplicationController
       if @user.errors.messages[:username]
         flash[:error] = 'El nombre de usuario no es único'
       elsif @user.errors.messages[:mail]
-        # flash[:error] = @user.errors.messages[:mail].last
         flash[:error] = 'El correo no es único'
       else
         flash[:error] = 'Hubo un error al crear el usuario'
       end
-      # flash[:error] = @user.errors.messages[:username].last
     end
 
     redirect_to('/signup')
@@ -85,7 +85,6 @@ class UsersController < ApplicationController
     if check_admin
       @user = User.find(params[:id])
       @user.destroy
-
       redirect_to action: 'index'
     else
       flash[:error] = 'Acceso restringido.'
@@ -100,20 +99,16 @@ class UsersController < ApplicationController
       hash = params[:groups_ids_]
       hash.each_with_index do |h, index|
         tempStr += "#{h[1][:id]}"
-        if index < ( hash.length - 1)
-          tempStr += ','
-          end
+        tempStr += ',' if index < (hash.length - 1)
       end
       if tempStr != ''
         u = User.joins(:groups).select('DISTINCT users.id').where("groups_users.group_id in (#{tempStr})")
         @users = User.select('DISTINCT id, username, fname, lname, mail').where('id not in (?)', u)
-
       else
-        @users = User.where("id != #{session[:user_id]}").select('DISTINCT users.id, users.username, users.fname, users.lname, users.mail')
+        @users = User.where("id != #{session[:user_id]}")
+          .select('DISTINCT users.id, users.username, users.fname, users.lname, users.mail')
       end
-      respond_to do |format|
-        format.json { render json: @users.to_json }
-      end
+      respond_to { |format| format.json { render json: @users.to_json } }
     else
       flash[:error] = 'Acceso restringido.'
       redirect_to(root_path)
@@ -135,9 +130,9 @@ class UsersController < ApplicationController
       checked_groups.each do |group_id|
         usersFromGroups = Group.find(group_id).users
         usersFromGroups.each do |user|
-          if !Cantake.exists?(master_exam_id: thisMasterExam.id, user_id: user[:id], group_id: group_id)
+          if !Cantake.exists?(master_exam: thisMasterExam, user_id: user[:id], group_id: group_id)
             cantake = Cantake.new
-            cantake.master_exam_id = thisMasterExam.id
+            cantake.master_exam = thisMasterExam
             cantake.user_id = user[:id]
             cantake.group_id = group_id
             cantake.save!
@@ -159,14 +154,11 @@ class UsersController < ApplicationController
 
   # Used for setting up cantake for exercise purposes
   def set_user_cantake_own
-    # debugger
-
     if authenticate_user
       exam_name = params[:exam_name]
       thisMasterExam = MasterExam.where(name: exam_name).where(user_id: session[:user_id]).last
-      # debugger
 
-      unless Cantake.exists?(master_exam_id: thisMasterExam.id, user_id: session[:user_id])
+      unless Cantake.exists?(master_exam: thisMasterExam, user_id: session[:user_id])
         cantake = Cantake.new
         cantake.master_exam_id = thisMasterExam.id
         cantake.user_id = session[:user_id]
@@ -185,10 +177,9 @@ class UsersController < ApplicationController
   def change_admin
     if check_admin
       user = User.find(params[:id])
-      user.utype = 2
+      user.utype = User::ADMIN
       if user.save
         redirect_to '/users'
-        return
       else
         flash[:error] = 'No se pudo hacer administrador al usuario.'
       end
@@ -200,10 +191,9 @@ class UsersController < ApplicationController
   def change_professor
     if check_admin
       user = User.find(params[:id])
-      user.utype = 1
+      user.utype = User::PROFESSOR
       if user.save
         redirect_to '/users'
-        return
       else
         flash[:error] = 'No se pudo hacer profesor al usuario.'
       end
@@ -215,10 +205,9 @@ class UsersController < ApplicationController
   def change_student
     if check_admin
       user = User.find(params[:id])
-      user.utype = 0
+      user.utype = User::STUDENT
       if user.save
         redirect_to '/users'
-        return
       else
         flash[:error] = 'No se pudo hacer estudiante al usuario.'
       end

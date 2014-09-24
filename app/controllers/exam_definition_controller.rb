@@ -4,14 +4,13 @@ class ExamDefinitionController < ApplicationController
 
   def new
     @examDefinition = ExamDefinition.new
-    # @master_questions = MasterQuestion.all_languages
     @examUsers = nil
 
-    if check_prof
+    if current_user.professor?
       render 'new'
-  else
-    render 'new_student'
-  end
+    else
+      render 'new_student'
+    end
   end
 
   def create
@@ -24,47 +23,23 @@ class ExamDefinitionController < ApplicationController
       else
         flash[:error] = 'Los datos no son válidos.'
       end
-
-      redirect_to root_path
-   else
-     flash[:error] = 'Acceso restringido.'
-     redirect_to root_path
-   end
+    else
+      flash[:error] = 'Acceso restringido.'
+    end
+    redirect_to root_path
   end
 
-  # def edit
-  # end
-
-  # def update
-  # end
-
   def destroy
-    @master_exam = MasterExam.find_by_id(params[:id])
+    master_exam = MasterExam.find(params[:id])
 
-    if check_admin || (check_prof && @master_exam.user_id == session[:user_id])
-      @exam_definitions = @master_exam.exam_definition
-      @exam_definitions.destroy
-      @exams = @master_exam.exams
-      @exams.each do |e|
-        @questions = e.questions
-        @questions.destroy
-      end
-      @exams.destroy
-
-      @exams_taken =  Exam.where('master_exam_id = ?', params[:id])
-      @exams_taken.each(&:destroy)
-
-      @master_exam.destroy
-
+    if check_admin || (check_prof && master_exam.user_id == current_user.id)
+      master_exam.destroy
       redirect_to '/profstats'
     else
       flash[:error] = 'Acceso restringido.'
-      redirect_to(master_questions_path)
+      redirect_to master_questions_path
     end
   end
-
-  # def index
-  # end
 
   def exam_def
     # este no debería de ir aquí pero marca error al intentarlo hacer en otro controlador
@@ -92,21 +67,23 @@ class ExamDefinitionController < ApplicationController
 
     timeZone = 'Monterrey'
 
-    user = User.find_by_id session[:user_id]
     master_exam = MasterExam.create(
       attempts: number_of_attempts,
       name: exam_name,
       duracion: duracion_name,
-      dateCreation: Time.strptime("#{creationYear}-#{creationMonth}-#{creationDay} #{creationHour}:#{creationMinute}", '%Y-%m-%d %H:%M').in_time_zone(timeZone),
-      startDate: Time.strptime("#{startYear}-#{startMonth}-#{startDay} #{startHour}:#{startMinute}", '%Y-%m-%d %H:%M').in_time_zone(timeZone),
-      finishDate: Time.strptime("#{endYear}-#{endMonth}-#{endDay} #{endHour}:#{endMinute}", '%Y-%m-%d %H:%M').in_time_zone(timeZone),
-      user: user
+      dateCreation: Time.strptime("#{creationYear}-#{creationMonth}-#{creationDay} #{creationHour}:#{creationMinute}",
+                                  '%Y-%m-%d %H:%M').in_time_zone(timeZone),
+      startDate: Time.strptime("#{startYear}-#{startMonth}-#{startDay} #{startHour}:#{startMinute}",
+                               '%Y-%m-%d %H:%M').in_time_zone(timeZone),
+      finishDate: Time.strptime("#{endYear}-#{endMonth}-#{endDay} #{endHour}:#{endMinute}",
+                                '%Y-%m-%d %H:%M').in_time_zone(timeZone),
+      user: current_user
     )
 
     hash.each_with_index do |(key, _value), index|
       ExamDefinition.create(
-        master_question: MasterQuestion.find_by_id(hash[key]['master_question_id'].to_i),
-        master_exam: MasterExam.find_by_id(master_exam.id),
+        master_question: MasterQuestion.find(hash[key]['master_question_id'].to_i),
+        master_exam: master_exam,
         questionNum: index + 1,
         weight: hash[key]['value'].to_f
       )

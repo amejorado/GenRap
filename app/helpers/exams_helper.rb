@@ -26,7 +26,7 @@ module ExamsHelper
       # Se guarda el valor del arreglo de respuetas en el arreglo temporal
       answersTemp[randNumber - 1] = answers[i - 1]
       i = i + 1
-       end
+    end
 
     # Se regresa el arreglo temporal con los valores en las nuevas posiciones
     answersTemp
@@ -42,9 +42,9 @@ module ExamsHelper
         if answers[i].to_s == correctAnswer
           unless answers[i].to_s.match(/\A[+-]?\d+?(\.\d+)?\Z/).nil?
             answers[i] = answers[i] + Random.rand(1..10)
-           end
+          end
         end
-         end
+      end
       i = i + 1
     end
     answers

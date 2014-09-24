@@ -1,46 +1,38 @@
 class ConceptsController < ApplicationController
-  # GET /concepts
-  # GET /concepts.json
-  before_filter :authenticate_admin, only: [:new, :index, :create, :show, :edit, :update, :destroy]
+  before_filter :authenticate_admin, only: [:new, :index, :create, :show,
+                                            :edit, :update, :destroy]
 
   def index
-    @concepts = Concept.all(order: 'language_id ASC')
+    @concepts = Concept.order('language_id ASC')
 
     respond_to do |format|
-      format.html # index.html.erb
+      format.html
       format.json { render json: @concepts }
     end
   end
 
-  # GET /concepts/1
-  # GET /concepts/1.json
   def show
     @concept = Concept.find(params[:id])
 
     respond_to do |format|
-      format.html # show.html.erb
+      format.html
       format.json { render json: @concept }
     end
   end
 
-  # GET /concepts/new
-  # GET /concepts/new.json
   def new
     @concept = Concept.new
 
     respond_to do |format|
-      format.html # new.html.erb
+      format.html
       format.json { render json: @concept }
     end
   end
 
-  # GET /concepts/1/edit
   def edit
     @concept = Concept.find(params[:id])
   end
 
-  # POST /concepts
-  # POST /concepts.json
   def create
     @concept = Concept.new(params[:concept])
 
@@ -55,8 +47,6 @@ class ConceptsController < ApplicationController
     end
   end
 
-  # PUT /concepts/1
-  # PUT /concepts/1.json
   def update
     @concept = Concept.find(params[:id])
 
@@ -71,8 +61,6 @@ class ConceptsController < ApplicationController
     end
   end
 
-  # DELETE /concepts/1
-  # DELETE /concepts/1.json
   def destroy
     @concept = Concept.find(params[:id])
     @concept.destroy

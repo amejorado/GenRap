@@ -1,44 +1,35 @@
 class SubConceptsController < ApplicationController
-  # GET /sub_concepts
-  # GET /sub_concepts.json
   def index
     @sub_concepts = SubConcept.all
 
     respond_to do |format|
-      format.html # index.html.erb
+      format.html
       format.json { render json: @sub_concepts }
     end
   end
 
-  # GET /sub_concepts/1
-  # GET /sub_concepts/1.json
   def show
     @sub_concept = SubConcept.find(params[:id])
 
     respond_to do |format|
-      format.html # show.html.erb
+      format.html
       format.json { render json: @sub_concept }
     end
   end
 
-  # GET /sub_concepts/new
-  # GET /sub_concepts/new.json
   def new
     @sub_concept = SubConcept.new
 
     respond_to do |format|
-      format.html # new.html.erb
+      format.html
       format.json { render json: @sub_concept }
     end
   end
 
-  # GET /sub_concepts/1/edit
   def edit
     @sub_concept = SubConcept.find(params[:id])
   end
 
-  # POST /sub_concepts
-  # POST /sub_concepts.json
   def create
     @sub_concept = SubConcept.new(params[:sub_concept])
 
@@ -53,8 +44,6 @@ class SubConceptsController < ApplicationController
     end
   end
 
-  # PUT /sub_concepts/1
-  # PUT /sub_concepts/1.json
   def update
     @sub_concept = SubConcept.find(params[:id])
 
@@ -69,8 +58,6 @@ class SubConceptsController < ApplicationController
     end
   end
 
-  # DELETE /sub_concepts/1
-  # DELETE /sub_concepts/1.json
   def destroy
     @sub_concept = SubConcept.find(params[:id])
     @sub_concept.destroy

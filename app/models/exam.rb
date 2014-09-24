@@ -17,21 +17,22 @@ class Exam < ActiveRecord::Base
   # private
   def check_attempts
     state = self.state.to_i
-    attempts = Exam.where('master_exam_id = ? and user_id = ?', master_exam_id, user_id).size
-    allowedAttempts = MasterExam.find(master_exam_id).attempts
+    attempts = Exam.where(master_exam: master_exam, user: user).count
+    allowedAttempts = master_exam.attempts
     if attempts > allowedAttempts || state >= 2
       false
     elsif state >= -1
       state = state + 1
       self.state = state.to_s
-      else
-        false
-      end
-   end
+    else
+      false
+    end
+  end
 
   def self.check_correct_answers(answers, correct)
     # Variables declaration/inicialization
-    stringAnswers = ['Ninguna de las opciones', 'Todas las opciones', 'Error al ejecutar']
+    stringAnswers = ['Ninguna de las opciones', 'Todas las opciones',
+                     'Error al ejecutar']
     answersTemp = Hash.new ('')
     answersTemp[1] = answers[1]
     correctAnswer = answers[correct].to_s
@@ -84,7 +85,6 @@ class Exam < ActiveRecord::Base
               else
                 answers[answersIndex] = answers[answersIndex] + Random.rand(1..100)
               end
-              # answers[answersIndex] = answers[answersIndex] + Random.rand(1..100)
             end
          end
         end
@@ -102,23 +102,20 @@ class Exam < ActiveRecord::Base
    end
 
   def self.createInstance(master_exam_id, user_id)
-    # session = Hash.new
-    # session[:user_id] = 9
-
     ActiveRecord::Base.transaction do
       exam = Exam.new
+      user = User.find(user_id)
+      master_exam = MasterExam.find(master_exam_id)
 
       # Create exam
-      exam.master_exam = MasterExam.find(master_exam_id)
-      exam.user = User.find user_id
+      exam.master_exam = master_exam
+      exam.user = user
       exam.state = '-1'
       exam.date = Time.now
       exam.score = 0
 
-      user = User.find(user_id)
-
-      if exam.master_exam.users.include? user
-        attemptN = Exam.where('master_exam_id = ? and user_id = ?', master_exam_id, user_id).size
+      if exam.master_exam.users.include?(user)
+        attemptN = Exam.where(master_exam: master_exam, user: user).count
 
         if attemptN < exam.master_exam.attempts
           exam.attemptnumber = attemptN + 1
@@ -143,7 +140,7 @@ class Exam < ActiveRecord::Base
       end
 
       # Create questions
-      e_definition = ExamDefinition.where('master_exam_id = ?', master_exam_id)
+      e_definition = ExamDefinition.where(master_exam: master_exam)
       for mQuestion in e_definition
         master_question = MasterQuestion.find(mQuestion.master_question_id)
         inquiry = master_question.inquiry

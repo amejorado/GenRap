@@ -3,12 +3,17 @@ class StatsController < ApplicationController
   before_filter :authenticate_user, only: [:mystats, :profstats, :profstats_exam]
 
   def mystats
-    @exams_taken = @current_user.exams.where(state: 2)
+    @exams_taken = current_user.exams.where(state: 2)
 
     @q_taken = @exams_taken.map(&:questions)
     @q_taken = @q_taken.flatten
 
-    q_info = @q_taken.map { |q| [MasterQuestion.find(q.master_question_id).language.name.capitalize, MasterQuestion.find(q.master_question_id).concept.name.capitalize, MasterQuestion.find(q.master_question_id).sub_concept.name.capitalize, right_answer?(q)] }
+    q_info = @q_taken.map do |q|
+      [q.master_question.language.name.capitalize,
+       q.master_question.concept.name.capitalize,
+       q.master_question.sub_concept.name.capitalize,
+       right_answer?(q)]
+    end
 
     @q_taken_by_language = {}
     for quad in q_info do
@@ -31,25 +36,17 @@ class StatsController < ApplicationController
   # Returns 1 if question was answered correctly, 0 otherwise
   # private
   def right_answer?(q)
-    if q.correctAns == q. givenAns
-      return 1
-    else
-      return 0
-    end
+    q.correctAns == q. givenAns ? 1 : 0
   end
 
   def profstats
     if check_prof
       @exams_agg = {}
-      for e in MasterExam.where('user_id = ?', @current_user.id) do
+      MasterExam.where(user_id: current_user).each do |e|
         actualExams = e.exams
         average = 0
-        for a in actualExams do
-          average += a.score
-        end
-        if actualExams.length > 0
-          average /= actualExams.length
-        end
+        actualExams.each { |a| average += a.score }
+        average /= actualExams.length if actualExams.length > 0
 
         @exams_agg[e] = [average, actualExams.length, e.users.length]
 
@@ -59,12 +56,12 @@ class StatsController < ApplicationController
         languagesHashIncorrect = {}
 
         # Se buscan las estadisticas por lenguaje
-        for language in Language.select(:id) do
+        Language.all.each do |language|
           puts 'Lenguaje => ' + language.id.to_s
 
           # Se crean las hash tables con los conceptos del lenguaje para
           # guardar las preguntas correctas e incorrectas
-          for conceptHash in Concept.where('language_id = ?', language.id) do
+          language.concepts.each do |conceptHash|
             languagesHashCorrect[conceptHash.name] = 0
             languagesHashIncorrect[conceptHash.name] = 0
           end
@@ -73,22 +70,22 @@ class StatsController < ApplicationController
           puts 'Language incorrect size = ' + languagesHashIncorrect.keys.to_s
 
           # Se recorren cada uno de los examenes del usuario actual
-          for exam in actualExams do
+          actualExams.each do |exam|
             questions = exam.questions # preguntas del examen
-            for question in questions do
+            questions.each do |question|
               correctAns = question.correctAns # respuesta correcta del examen
               givenAns = question.givenAns # respuesta contestada
-              masterquestion = MasterQuestion.where('id = ?', question.master_question_id).first
+              masterquestion = question.master_question
 
               if masterquestion.language.id == language.id
+                concept_name = masterquestion.concept.name
                 if correctAns == givenAns
                   puts 'Entre respuesta correcta'
-                  languagesHashCorrect[masterquestion.concept.name] = languagesHashCorrect[masterquestion.concept.name] + 1
+                  languagesHashCorrect[concept_name] = languagesHashCorrect[concept_name] + 1
                 else
-                  languagesHashIncorrect[masterquestion.concept.name] = languagesHashIncorrect[masterquestion.concept.name] + 1
+                  languagesHashIncorrect[concept_name] = languagesHashIncorrect[concept_name] + 1
                 end
               end
-              # puts "Retroalimentacion => " + masterquestion.concept.name.to_s
             end
           end
 
@@ -98,16 +95,14 @@ class StatsController < ApplicationController
           languagesHashCorrect.clear
           languagesHashIncorrect.clear
         end
-
         # Fin Retroalimentacion de areas
-
       end
 
       # Information returned is about questions from all professors, in aggregate
       # not only from exams by professor
       @questions_agg = {}
-      for e in MasterExam.where('user_id = ?', @current_user.id) do
-        for q in e.master_questions do
+      current_user.master_exams.each do |e|
+        e.master_questions.each do |q|
           actualQuestions = q.questions
 
           if actualQuestions.length > 0
@@ -116,7 +111,7 @@ class StatsController < ApplicationController
 
             if @questions_agg.key? q
               @questions_agg[q][0] += right
-              @questions_agg[q][1] += (actualQuestions.length - right)
+              @questions_agg[q][1] += actualQuestions.length - right
             else
               @questions_agg[q] = [right, actualQuestions.length - right]
             end
@@ -133,27 +128,34 @@ class StatsController < ApplicationController
   def profstats_exam
     if check_prof
       @examId = params[:id]
-      @examName = MasterExam.find(@examId).name
-      @cantakes = Cantake.where('master_exam_id = ?', @examId).order ('user_id')
+      master_exam = MasterExam.where(user_id: current_user).find(@examId)
+      @examName = master_exam.name
+      @cantakes = Cantake.where(master_exam_id: master_exam).order(:user_id)
       @h = {}
-      for c in @cantakes do
+      @cantakes.each do |c|
         exams_result = []
-        @exams =  Exam.where('master_exam_id = ? and user_id=?', @examId, c.user_id)
-        for e in @exams do
+        @exams =  Exam.where(master_exam_id: master_exam, user_id: c.user)
+        @exams.each do |e|
           exams_result.push(e)
         end
         @h[c.user_id] = exams_result
       end
       # Estadisticas para las preguntas de examen por concepto/subconcepto
-      @exams_taken = MasterExam.where('user_id = ? AND id = ?', @current_user.id, @examId).first.exams
+      @exams_taken = master_exam.exams
 
       @q_taken = @exams_taken.map(&:questions)
       @q_taken = @q_taken.flatten
 
-      q_info = @q_taken.map { |q| [MasterQuestion.find(q.master_question_id).language.name.capitalize, MasterQuestion.find(q.master_question_id).concept.name.capitalize, MasterQuestion.find(q.master_question_id).sub_concept.name.capitalize, right_answer?(q)] }
+      q_info = @q_taken.map do |q|
+        master_question = q.master_question
+        [master_question.language.name.capitalize,
+         master_question.concept.name.capitalize,
+         master_question.sub_concept.name.capitalize,
+         right_answer?(q)]
+      end
 
       @q_taken_by_language = {}
-      for quad in q_info do
+      q_info.each do |quad|
         if @q_taken_by_language.key? quad[0]
           if @q_taken_by_language[quad[0]].key? quad[1]
             if @q_taken_by_language[quad[0]][quad[1]].key? quad[2]
@@ -181,14 +183,12 @@ class StatsController < ApplicationController
     @examId = params[:id]
     @examenMaestro = MasterExam.find(@examId)
 
-    @cantakes = Cantake.where('master_exam_id = ?', @examId).order ('user_id')
+    @cantakes = Cantake.where(master_exam_id: @examId).order(:user_id)
     @h = {}
-    for c in @cantakes do
+    @cantakes.each do |c|
       exams_result = []
-      @exams =  Exam.where('master_exam_id = ? and user_id=?', @examId, c.user_id)
-      for e in @exams do
-        exams_result.push(e)
-      end
+      @exams = Exam.where(master_exam_id: @examenMaestro, user_id: c.user)
+      @exams.each { |e| exams_result << e }
       @h[c.user_id] = exams_result
     end
 
@@ -196,23 +196,12 @@ class StatsController < ApplicationController
       cont = 1
       @examenes = ExcelFormat.new
       if !@h[can.user_id].empty?
-        # format.html
-        # format.csv { send_data @products.to_csv }
-        # format.xls { send_data can.user.name.to_csv(col_sep: "\t") }
-        # can.user.username
-        # arr.push(can.user.username)
-        # @examenes.usuario = can.user.username
         @h[can.user_id].each do |_h|
           @examenes_anidados = ExcelFormat.new
           @examenes_anidados.usuario =  can.user.username
-          # cont
-          # format.xls { send_data cont.to_csv(col_sep: "\t") }
-          # format.xls { send_data @h[can.user_id][cont-1].score.to_csv(col_sep: "\t")  }
-          # @examenes.usuario  = n il
           @examenes_anidados.intentos = cont
           @examenes_anidados.resultados = @h[can.user_id][cont - 1].score
           @examenes_anidados.save
-          # @examenes.usuario  = nil
           cont = cont + 1
         end
      else
@@ -220,10 +209,6 @@ class StatsController < ApplicationController
        @examenes.intentos  = 0.0
        @examenes.resultados = 0
        @examenes.save
-       # can.user.username
-       # format.xls { send_data can.user.name.to_csv(col_sep: "\t") }
-       # format.xls { send_data zero.to_csv(col_sep: "\t") }
-       # 0
      end
 
     end
@@ -232,7 +217,7 @@ class StatsController < ApplicationController
     respond_to do |format|
       format.html
       format.csv { send_data @examenest.to_csv }
-      format.xls # { send_data @examenest.to_csv(col_sep: "\t") }
+      format.xls
     end
     ExcelFormat.delete_all
   end
