@@ -13,7 +13,7 @@
   <div class="navbar-inner">
     <div class="container">
 
-      <% if check_prof %>
+      <% if current_user && current_user.professor? %>
         <%= link_to("<img style='height:26px;' src='/assets/logo3_small.png' />".html_safe, profstats_path, {:class => "brand"}) %>
       <% else %>
         <%= link_to("<img style='height:26px;' src='/assets/logo3_small.png' />".html_safe, root_path, {:class => "brand"}) %>
@@ -30,7 +30,7 @@
       <!-- If logged in: -->
       <ul class="nav pull-right">
         <!-- Student dropdown -->
-        <% if check_student %>
+        <% if current_user && current_user.student? %>
           <div class="btn-group" style="display:inline-block;">
             <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
               Alumno
@@ -47,7 +47,7 @@
         <% end %>
 
         <!-- Professor dropdown -->
-        <% if check_prof %>
+        <% if current_user && current_user.professor? %>
           <div class="btn-group" style="display:inline-block;">
             <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
               Profesor
@@ -64,7 +64,7 @@
         <% end %>
 
         <!-- Admin dropdown -->
-        <% if check_admin %>
+        <% if current_user && current_user.admin? %>
           <div class="btn-group" style="display:inline-block;">
             <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
               Admin

@@ -1,7 +1,4 @@
 class ConceptsController < ApplicationController
-  before_filter :authenticate_admin, only: [:new, :index, :create, :show,
-                                            :edit, :update, :destroy]
-
   def index
     @concepts = Concept.order('language_id ASC')
 

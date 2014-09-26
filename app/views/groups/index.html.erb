@@ -1,22 +1,23 @@
 <style type="text/css">
-  #newGroupBtn{
-    float:right;
-    margin-bottom:20px;
-  }
-  #newGroupBtn a{
-    color: white !important;
-  }
+
+#newGroupBtn{
+  float:right;
+  margin-bottom:20px;
+}
+
+#newGroupBtn a{
+  color: white !important;
+}
 
 </style>
 
 <h1>Grupos</h1>
- <% if check_admin %>
-  <div id="newGroupBtn" > 
+<% if current_user.admin? %>
+  <div id="newGroupBtn" >
 
     <span style="display: inline-block;float:right;">
-      <%= link_to '<span class="glyphicon glyphicon-plus" style="margin-right: 5px;"></span>Nuevo Grupo'.html_safe, 
-              new_group_path,
-              :class => "btn btn-info" %>
+      <%= link_to '<span class="glyphicon glyphicon-plus" style="margin-right: 5px;"></span>Nuevo Grupo'.html_safe,
+        new_group_path, class: "btn btn-info" %>
     </span>
 
   </div>
@@ -31,22 +32,21 @@
       <th></th>
     </tr>
   </thead>
- 
+
   <tbody>
   <% @groups.each do |group| %>
     <tr>
       <td><%= group.name %></td>
       <td><%= group.user.username %></td>
-      <td><%= link_to 'Mostrar', group, {class: "btn btn-default btn-xs"}%>
-      <% if check_admin %>
-      <%=   link_to 'Editar', edit_group_path(group), {class: "btn btn-default btn-xs"} %>
-      <%=   link_to 'Borrar', group, :confirm => '¿Está seguro que quiere borrar este grupo?', :method => :delete, :class => "btn btn-default btn-xs"  %>
+      <td><%= link_to 'Mostrar', group, { class: "btn btn-default btn-xs" }%>
+      <% if current_user.admin? %>
+        <%= link_to 'Editar', edit_group_path(group), { class: "btn btn-default btn-xs" } %>
+        <%= link_to 'Borrar', group, confirm: '¿Está seguro que quiere borrar este grupo?', method: :delete, class: "btn btn-default btn-xs" %>
       </td>
-      <% end %>
-    </tr>
-  <% end %>
-  </tbody>
+    <% end %>
+  </tr>
+<% end %>
+</tbody>
 </table>
- 
+
 <br />
- 

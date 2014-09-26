@@ -3,7 +3,7 @@
 
   <%= render 'form_show' %>
 
-  <% if check_admin %>
+  <% if current_user.admin? %>
     <%= link_to "Regresar", request.referer, {class: "btn"} %>
   <% else %>
     <%= link_to "Regresar", "/mystats", {class: "btn"} %>

@@ -2,21 +2,16 @@
 class ExamsController < ApplicationController
   helper_method :who_cantake_masterExam
 
-  before_filter :authenticate_user, except: [:who_cantake_masterExam]
-
   def new
     @exam = Exam.new
   end
 
   def index
-    if check_admin
+    if current_user.admin?
       @masterExams = MasterExam.all
-    elsif check_prof
-      @masterExams = MasterExam.where(user: @current_user)
-    else
-      flash[:error] = 'Acceso restringido.'
-      redirect_to(root_path)
-     end
+    elsif current_user.professor?
+      @masterExams = MasterExam.where(user: current_user)
+    end
   end
 
   def pending
@@ -31,7 +26,7 @@ class ExamsController < ApplicationController
     # Además, estos deben ser creados por personas diferentes al usuario actual
     now = Time.zone.now
     availableExams = MasterExam.where('startDate <= ? AND finishDate >= ?',
-                                      now, now).where(user_id: @current_user)
+                                      now, now).where('user_id <> ?', current_user)
 
     # Para cada uno de estos examenes, se agrega el master exam y los intentos
     # actuales a los arreglos correspondientes
@@ -121,14 +116,13 @@ class ExamsController < ApplicationController
 
   def create
     masterExam = MasterExam.find(params[:id])
-    creatorId = masterExam.user_id
-    @attempts = Exam.where(master_exam_id: params[:id], user_id: @current_user).count
+    @attempts = Exam.where(master_exam_id: params[:id], user_id: current_user).count
     validUsers = who_cantake_masterExam(masterExam.id)
 
-    if available && (check_prof || validUsers.include?(@current_user.id))
+    if available(masterExam) && (current_user.professor? || validUsers.include?(current_user.id))
 
       # Se crea una instancia del examen para el usuario actual
-      exam = Exam.createInstance(params[:id], @current_user.id)
+      exam = Exam.createInstance(params[:id], current_user.id)
       if !exam.nil?
         # Redirigir a editar el examen para contestarlo
         redirect_to action: 'edit', id: exam.id
@@ -153,7 +147,7 @@ class ExamsController < ApplicationController
     # Se verifica que el administrador sea el que está editando o que el examen
     # sea del usuario actual y que el estado del examen sea 0 (creado)
     @exam = Exam.find(params[:id])
-    if check_prof || (@current_user.id.to_i == @exam.user_id.to_i && @exam.state.to_i == 0)
+    if current_user.professor? || (current_user.id.to_i == @exam.user_id.to_i && @exam.state.to_i == 0)
       # Declarar el examen como comenzado
       @examName = @exam.master_exam.name
       # master_examen es un objeto
@@ -163,37 +157,31 @@ class ExamsController < ApplicationController
         flash[:error] = 'Error al obtener el examen.'
         redirect_to(pending_path)
       end
-    else
-      flash[:error] = 'Acceso restringido.'
-      redirect_to(pending_path)
     end
   end
 
   def show
-    if check_prof || @current_user.id == Exam.find(params[:id]).user_id
-      @exam = Exam.find(params[:id])
+    @exam = Exam.find(params[:id])
+    if current_user.professor? || current_user.id == @exam.user_id
       @masterExamId = @exam.master_exam_id
       @examName = MasterExam.find(@masterExamId).name
-    else
-      flash[:error] = 'Acceso restringido.'
-      redirect_to(pending_path)
     end
   end
 
   def update
-    if check_prof || @current_user.id == Exam.find(params[:id]).user_id
-      @exam = Exam.find(params[:id])
-
+    @exam = Exam.find(params[:id])
+    if current_user.professor? || current_user.id == @exam.user_id
       masterExam = @exam.master_exam
 
       # Checar que la fecha del examen sea valida
-      if masterExam.startDate <= Time.now && masterExam.finishDate >= Time.now
+      now = Time.zone.now
+      if masterExam.startDate <= now && masterExam.finishDate >= now
         examenTomado = @exam
         # checara que la hora en la que se guarda el servidor esta dentro del
         # tiempo de duración y 30 segundos del alert que muestra
         horaMaxima = examenTomado.date
         horaMaxima += (masterExam.duracion * 60) + 30
-        if Time.zone.now <= horaMaxima
+        if now <= horaMaxima
           score = 0
           masterExamId = masterExam.id
 
@@ -219,19 +207,16 @@ class ExamsController < ApplicationController
           # Se actualiza el score del examen
           if @exam.update_attributes(score: score)
             flash[:notice] = 'El exámen fue registrado de manera correcta.'
+            redirect_to action: 'results', id: @exam.id
           else
             flash[:error] = 'Error al guardar el exámen.'
             redirect_to(root_path)
           end
-          redirect_to action: 'results', id: @exam.id
         end
       else
         flash[:error] = 'Examen no disponible.'
         redirect_to(root_path)
       end
-    else
-      flash[:error] = 'Acceso restringido.'
-      redirect_to(root_path)
     end
   end
 
@@ -245,10 +230,9 @@ class ExamsController < ApplicationController
 
     validUsers << examCreator
 
-    if check_prof || validUsers.include?(@current_user.id)
+    if current_user.professor? || validUsers.include?(current_user.id)
       @exam = exam
     else
-      flash[:error] = 'Acceso restringido.'
       redirect_to(root_path)
     end
   end
@@ -261,9 +245,9 @@ class ExamsController < ApplicationController
     masterExam.cantakes.map(&:user_id)
   end
 
-  def available
+  def available(masterExam)
     now = Time.zone.now
-    creatorId == @current_user.id ||
+    masterExam.user_id == current_user.id ||
       (masterExam.startDate <= now && masterExam.finishDate >= now)
   end
 end

@@ -17,7 +17,7 @@ class Exam < ActiveRecord::Base
   # private
   def check_attempts
     state = self.state.to_i
-    attempts = Exam.where(master_exam: master_exam, user: user).count
+    attempts = Exam.where(master_exam_id: master_exam, user_id: user).count
     allowedAttempts = master_exam.attempts
     if attempts > allowedAttempts || state >= 2
       false
@@ -115,7 +115,7 @@ class Exam < ActiveRecord::Base
       exam.score = 0
 
       if exam.master_exam.users.include?(user)
-        attemptN = Exam.where(master_exam: master_exam, user: user).count
+        attemptN = Exam.where(master_exam_id: master_exam, user_id: user).count
 
         if attemptN < exam.master_exam.attempts
           exam.attemptnumber = attemptN + 1
@@ -140,7 +140,7 @@ class Exam < ActiveRecord::Base
       end
 
       # Create questions
-      e_definition = ExamDefinition.where(master_exam: master_exam)
+      e_definition = ExamDefinition.where(master_exam_id: master_exam)
       for mQuestion in e_definition
         master_question = MasterQuestion.find(mQuestion.master_question_id)
         inquiry = master_question.inquiry

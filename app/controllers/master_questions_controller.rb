@@ -1,25 +1,15 @@
 # encoding: utf-8
 class MasterQuestionsController < ApplicationController
-  $randomizer = ''
-  $solver = ''
   @inquiriesMasterQuestionsIDs = {}
 
-  before_filter :authenticate_user, only: [:new, :index, :create, :show, :edit,
-                                           :update, :destroy, :backup]
-
   def new
-    if check_admin
-      if @master_question
-        @master_question = params[:object]
-      else
-        @master_question = MasterQuestion.new
-        @master_question.randomizer = initialize_file('randomizer')
-        @master_question.solver = initialize_file('solver')
-        @master_question.inquiry = initialize_file('inquiry')
-      end
+    if @master_question
+      @master_question = params[:object]
     else
-      flash[:error] = 'Acceso restringido.'
-      redirect_to root_path
+      @master_question = MasterQuestion.new
+      @master_question.randomizer = initialize_file('randomizer')
+      @master_question.solver = initialize_file('solver')
+      @master_question.inquiry = initialize_file('inquiry')
     end
   end
 
@@ -63,154 +53,129 @@ class MasterQuestionsController < ApplicationController
   end
 
   def create
-    if check_admin
-      params[:master_question][:borrado] = 0
-      @master_question = MasterQuestion.new(params[:master_question], without_protection: true)
+    params[:master_question][:borrado] = 0
+    @master_question = MasterQuestion.new(params[:master_question], without_protection: true)
 
-      # Generate random name for solver and randomizer
-      uuid = SecureRandom.uuid
-      randomizer = "#{uuid}_randomizer"
-      solver = "#{uuid}_solver"
+    # Generate random name for solver and randomizer
+    uuid = SecureRandom.uuid
+    randomizer = "#{uuid}_randomizer"
+    solver = "#{uuid}_solver"
 
-      # Create solver and randomizer files in /helpers/s and /helpers/r
-      rand_file = File.dirname(__FILE__) + "/../helpers/r/#{randomizer}.rb"
-      solv_file = File.dirname(__FILE__) + "/../helpers/s/#{solver}.rb"
+    # Create solver and randomizer files in /helpers/s and /helpers/r
+    rand_file = File.dirname(__FILE__) + "/../helpers/r/#{randomizer}.rb"
+    solv_file = File.dirname(__FILE__) + "/../helpers/s/#{solver}.rb"
 
-      randomizer_file = File.open(rand_file, 'w') { |f| f.write("#{@master_question.randomizer}") }
-      solver_file = File.open(solv_file, 'w') { |f| f.write("#{@master_question.solver}") }
+    randomizer_file = File.open(rand_file, 'w') { |f| f.write("#{@master_question.randomizer}") }
+    solver_file = File.open(solv_file, 'w') { |f| f.write("#{@master_question.solver}") }
 
-      rand_file_error = false
-      solv_file_error = false
+    rand_file_error = false
+    solv_file_error = false
 
-      # Verficicar error en el randomizer
-      begin
-        load rand_file
-      rescue => exc
-        rand_file_error = true
-      end
-
-      # Verificar error en el solver
-      begin
-        load solv_file
-      rescue => exc
-        solv_file_error = true
-      end
-
-      # Notificar del error
-      if solv_file_error && rand_file_error
-        flash[:error] = 'Error al ejecutar randomizer y solver, por favor revise su código.'
-        render(action: 'new') && return
-      elsif solv_file_error
-        flash[:error] = 'Error al ejecutar solver, por favor revise su código.'
-        render(action: 'new') && return
-      elsif rand_file_error
-        flash[:error] = 'Error al ejecutar randomizer, por favor revise su código.'
-        render(action: 'new') && return
-      end
-
-      # Save masterquestion solver and randomizer file path
-      @master_question.randomizer = "#{randomizer}"
-      @master_question.solver = "#{solver}"
-
-      if @master_question.save
-        flash[:notice] = 'MasterQuestion creada exitosamente.'
-      else
-        flash[:error] = 'Los datos proporcionados no son válidos.'
-      end
-      redirect_to master_questions_path
-    else
-      flash[:error] = 'Acceso restringido.'
-      redirect_to root_path
+    # Verficicar error en el randomizer
+    begin
+      load rand_file
+    rescue => exc
+      rand_file_error = true
     end
+
+    # Verificar error en el solver
+    begin
+      load solv_file
+    rescue => exc
+      solv_file_error = true
+    end
+
+    # Notificar del error
+    if solv_file_error && rand_file_error
+      flash[:error] = 'Error al ejecutar randomizer y solver, por favor revise su código.'
+      render(action: 'new') && return
+    elsif solv_file_error
+      flash[:error] = 'Error al ejecutar solver, por favor revise su código.'
+      render(action: 'new') && return
+    elsif rand_file_error
+      flash[:error] = 'Error al ejecutar randomizer, por favor revise su código.'
+      render(action: 'new') && return
+    end
+
+    # Save masterquestion solver and randomizer file path
+    @master_question.randomizer = "#{randomizer}"
+    @master_question.solver = "#{solver}"
+
+    if @master_question.save
+      flash[:notice] = 'MasterQuestion creada exitosamente.'
+    else
+      flash[:error] = 'Los datos proporcionados no son válidos.'
+    end
+    redirect_to master_questions_path
   end
 
   # Read actions
   def index
-    if check_prof || check_admin
-      if params[:id]
-        @masterQuestions = MasterQuestion
-          .find(:all,
-                conditions: ['master_questions.language_id = ?', params[:id]],
-                joins: :concept, order: ['language_id', 'concepts.name'])
-      else
-        @masterQuestions = MasterQuestion.find(:all, joins: :concept, order: ['language_id', 'concepts.name'])
-      end
-      @masterSelections = MasterQuestion.select('DISTINCT language_id').where('borrado = 0').order('language_id')
+    if params[:id]
+      @masterQuestions = MasterQuestion
+        .find(:all,
+              conditions: ['master_questions.language_id = ?', params[:id]],
+              joins: :concept, order: ['language_id', 'concepts.name'])
     else
-      flash[:error] = 'Acceso restringido.'
-      redirect_to root_path
+      @masterQuestions = MasterQuestion.find(:all, joins: :concept, order: ['language_id', 'concepts.name'])
     end
+    @masterSelections = MasterQuestion.select('DISTINCT language_id').where('borrado = 0').order('language_id')
   end
 
   def show
-    if check_prof || check_admin
-      @master_question = MasterQuestion.find(params[:id], joins: :concept, order: ['concepts.name'])
+    @master_question = MasterQuestion.find(params[:id], joins: :concept, order: ['concepts.name'])
 
-      # Get files path
-      randomizer = @master_question.randomizer
-      solver = @master_question.solver
+    # Get files path
+    randomizer = @master_question.randomizer
+    solver = @master_question.solver
 
-      # Retrieve code from files
-      @master_question.randomizer = read_file(File.dirname(__FILE__) + "/../helpers/r/#{randomizer}.rb")
-      @master_question.solver = read_file(File.dirname(__FILE__) + "/../helpers/s/#{solver}.rb")
-    else
-      flash[:error] = 'Acceso restringido.'
-      redirect_to(root_path)
-    end
+    # Retrieve code from files
+    @master_question.randomizer = read_file(File.dirname(__FILE__) + "/../helpers/r/#{randomizer}.rb")
+    @master_question.solver = read_file(File.dirname(__FILE__) + "/../helpers/s/#{solver}.rb")
   end
 
   # Update actions
   def edit
-    if check_admin
-      @master_question = MasterQuestion.find(params[:id])
+    @master_question = MasterQuestion.find(params[:id])
 
-      randomizer = @master_question.randomizer
-      solver = @master_question.solver
+    randomizer = @master_question.randomizer
+    solver = @master_question.solver
 
-      # Retrieve code from files
-      @master_question.randomizer = read_file(File.dirname(__FILE__) + "/../helpers/r/#{randomizer}.rb")
-      @master_question.solver = read_file(File.dirname(__FILE__) + "/../helpers/s/#{solver}.rb")
-    else
-      flash[:error] = 'Acceso restringido.'
-      redirect_to(root_path)
-    end
+    # Retrieve code from files
+    @master_question.randomizer = read_file(File.dirname(__FILE__) + "/../helpers/r/#{randomizer}.rb")
+    @master_question.solver = read_file(File.dirname(__FILE__) + "/../helpers/s/#{solver}.rb")
   end
 
   def update
-    if check_admin
-      @master_question = MasterQuestion.find(params[:id])
+    @master_question = MasterQuestion.find(params[:id])
 
-      randomizer = @master_question.randomizer
-      solver = @master_question.solver
+    randomizer = @master_question.randomizer
+    solver = @master_question.solver
 
-      # Create master temporal
-      master_temporal =  MasterQuestion.new(params[:master_question], without_protection: true)
+    # Create master temporal
+    master_temporal =  MasterQuestion.new(params[:master_question], without_protection: true)
 
-      # Saves code to randomizer and solver files
-      File.open(File.dirname(__FILE__) + "/../helpers/r/#{randomizer}.rb", 'w') { |f| f.write("#{master_temporal.randomizer}") }
-      File.open(File.dirname(__FILE__) + "/../helpers/s/#{solver}.rb", 'w') { |f| f.write("#{master_temporal.solver}") }
+    # Saves code to randomizer and solver files
+    File.open(File.dirname(__FILE__) + "/../helpers/r/#{randomizer}.rb", 'w') { |f| f.write("#{master_temporal.randomizer}") }
+    File.open(File.dirname(__FILE__) + "/../helpers/s/#{solver}.rb", 'w') { |f| f.write("#{master_temporal.solver}") }
 
-      # Updates randomizer and solver fields
-      master_temporal.randomizer = randomizer
-      master_temporal.solver = solver
+    # Updates randomizer and solver fields
+    master_temporal.randomizer = randomizer
+    master_temporal.solver = solver
 
-      attributes = { language_id: master_temporal.language_id,
-                     concept_id: master_temporal.concept_id,
-                     subconcept_id: master_temporal.subconcept_id,
-                     inquiry: master_temporal.inquiry,
-                     randomizer: master_temporal.randomizer,
-                     solver: master_temporal.solver }
-      if @master_question.update_attributes(attributes)
-        flash[:notice] = 'La pregunta maestra fue actualizada de manera correcta.'
-      else
-        flash[:error] = 'No se pudieron actualizar los datos de la pregunta maestra.'
-      end
-
-      redirect_to(@master_question)
+    attributes = { language_id: master_temporal.language_id,
+                   concept_id: master_temporal.concept_id,
+                   subconcept_id: master_temporal.subconcept_id,
+                   inquiry: master_temporal.inquiry,
+                   randomizer: master_temporal.randomizer,
+                   solver: master_temporal.solver }
+    if @master_question.update_attributes(attributes)
+      flash[:notice] = 'La pregunta maestra fue actualizada de manera correcta.'
     else
-      flash[:error] = 'Acceso restringido.'
-      redirect_to(root_path)
+      flash[:error] = 'No se pudieron actualizar los datos de la pregunta maestra.'
     end
+
+    redirect_to(@master_question)
   end
 
   # Read file from file_path
@@ -248,26 +213,20 @@ class MasterQuestionsController < ApplicationController
 
   # Delete actions
   def destroy
-    # if check_prof || check_admin
-    if check_admin
-      @master_question = MasterQuestion.find(params[:id])
+    @master_question = MasterQuestion.find(params[:id])
 
-      # Delete randomizer and solver files
-      if File.exist?(@master_question.randomizer)
-        File.delete(@master_question.randomizer)
-      end
-
-      if File.exist?(@master_question.solver)
-        File.delete(@master_question.solver)
-      end
-
-      @master_question.destroy
-
-      redirect_to action: 'index'
-    else
-      flash[:error] = 'Acceso restringido.'
-      redirect_to(master_questions_path)
+    # Delete randomizer and solver files
+    if File.exist?(@master_question.randomizer)
+      File.delete(@master_question.randomizer)
     end
+
+    if File.exist?(@master_question.solver)
+      File.delete(@master_question.solver)
+    end
+
+    @master_question.destroy
+
+    redirect_to action: 'index'
   end
 
   def concepts_for_question
@@ -313,26 +272,17 @@ class MasterQuestionsController < ApplicationController
   end
 
   def deleteQuestion
-    if check_admin
-      @master_question = MasterQuestion.find(params[:id])
-      if @master_question.update_attributes(borrado: '1',
-                                            questionDateDeleted: Time.zone.now)
-        flash[:notice] = 'La pregunta maestra fue borrada de manera correcta.'
-      else
-        flash[:error] = 'No se pudieron actualizar los datos de la pregunta maestra.'
-      end
-      redirect_to controller: 'master_questions', action: 'index'
+    @master_question = MasterQuestion.find(params[:id])
+    if @master_question.update_attributes(borrado: '1',
+                                          questionDateDeleted: Time.zone.now)
+      flash[:notice] = 'La pregunta maestra fue borrada de manera correcta.'
     else
-      flash[:error] = 'Acceso restringido.'
+      flash[:error] = 'No se pudieron actualizar los datos de la pregunta maestra.'
     end
+    redirect_to controller: 'master_questions', action: 'index'
   end
 
   def deleted_questions
-    if check_admin
-      @master_question = MasterQuestion.where(borrado: '1')
-    else
-      flash[:error] = 'Acceso restringido.'
-      redirect_to root_path
-    end
+    @master_question = MasterQuestion.where(borrado: '1')
   end
 end

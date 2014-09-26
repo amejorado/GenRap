@@ -6,7 +6,7 @@ class SessionsController < ApplicationController
     if authorized_user && authorized_user.authenticate(params[:gpassword])
       session[:user_id] = authorized_user.id
       flash[:notice] = "Bienvenido #{authorized_user.fname} #{authorized_user.lname}."
-      if check_prof
+      if current_user.professor?
         redirect_to controller: 'stats', action: 'profstats'
       else
         redirect_to root_path

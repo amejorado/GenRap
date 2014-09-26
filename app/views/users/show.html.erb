@@ -12,16 +12,14 @@
 
 <h3>Perfil del Usuario</h3>
 <br/>
-<%= link_to '<span class="gglyphicon glyphicon-pencil" style="margin-right: 5px;"></span>Editar Usuario'.html_safe, 
-              edit_user_path(@user),
-              :class => "btn btn-default btn-sm" %>
+<%= link_to '<span class="gglyphicon glyphicon-pencil" style="margin-right: 5px;"></span>Editar Usuario'.html_safe,
+              edit_user_path(@user), class: "btn btn-default btn-sm" %>
 
-<% if check_admin %>
+<% if current_user.admin? %>
 
 <span style="display: inline-block;float:right;">
- <%= link_to '<span class="glyphicon glyphicon-arrow-left" style="margin-right: 5px;"></span>Ir a Usuarios'.html_safe, 
-              users_path,
-              :class => "btn btn-default btn-sm" %>
+ <%= link_to '<span class="glyphicon glyphicon-arrow-left" style="margin-right: 5px;"></span>Ir a Usuarios'.html_safe,
+              users_path, class: "btn btn-default btn-sm" %>
 </span>
 <% end %>
 

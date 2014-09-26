@@ -1,23 +1,22 @@
 <h3>Detalle de Pregunta</h3>
 
-  <% if check_admin %>
-  
-  <%= link_to '<span class="gglyphicon glyphicon-pencil" style="margin-right: 5px;"></span>Editar Pregunta'.html_safe, 
-              edit_master_question_path(@master_question),
-              :class => "btn btn-default btn-sm" %>
-  <% end %>
+<% if current_user && current_user.admin? %>
 
-  <% if check_prof %>
+  <%= link_to '<span class="gglyphicon glyphicon-pencil" style="margin-right: 5px;"></span>Editar Pregunta'.html_safe,
+    edit_master_question_path(@master_question),
+    :class => "btn btn-default btn-sm" %>
+
+<% end %>
+
+<% if current_user && current_user.professor? %>
 
   <span style="display: inline-block;float:right;">
-  <%= link_to '<span class="glyphicon glyphicon-arrow-left" style="margin-right: 5px;"></span>Ir a Preguntas'.html_safe, 
-              master_questions_path,
-              :class => "btn btn-default btn-sm" %>
+    <%= link_to '<span class="glyphicon glyphicon-arrow-left" style="margin-right: 5px;"></span>Ir a Preguntas'.html_safe,
+      master_questions_path,
+      :class => "btn btn-default btn-sm" %>
   </span>
-  <% end %>
 
-
-
+<% end %>
 
 <hr>
 
@@ -30,12 +29,12 @@
   <span><h5>Concepto a evaluar:</h5></span>
   <%= @master_question.concept.name %>
 </p>
- 
+
 <p>
   <span><h5>Subconcepto a evaluar:</h5></span>
   <%= @master_question.sub_concept.name %>
 </p>
- 
+
 <p>
   <span><h5>Pregunta:</h5></span>
   <pre><%= @master_question.inquiry %></pre>
@@ -45,7 +44,7 @@
 <p>
   <span><h5>Randomizer:</h5></span>
   <textarea disabled><%= @master_question.randomizer %></textarea>
-</p> 
+</p>
 
 <p>
   <span><h5>Solver:</h5></span>

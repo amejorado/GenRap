@@ -1,7 +1,5 @@
 # encoding: utf-8
 class ExamDefinitionController < ApplicationController
-  before_filter :authenticate_user
-
   def new
     @examDefinition = ExamDefinition.new
     @examUsers = nil
@@ -14,17 +12,13 @@ class ExamDefinitionController < ApplicationController
   end
 
   def create
-    if check_prof
-      @examDefinition = ExamDefinition.new(params[:examID])
-      @examDefinition.utype = 0
+    @examDefinition = ExamDefinition.new(params[:examID])
+    @examDefinition.utype = 0
 
-      if @examDefinition.save
-        flash[:notice] = 'Definición de examen creada de manera exitosa.'
-      else
-        flash[:error] = 'Los datos no son válidos.'
-      end
+    if @examDefinition.save
+      flash[:notice] = 'Definición de examen creada de manera exitosa.'
     else
-      flash[:error] = 'Acceso restringido.'
+      flash[:error] = 'Los datos no son válidos.'
     end
     redirect_to root_path
   end
@@ -32,12 +26,11 @@ class ExamDefinitionController < ApplicationController
   def destroy
     master_exam = MasterExam.find(params[:id])
 
-    if check_admin || (check_prof && master_exam.user_id == current_user.id)
+    if current_user.admin? ||
+       (current_user.professor? && master_exam.user_id == current_user.id)
+
       master_exam.destroy
       redirect_to '/profstats'
-    else
-      flash[:error] = 'Acceso restringido.'
-      redirect_to master_questions_path
     end
   end
 
@@ -89,7 +82,7 @@ class ExamDefinitionController < ApplicationController
       )
     end
 
-    if check_prof
+    if current_user.professor?
       flash[:notice] = 'Examen agregado exitosamente'
     else
       flash[:notice] = 'Ejercicio creado exitosamente'

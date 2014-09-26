@@ -1,67 +1,56 @@
-
 <style type="text/css">
-  h3{
-    display: inline-block;
-  }
-  span#historial_ques a{
-    font-weight: bold !important;;
-    display: inline-block !important;;
-    float: right !important;;
-    color: #0088cc !important;;
-  }
-  span#historial_ques a:hover {
-    color: #005580 !important;
-    background: none !important;
-  }
+h3 {
+  display: inline-block;
+}
 
+span#historial_ques a{
+  font-weight: bold !important;;
+  display: inline-block !important;;
+  float: right !important;;
+  color: #0088cc !important;;
+}
 
+span#historial_ques a:hover {
+  color: #005580 !important;
+  background: none !important;
+}
 </style>
 
 <h3>Preguntas Maestras</h3>
 
 <div>
-  <%  if check_admin %>
-     <%=   link_to 'Historial de Preguntas Borradas', {:action => "deleted_questions"} , :class => "btn btn-default" %>
+  <%  if current_user.admin? %>
+    <%= link_to 'Historial de Preguntas Borradas', { action: "deleted_questions" }, class: "btn btn-default" %>
   <% end %>
+
   <div class="btn-group" style="display:inline-block;">
-      <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-        Lenguaje
-        <span class="caret"></span>
-      </a>
-      <ul class="dropdown-menu">
-      <% 
-      @masterSelections.each do |mq|
-
-      %>
-
-        <li><%= link_to mq.language.name, :controller => :master_questions, :action => :index, :id => mq.language_id %></li>
-         
-    <% 
-      end
-    %>
+    <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+      Lenguaje
+      <span class="caret"></span>
+    </a>
+    <ul class="dropdown-menu">
+      <% @masterSelections.each do |mq| %>
+        <li><%= link_to mq.language.name, controller: :master_questions, action: :index, id: mq.language_id %></li>
+      <% end %>
     </ul>
   </div>
 
-  <% if check_admin %>
-  <span style="display: inline-block;float:right;">
-    <%= link_to '<span class="glyphicon glyphicon-plus" style="margin-right: 5px;"></span>Nueva Pregunta'.html_safe, 
-              {:controller => :master_questions, :action => :new },
-              :class => "btn btn-info" %>
-  </span>
+  <% if current_user.admin? %>
+
+    <span style="display: inline-block;float:right;">
+      <%= link_to '<span class="glyphicon glyphicon-plus" style="margin-right: 5px;"></span>Nueva Pregunta'.html_safe,
+        { controller: :master_questions, action: :new }, class: "btn btn-info" %>
+    </span>
+
     <span style="display: inline-block;float:right;margin-right:5px;">
-    <%= link_to 'Respaldar Preguntas', {:action => "backup" },
-              :class => "btn btn-default" %>
-  </span>
+      <%= link_to 'Respaldar Preguntas', { action: "backup" }, class: "btn btn-default" %>
+    </span>
 
     <br/><br/>
-
   <% end %>
-
-
-
 </div>
- <br/>
- 
+<br/>
+
 <table class="table table-bordered table-striped">
   <thead>
     <tr>
@@ -72,34 +61,28 @@
       <th style="width: 1px;"></th>
     </tr>
   </thead>
- 
+
   <tbody>
 
-  <% 
-  @masterQuestions.each do |mq|
-    if mq.borrado == 0
-  %>
+  <% @masterQuestions.each do |mq| %>
+    <% if mq.borrado == 0 %>
       <tr>
-        <td><%=   mq.language.name %></td>
-        <td><%=   mq.concept.name %></td>
-        <td><%=   mq.sub_concept.name %></td>
-        
-        <td style="width:0;"><pre style="font-size: 11px; border: none; background: transparent;"><%=   mq.inquiry %></pre></td>
-        <td style="width:0;">
-          <%=   link_to 'Ver más', mq , {class: "btn btn-default btn-xs"} %> <br/><br/>
-          <% if check_admin %>
-          <%=   link_to 'Editar', edit_master_question_path(mq) , {class: "btn btn-default btn-xs"}  %> <br/> <br/>
-          <%=   link_to 'Borrar', {:action => "deleteQuestion", :id => mq.id},  data: { confirm: '¿Estas seguro?' } , :class => "btn btn-default btn-xs"    %> <br/><br/>
-          <% end %>
-        </td>
+        <td><%= mq.language.name %></td>
+        <td><%= mq.concept.name %></td>
+        <td><%= mq.sub_concept.name %></td>
 
-      </tr>
-    <% 
-    end
-  end
-  %>
-  </tbody>
-</table>
- 
-<br />
- 
+        <td style="width:0;"><pre style="font-size: 11px; border: none; background: transparent;"><%= mq.inquiry %></pre></td>
+          <td style="width:0;">
+            <%= link_to 'Ver más', mq, { class: "btn btn-default btn-xs" } %> <br/><br/>
+            <% if current_user.admin? %>
+              <%= link_to 'Editar', edit_master_question_path(mq) , { class: "btn btn-default btn-xs" } %> <br/> <br/>
+              <%= link_to 'Borrar', { action: "deleteQuestion", id: mq.id},  data: { confirm: '¿Estas seguro?' }, class: "btn btn-default btn-xs" %> <br/><br/>
+            <% end %>
+          </td>
+
+        </tr>
+      <% end %>
+    <% end %>
+    </tbody>
+  </table>
+  <br/>

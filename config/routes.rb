@@ -1,19 +1,7 @@
-
 GenRap::Application.routes.draw do
   resources :languages
   resources :sub_concepts
   resources :concepts
-
-  # get "sessions/login,"
-
-  # get "sessions/home,"
-
-  # get "sessions/profile,"
-
-  # get "sessions/setting"
-
-  # The priority is based upon order of creation:
-  # first created -> highest priority.
 
   root to: 'exams#pending'
 
@@ -22,7 +10,6 @@ GenRap::Application.routes.draw do
   match 'signup', to: 'users#new'
   match 'login', to: 'sessions#login'
   match 'logout', to: 'sessions#logout'
-  # match "mq", :to => "master_question#new"
   match 'def', to: 'exam_definition#new'
   match 'exam_definition/destroy/:id', to: 'exam_definition#destroy'
   match 'results/exam/:id', to: 'exams#results', as: 'exam_results'
@@ -34,8 +21,6 @@ GenRap::Application.routes.draw do
   match 'profstats_exam', to: 'stats#profstats_exam'
   match 'resultadosExamen', to: 'stats#resultadosExamen'
 
-  # match "deleted_questions", to: "master_questions#deleted_questions"
-
   # json routes in MasterQuestion controller
   match 'master_question/concepts_for_question' => 'master_questions#concepts_for_question'
   match 'master_question/subconcepts_for_question' => 'master_questions#subconcepts_for_question'
@@ -46,7 +31,6 @@ GenRap::Application.routes.draw do
   match 'master_question/deleted_questions' => 'master_questions#deleted_questions'
   match 'master_question/backup' => 'master_questions#backup'
   match 'exam/afterExam' => 'exams#afterExam'
-  # match "exams/:id/edit/" => "emailer#sendmail"
 
   # json routes in Exams controller
   match 'exam/get_exams' => 'exams#get_exams'
@@ -65,7 +49,4 @@ GenRap::Application.routes.draw do
   match 'user/change_admin/:id' => 'users#change_admin'
   match 'user/change_professor/:id' => 'users#change_professor'
   match 'user/change_student/:id' => 'users#change_student'
-
-  # map.exam_show, '/exams/:id', :controller => :exams, :action => :show
-
 end
