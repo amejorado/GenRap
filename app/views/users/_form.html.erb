@@ -1,24 +1,20 @@
 <%= simple_form_for(@user) do |f| %>
   <br/>
   <fieldset>
-    <!-- <legend>Registro de usuario</legend> -->
-
-    <%= f.input :username, :label => 'Usuario' %>
-    <%= f.input :fname, :label => 'Nombre' %>
-    <%= f.input :lname, :label => 'Apellidos' %>
-    <%= f.input :mail, :label => 'Correo' %>
-    <%= f.label :password, 'Contraseña' %>
-      <%= f.password_field :password %>
-      <%= f.label :password_confirmation, 'Confirmar Contraseña' %>
-    <%= f.password_field :password_confirmation %>
+    <%= f.input :username, label: 'Usuario' %>
+    <%= f.input :fname, label: 'Nombre' %>
+    <%= f.input :lname, label: 'Apellidos' %>
+    <%= f.input :mail, label: 'Correo' %>
+    <%= f.input :password, as: :password, label: 'Contraseña' %>
+    <%= f.input :password_confirmation, as: :password, label: 'Confirmar Contraseña' %>
 
     <div class="control-group">
       <div class="controls">
 
-        <%= f.button :submit, "Guardar Usuario", :class => "btn btn-primary" %>
+        <%= f.button :submit, "Guardar Usuario", class: "btn btn-primary" %>
 
         <% if current_user && current_user.admin? %>
-          <%= link_to 'Cancelar', users_path, :class => "btn btn-danger"%>
+          <%= link_to 'Cancelar', users_path, class: "btn btn-danger"%>
         <% end %>
       </div>
     </div>

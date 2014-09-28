@@ -13,43 +13,33 @@ class UsersController < ApplicationController
     @user.utype = User::STUDENT
 
     if @user.save
-      flash[:notice] = 'usuario creado de manera exitosa. haga sign in.'
+      flash[:notice] = 'Usuario creado de manera exitosa.'
+      redirect_to '/signup'
     else
-      if @user.errors.messages[:username]
-        flash[:error] = 'El nombre de usuario no es único'
-      elsif @user.errors.messages[:mail]
-        flash[:error] = 'El correo no es único'
-      else
-        flash[:error] = 'Hubo un error al crear el usuario'
-      end
+      render :new
     end
-
-    redirect_to('/signup')
   end
 
   def show
-    if current_user.admin? || current_user.id.to_s == params[:id]
-      @user = User.find(params[:id])
-    end
+    fail unless current_user.admin? || current_user.id.to_s == params[:id]
+    @user = User.find(params[:id])
   end
 
   def edit
-    if current_user.admin? || @current_user.id.to_s == params[:id]
-      @user = User.find(params[:id])
-    end
+    fail unless current_user.admin? || current_user.id.to_s == params[:id]
+    @user = User.find(params[:id])
   end
 
   def update
-    if current_user.admin? || current_user.id.to_s == params[:id]
-      @user = User.find(params[:id])
+    fail unless current_user.admin? || current_user.id.to_s == params[:id]
+    @user = User.find(params[:id])
 
-      if @user.update_attributes(params[:user])
-        flash[:notice] = 'El usuario fue actualizado de manera correcta.'
-      else
-        flash[:error] = 'No se pudieron actualizar los datos del usuario.'
-      end
-
-      redirect_to(@user)
+    if @user.update_attributes(params[:user])
+      flash[:notice] = 'El usuario fue actualizado de manera correcta.'
+      redirect_to @user
+    else
+      flash[:error] = 'No se pudieron actualizar los datos del usuario.'
+      render :edit
     end
   end
 
