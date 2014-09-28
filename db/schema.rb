@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131130033820) do
+ActiveRecord::Schema.define(:version => 20140926171001) do
 
   create_table "cantakes", :force => true do |t|
     t.integer "master_exam_id"
@@ -98,13 +98,13 @@ ActiveRecord::Schema.define(:version => 20131130033820) do
 
   create_table "master_questions", :force => true do |t|
     t.string   "language_id"
-    t.string   "solver"
-    t.string   "randomizer"
+    t.text     "solver",              :limit => 255
+    t.text     "randomizer",          :limit => 255
     t.string   "inquiry"
     t.string   "concept_id"
     t.string   "subconcept_id"
-    t.datetime "created_at",          :null => false
-    t.datetime "updated_at",          :null => false
+    t.datetime "created_at",                         :null => false
+    t.datetime "updated_at",                         :null => false
     t.integer  "borrado"
     t.date     "questionDateDeleted"
   end

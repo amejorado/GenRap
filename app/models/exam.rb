@@ -145,27 +145,19 @@ class Exam < ActiveRecord::Base
         master_question = MasterQuestion.find(mQuestion.master_question_id)
         inquiry = master_question.inquiry
 
+        master_question.load_randomizer_and_solver!
+
         # We generate random question
-        randomizer = master_question.randomizer
-        full_randomizer_path = File.dirname(__FILE__) + '/../helpers/r/' + randomizer + '.rb'
-        load full_randomizer_path
-        puts 'loaded ' + full_randomizer_path
-        values = randomize(inquiry)
+        values = master_question.randomize(inquiry)
         # puts "values " + values.to_s
 
         # We generate values, correctAns
-        solver = master_question.solver
-        full_solver_path = File.dirname(__FILE__) + '/../helpers/s/' + solver + '.rb'
-        load full_solver_path
-        puts 'loaded ' + full_solver_path
-        answers, correctAns = solve(inquiry, values)
+        answers, correctAns = master_question.solve(inquiry, values)
         answers = check_correct_answers(answers, correctAns)
         puts 'answers ' + answers.to_s
-        # puts "correctAns " + correctAns.to_s
 
         # We finally create the question
         question = Question.new
-        # puts "exam " + exam.to_s
         question.exam = exam
         question.master_question = master_question
         question.questionNum = mQuestion.questionNum
@@ -175,10 +167,8 @@ class Exam < ActiveRecord::Base
         question.givenAns = ''
 
         if question.save
-          # flash[:notice] = "Pregunta creada de manera exitosa."
           puts 'Pregunta creada de manera exitosa.'
         else
-          # flash[:error] = "No se pudo crear la pregunta."
           puts 'No se pudo crear la pregunta.'
           fail ActiveRecord::Rollback
         end

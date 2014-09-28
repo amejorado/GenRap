@@ -14,9 +14,9 @@ class MasterQuestionsController < ApplicationController
   end
 
   def backup
-    $file_name = 'Questions_backup'
-    prebackup_file = File.dirname(__FILE__) + "/../../#{$file_name}.txt"
-    File.open(File.dirname(__FILE__) + "/../../#{$file_name}.txt", 'w') do |somefile|
+    file_name = 'Questions_backup'
+    prebackup_file = File.dirname(__FILE__) + "/../../#{file_name}.txt"
+    File.open(File.dirname(__FILE__) + "/../../#{file_name}.txt", 'w') do |somefile|
       somefile.puts "
          Reslpaldo de MasterQuestions "
     end
@@ -26,12 +26,8 @@ class MasterQuestionsController < ApplicationController
 
     MasterQuestion.all.each do |mq|
       inquiry = mq.inquiry
-      randomizer = mq.randomizer
-      solver = mq.solver
-
-      # Retrieve code from files
-      crandomizer = read_file(File.dirname(__FILE__) + "/../helpers/r/#{randomizer}.rb")
-      csolver = read_file(File.dirname(__FILE__) + "/../helpers/s/#{solver}.rb")
+      crandomizer = mq.randomizer
+      csolver = mq.solver
 
       File.open(prebackup_file, 'a+') do |outfile|
         outfile << inquiry
@@ -54,59 +50,15 @@ class MasterQuestionsController < ApplicationController
 
   def create
     params[:master_question][:borrado] = 0
-    @master_question = MasterQuestion.new(params[:master_question], without_protection: true)
-
-    # Generate random name for solver and randomizer
-    uuid = SecureRandom.uuid
-    randomizer = "#{uuid}_randomizer"
-    solver = "#{uuid}_solver"
-
-    # Create solver and randomizer files in /helpers/s and /helpers/r
-    rand_file = File.dirname(__FILE__) + "/../helpers/r/#{randomizer}.rb"
-    solv_file = File.dirname(__FILE__) + "/../helpers/s/#{solver}.rb"
-
-    randomizer_file = File.open(rand_file, 'w') { |f| f.write("#{@master_question.randomizer}") }
-    solver_file = File.open(solv_file, 'w') { |f| f.write("#{@master_question.solver}") }
-
-    rand_file_error = false
-    solv_file_error = false
-
-    # Verficicar error en el randomizer
-    begin
-      load rand_file
-    rescue => exc
-      rand_file_error = true
-    end
-
-    # Verificar error en el solver
-    begin
-      load solv_file
-    rescue => exc
-      solv_file_error = true
-    end
-
-    # Notificar del error
-    if solv_file_error && rand_file_error
-      flash[:error] = 'Error al ejecutar randomizer y solver, por favor revise su código.'
-      render(action: 'new') && return
-    elsif solv_file_error
-      flash[:error] = 'Error al ejecutar solver, por favor revise su código.'
-      render(action: 'new') && return
-    elsif rand_file_error
-      flash[:error] = 'Error al ejecutar randomizer, por favor revise su código.'
-      render(action: 'new') && return
-    end
-
-    # Save masterquestion solver and randomizer file path
-    @master_question.randomizer = "#{randomizer}"
-    @master_question.solver = "#{solver}"
+    @master_question = MasterQuestion.new(params[:master_question])
 
     if @master_question.save
       flash[:notice] = 'MasterQuestion creada exitosamente.'
+      redirect_to master_questions_path
     else
       flash[:error] = 'Los datos proporcionados no son válidos.'
+      render :new
     end
-    redirect_to master_questions_path
   end
 
   # Read actions
@@ -124,70 +76,23 @@ class MasterQuestionsController < ApplicationController
 
   def show
     @master_question = MasterQuestion.find(params[:id], joins: :concept, order: ['concepts.name'])
-
-    # Get files path
-    randomizer = @master_question.randomizer
-    solver = @master_question.solver
-
-    # Retrieve code from files
-    @master_question.randomizer = read_file(File.dirname(__FILE__) + "/../helpers/r/#{randomizer}.rb")
-    @master_question.solver = read_file(File.dirname(__FILE__) + "/../helpers/s/#{solver}.rb")
   end
 
   # Update actions
   def edit
     @master_question = MasterQuestion.find(params[:id])
-
-    randomizer = @master_question.randomizer
-    solver = @master_question.solver
-
-    # Retrieve code from files
-    @master_question.randomizer = read_file(File.dirname(__FILE__) + "/../helpers/r/#{randomizer}.rb")
-    @master_question.solver = read_file(File.dirname(__FILE__) + "/../helpers/s/#{solver}.rb")
   end
 
   def update
     @master_question = MasterQuestion.find(params[:id])
 
-    randomizer = @master_question.randomizer
-    solver = @master_question.solver
-
-    # Create master temporal
-    master_temporal =  MasterQuestion.new(params[:master_question], without_protection: true)
-
-    # Saves code to randomizer and solver files
-    File.open(File.dirname(__FILE__) + "/../helpers/r/#{randomizer}.rb", 'w') { |f| f.write("#{master_temporal.randomizer}") }
-    File.open(File.dirname(__FILE__) + "/../helpers/s/#{solver}.rb", 'w') { |f| f.write("#{master_temporal.solver}") }
-
-    # Updates randomizer and solver fields
-    master_temporal.randomizer = randomizer
-    master_temporal.solver = solver
-
-    attributes = { language_id: master_temporal.language_id,
-                   concept_id: master_temporal.concept_id,
-                   subconcept_id: master_temporal.subconcept_id,
-                   inquiry: master_temporal.inquiry,
-                   randomizer: master_temporal.randomizer,
-                   solver: master_temporal.solver }
-    if @master_question.update_attributes(attributes)
+    if @master_question.update_attributes(params[:master_question])
       flash[:notice] = 'La pregunta maestra fue actualizada de manera correcta.'
     else
       flash[:error] = 'No se pudieron actualizar los datos de la pregunta maestra.'
     end
 
     redirect_to(@master_question)
-  end
-
-  # Read file from file_path
-
-  def read_file(file_path)
-    @code = ''
-    File.open(file_path, 'r') do |file|
-      while line = file.gets
-        @code << line
-      end
-    end
-    @code
   end
 
   # Write initialize file
@@ -214,18 +119,7 @@ class MasterQuestionsController < ApplicationController
   # Delete actions
   def destroy
     @master_question = MasterQuestion.find(params[:id])
-
-    # Delete randomizer and solver files
-    if File.exist?(@master_question.randomizer)
-      File.delete(@master_question.randomizer)
-    end
-
-    if File.exist?(@master_question.solver)
-      File.delete(@master_question.solver)
-    end
-
     @master_question.destroy
-
     redirect_to action: 'index'
   end
 

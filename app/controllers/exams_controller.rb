@@ -44,12 +44,12 @@ class ExamsController < ApplicationController
         # Se agrega a la lista de intentos, la cantidad de intentos del
         # examen encontrado
         @attempts_exams << Exam.where(master_exam_id: masterExam,
-                                      user_id: @current_user).count
+                                      user_id: current_user).count
       end
     end
 
     # Se obtienen los examenes (ejercicios) creados por uno mismo, como ejercicios
-    availableExercices = MasterExam.where(user_id: @current_user)
+    availableExercices = MasterExam.where(user_id: current_user)
 
     # Para cada uno de estos examenes, se agrega el master exam y el promedio
     # de los intentos actuales a los arreglos correspondientes
@@ -57,9 +57,9 @@ class ExamsController < ApplicationController
       # Se obtienen los usuarios relacionados con este examen
       validUsers = who_cantake_masterExam(masterExam.id)
       # Se valida que el usuario actual sea un usuario valido
-      if validUsers.include?(@current_user.id)
+      if validUsers.include?(current_user.id)
         actual_exams = Exam.where(master_exam_id: masterExam,
-                                  user_id: @current_user)
+                                  user_id: current_user)
         @masterExercises << masterExam
         if actual_exams.length > 0
           grade = actual_exams.map(&:score).reduce { |sum, x| sum + x }
@@ -73,8 +73,8 @@ class ExamsController < ApplicationController
   end
 
   def sendEmailExam(user, idExam)
-    userName = user[0].fname
-    userMail = user[0].mail
+    userName = user.fname
+    userMail = user.mail
     url  = 'http://codeafeliz.com/exams/' + idExam.to_s
     data = Multimap.new
     data[:from] = 'Codea Feliz Team <info@codigofeliz.com>'
@@ -107,7 +107,7 @@ class ExamsController < ApplicationController
     # id del examen presentado
     @answeredExam = Exam.find(params[:id])
     # usuario que presento el examen
-    @userOfExam = User.select('fname, mail').where(id: @answeredExam.user_id)
+    @userOfExam = @answeredExam.user
     # manda llamar metodo que envia el correo
     sendEmailExam(@userOfExam, @answeredExam.id)
     # redireccionar a pagina principal
