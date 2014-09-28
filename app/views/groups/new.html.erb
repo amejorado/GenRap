@@ -2,14 +2,5 @@
 
 <div class="hero-unit">
   <h1>Registro de nuevo grupo</h1><br/>
-
   <%= render 'form' %>
-
-  <% if @group.errors.any? %>
-    <ul>
-      <% for message_error in @group.errors.full_messages %>
-      <li>- <%= message_error %></li>
-      <% end %>
-    </ul>
-  <% end %>
 </div>

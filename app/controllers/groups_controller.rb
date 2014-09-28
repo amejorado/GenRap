@@ -14,9 +14,6 @@ class GroupsController < ApplicationController
 
   def create
     @group = Group.new(params[:group])
-    @group.user = User.find(params[:profesor])
-
-    puts 'GROUP CONTROLLER ' + @group.users.to_s
 
     group_file = params[:upload]
     to_add = ''
@@ -40,13 +37,16 @@ class GroupsController < ApplicationController
         params[:group][:user_ids] << curr_user.id
       end
     end
-    flash[:error] = errors.join('<br />').html_safe if errors.length > 0
-    if @group.save
+    if errors.length > 0
+      flash[:error] = errors.join('<br />').html_safe
+      render :new
+    elsif @group.save
       flash[:notice] = 'Grupo creado de manera exitosa.'
+      redirect_to groups_path
     else
       flash[:error] = 'Datos del grupo no válidos.'
+      render :new
     end
-    redirect_to groups_path
   end
 
   def show
