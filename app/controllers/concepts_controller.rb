@@ -1,6 +1,6 @@
 class ConceptsController < ApplicationController
   def index
-    @concepts = Concept.order('language_id ASC')
+    @concepts = Concept.order(:language_id)
 
     respond_to do |format|
       format.html

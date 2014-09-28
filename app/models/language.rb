@@ -5,4 +5,6 @@ class Language < ActiveRecord::Base
   belongs_to :question
 
   attr_accessible :name
+
+  validates :name, presence: true, uniqueness: true
 end
