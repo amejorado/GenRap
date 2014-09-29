@@ -15,7 +15,9 @@ class MasterQuestion < ActiveRecord::Base
   validates :solver, presence: true
   validates :sub_concept, presence: true
   validates :borrado, presence: true
-  validate :randomizer_and_solver_code_is_correct
+
+  validate :randomizer_code_is_correct
+  validate :solver_code_is_correct
 
   attr_accessible :concept, :inquiry, :language, :randomizer, :solver,
                   :subconcept, :borrado, :questionDateDeleted, :concept_id,
@@ -32,16 +34,29 @@ class MasterQuestion < ActiveRecord::Base
 
   private
 
-  def randomizer_and_solver_code_is_correct
+  def randomizer_code_is_correct
     begin
       eval randomizer, binding
-    rescue => e
+      begin
+        randomize(inquiry)
+      rescue Exception => e
+        errors.add :randomizer, "tiene errores de ejecución</br>#{e.message}"
+      end
+    rescue Exception => e
       errors.add :randomizer, "tiene errores de compilación</br>#{e.message}"
     end
+  end
 
+  def solver_code_is_correct
     begin
       eval solver, binding
-    rescue => e
+      return if errors.messages[:randomizer]
+      begin
+        solve(inquiry, randomize(inquiry))
+      rescue Exception => e
+        errors.add :solver, "tiene errores de ejecución</br>#{e.message}"
+      end
+    rescue Exception => e
       errors.add :solver, "tiene errores de compilación</br>#{e.message}"
     end
   end

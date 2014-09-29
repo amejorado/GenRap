@@ -42,7 +42,7 @@ class MasterQuestionsController < ApplicationController
       end
     end
 
-    @masterSelections = MasterQuestion.all.order('language_id ASC').group('language_id')
+    @masterSelections = MasterQuestion.order('language_id ASC').group('language_id')
     @masterQuestions = MasterQuestion.all
     flash[:notice] = 'Backup realizado exitosamente.'
     redirect_to master_questions_path
