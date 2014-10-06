@@ -88,11 +88,11 @@ class MasterQuestionsController < ApplicationController
 
     if @master_question.update_attributes(params[:master_question])
       flash[:notice] = 'La pregunta maestra fue actualizada de manera correcta.'
+      redirect_to(@master_question)
     else
       flash[:error] = 'No se pudieron actualizar los datos de la pregunta maestra.'
+      render :edit
     end
-
-    redirect_to(@master_question)
   end
 
   # Write initialize file
